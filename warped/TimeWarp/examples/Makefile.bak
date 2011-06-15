@@ -1,0 +1,174 @@
+#-*-makefile-*-
+export 
+
+CXX = g++
+
+TOP = ..
+TWDIR = $(TOP)/src
+COMMON = ../../common
+TWOBJ = $(TWDIR)/obj
+RNDDIR = $(TOP)/rnd
+RNDOBJ = $(RNDDIR)/obj
+PINGOBJ = ./obj
+#MPIDIR = /vast/dmartin/download/mpich.ch_p4
+MPIDIR = /home/atroccol/mpich-1.2.0
+CPPFLAGS = -I$(TWDIR) -I$(COMMON)/include -I$(MPIDIR)/include -DMPI -DUSE_KERNEL_VTIME -DHAS_BOOLEAN -DBEST_PARTITION
+#-DOBJECTDEBUG
+#-DUSENONBLOCKINGMPICALLS\
+
+#CXXFLAGS = -g -Wall -O2 -pipe
+CXXFLAGS = -g -O2 
+LDFLAGS = -L$(MPIDIR)/lib/
+LOADLIBES = -lm -lnsl -lmpich 
+DEPENDINC = -I/usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include
+
+SIMSRCS = main.cc\
+	PingObject.cc
+
+PINGOBJS = $(PINGOBJ)/main.o\
+	$(PINGOBJ)/PingObject.o
+
+.PHONY: $(TWOBJ)/libTW.a
+
+all: $(PINGOBJ) PING $(RNDOBJ)/libRnd.a
+
+$(PINGOBJ):
+	mkdir $(PINGOBJ)
+
+#Just build a normal executable
+PING: $(PINGOBJS) $(TWOBJ)/libTW.a $(RNDOBJ)/libRnd.a 
+	$(CXX) -g $^\
+	$(LDFLAGS) $(LOADLIBES)\
+	-o $@
+
+PING.pure: $(PINGOBJS) $(TWOBJ)/libTW.a $(RNDOBJ)/libRnd.a
+	/local/packages/pure/bin/purify -g++ -follow-child-processes=yes -view-file=../PING/%v.%p.pv $(CXX) $^\
+	$(LDFLAGS) $(LOADLIBES)\
+	-o $@
+
+PING.quantify: $(PINGOBJS) $(TWOBJ)/libTW.a $(RNDOBJ)/libRnd.a
+	/home/common/pure/solaris/quantify-2.0.1-solaris2/quantify \
+	$(CXX) $^\
+	$(LDFLAGS) $(LOADLIBES)\
+	-o $@
+
+$(TWOBJ)/libTW.a:
+	$(MAKE) -j6 -l5 -C $(TWDIR)
+
+$(RNDOBJ)/libRnd.a:
+	$(MAKE) -C $(RNDDIR)
+
+# rule to make all the process .o files
+$(PINGOBJ)/%.o : %.cc
+	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS)\
+		$< -o $@
+
+depend:
+	makedepend -p$(PINGOBJ)/ -- $(CPPFLAGS) $(CXXFLAGS) -- $(DEPENDINC) $(SIMSRCS)
+	$(MAKE) -C $(TWDIR) depend
+	$(MAKE) -C $(RNDDIR) depend
+
+cleandep:
+	$(TOP)/bin/cleandepend ./Makefile > ./Makefile.clean
+	mv ./Makefile.clean ./Makefile
+	$(MAKE) -C $(TWDIR) cleandep
+	$(MAKE) -C $(RNDDIR) cleandep
+clean:	
+	rm -f *~ \#*\# PING
+	rm -rf $(PINGOBJ)/
+	$(MAKE) -C $(TWDIR) clean
+	$(MAKE) -C $(RNDDIR) clean
+
+it: clean depend PING
+
+# DO NOT DELETE THIS LINE -- make depend depends on it.
+
+./obj/main.o: PingObject.hh ../../common/include/SimulationObj.hh
+./obj/main.o: ../src/config.hh ../src/TimeWarp.hh
+./obj/main.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/new.h
+./obj/main.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/new
+./obj/main.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stddef.h
+./obj/main.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/exception
+./obj/main.o: ../src/BasicTimeWarp.hh ../src/LTSFInputQueue.hh
+./obj/main.o: /usr/include/stdlib.h /usr/include/features.h
+./obj/main.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+./obj/main.o: /usr/include/sys/types.h /usr/include/bits/types.h
+./obj/main.o: /usr/include/time.h /usr/include/endian.h
+./obj/main.o: /usr/include/bits/endian.h /usr/include/sys/select.h
+./obj/main.o: /usr/include/bits/select.h /usr/include/bits/sigset.h
+./obj/main.o: /usr/include/sys/sysmacros.h /usr/include/alloca.h
+./obj/main.o: ../../common/include/BasicEvent.hh ../src/TimeWarpBasicEvent.hh
+./obj/main.o: ../../common/include/warped.hh /usr/include/string.h
+./obj/main.o: /usr/include/values.h
+./obj/main.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/limits.h
+./obj/main.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/syslimits.h
+./obj/main.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/float.h
+./obj/main.o: /usr/include/ctype.h ../../common/include/DefaultVTime.hh
+./obj/main.o: ../../common/include/bool.hh ../src/MultiList.hh
+./obj/main.o: ../src/SortedListOfEvents.hh ../src/SortedListOfEvents.cc
+./obj/main.o: ../src/MultiList.cc ../src/OutputQueue.hh
+./obj/main.o: ../../common/include/SortedList.hh
+./obj/main.o: ../../common/include/Container.hh
+./obj/main.o: ../../common/include/SortedList.cc ../src/ObjectRecord.hh
+./obj/main.o: ../src/StateManager.hh ../src/StateQueue.hh
+./obj/main.o: ../../common/include/BasicState.hh ../src/TimeWarpBasicState.hh
+./obj/main.o: ../src/KernelMsgs.hh ../src/StateManagerInclude.hh
+./obj/main.o: ../../common/include/FileQueue.hh
+./obj/main.o: ../../common/include/FileData.hh
+./obj/main.o: ../../common/include/InFileQueue.hh
+./obj/main.o: ../../common/include/InFileData.hh
+./obj/main.o: ../../common/include/Stopwatch.hh /usr/include/sys/time.h
+./obj/main.o: /usr/include/bits/time.h ../src/LogicalProcess.hh
+./obj/main.o: ../src/FossilManagerInclude.hh ../src/GVTManager.hh
+./obj/main.o: ../src/AckRecord.hh ../src/CommMgrInterface.hh
+./obj/main.o: ../src/CommPhyInterface.hh ../src/OneShot.hh ../src/OneShot.cc
+./obj/main.o: ../src/LTSFScheduler.hh ../src/CommMgrDefault.hh
+./obj/main.o: ../src/TimeWarpObjectStats.hh ../src/LogicalProcessStats.hh
+./obj/main.o: PingObjectState.hh /usr/local/mpich-1.2.0/include/mpi.h
+./obj/main.o: /usr/local/mpich-1.2.0/include/mpidefs.h
+./obj/main.o: /usr/local/mpich-1.2.0/include/mpio.h
+./obj/main.o: /usr/local/mpich-1.2.0/include/mpi_errno.h
+./obj/PingObject.o: PingObject.hh ../../common/include/SimulationObj.hh
+./obj/PingObject.o: ../src/config.hh ../src/TimeWarp.hh
+./obj/PingObject.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/new.h
+./obj/PingObject.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/new
+./obj/PingObject.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stddef.h
+./obj/PingObject.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/exception
+./obj/PingObject.o: ../src/BasicTimeWarp.hh ../src/LTSFInputQueue.hh
+./obj/PingObject.o: /usr/include/stdlib.h /usr/include/features.h
+./obj/PingObject.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+./obj/PingObject.o: /usr/include/sys/types.h /usr/include/bits/types.h
+./obj/PingObject.o: /usr/include/time.h /usr/include/endian.h
+./obj/PingObject.o: /usr/include/bits/endian.h /usr/include/sys/select.h
+./obj/PingObject.o: /usr/include/bits/select.h /usr/include/bits/sigset.h
+./obj/PingObject.o: /usr/include/sys/sysmacros.h /usr/include/alloca.h
+./obj/PingObject.o: ../../common/include/BasicEvent.hh
+./obj/PingObject.o: ../src/TimeWarpBasicEvent.hh
+./obj/PingObject.o: ../../common/include/warped.hh /usr/include/string.h
+./obj/PingObject.o: /usr/include/values.h
+./obj/PingObject.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/limits.h
+./obj/PingObject.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/syslimits.h
+./obj/PingObject.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/float.h
+./obj/PingObject.o: /usr/include/ctype.h ../../common/include/DefaultVTime.hh
+./obj/PingObject.o: ../../common/include/bool.hh ../src/MultiList.hh
+./obj/PingObject.o: ../src/SortedListOfEvents.hh ../src/SortedListOfEvents.cc
+./obj/PingObject.o: ../src/MultiList.cc ../src/OutputQueue.hh
+./obj/PingObject.o: ../../common/include/SortedList.hh
+./obj/PingObject.o: ../../common/include/Container.hh
+./obj/PingObject.o: ../../common/include/SortedList.cc ../src/ObjectRecord.hh
+./obj/PingObject.o: ../src/StateManager.hh ../src/StateQueue.hh
+./obj/PingObject.o: ../../common/include/BasicState.hh
+./obj/PingObject.o: ../src/TimeWarpBasicState.hh ../src/KernelMsgs.hh
+./obj/PingObject.o: ../src/StateManagerInclude.hh
+./obj/PingObject.o: ../../common/include/FileQueue.hh
+./obj/PingObject.o: ../../common/include/FileData.hh
+./obj/PingObject.o: ../../common/include/InFileQueue.hh
+./obj/PingObject.o: ../../common/include/InFileData.hh
+./obj/PingObject.o: ../../common/include/Stopwatch.hh /usr/include/sys/time.h
+./obj/PingObject.o: /usr/include/bits/time.h ../src/LogicalProcess.hh
+./obj/PingObject.o: ../src/FossilManagerInclude.hh ../src/GVTManager.hh
+./obj/PingObject.o: ../src/AckRecord.hh ../src/CommMgrInterface.hh
+./obj/PingObject.o: ../src/CommPhyInterface.hh ../src/OneShot.hh
+./obj/PingObject.o: ../src/OneShot.cc ../src/LTSFScheduler.hh
+./obj/PingObject.o: ../src/CommMgrDefault.hh ../src/TimeWarpObjectStats.hh
+./obj/PingObject.o: ../src/LogicalProcessStats.hh PingObjectState.hh

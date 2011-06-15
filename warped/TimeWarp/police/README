@@ -1,0 +1,24 @@
+Police Dispatch System Model :
+-----------------------------
+
+The police dispatch system model is a simple model of a traffic police
+telecommunications network. A random number of calls are received by the
+police station and are dispatched for service to different police cars.
+
+The files associated in this model are the following:
+	PoliceSourceObject.hh		PoliceSourceObject.cc
+	PoliceSourceState.hh		PoliceSourceState.cc
+
+	PoliceForkObject.hh		PoliceForkObject.cc		
+	PoliceForkState.hh		PoliceForkState.cc
+
+	PoliceServerObject.hh		PoliceServerObject.cc
+	PoliceServerState.hh
+
+	PoliceSinkObject.hh		PoliceSinkObject.cc
+
+The PoliceSourceObject simulates the random number of incoming calls by
+sending a fixed set of events every hour for a 24-hour shift. The
+PoliceForkObject forwards the call to one of the many police cars
+available(police cars are modelled as servers). When the job has been
+completed the cars report back to the station through the sink object. 

@@ -1,0 +1,4 @@
+This is a template based stack.  It is extremely simple, the whole
+interface consists of two methods - push and pop.  According to
+"quantify", on a super sparc the push and pop take 18 clock cycles
+each.  (Compiled with a patched g++ 2.6.3, with -O2 enabled.)  Enjoy!

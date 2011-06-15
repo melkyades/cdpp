@@ -1,0 +1,5 @@
+This is a template based first order FIR filter.  Although this
+description sounds complex, all it does is keep a running average of
+data.  When constructed, it is initialized with a size that tells it
+how many data items should be averaged together.  The inline
+documentation tells you all you needed to know, so check it out.

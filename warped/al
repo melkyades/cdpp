@@ -1,0 +1,36 @@
+loading cache ./config.cache
+checking for gcc... (cached) gcc
+checking whether the C compiler (gcc  -L/usr/local/mpich-1.2.0/lib/) works... yes
+checking whether the C compiler (gcc  -L/usr/local/mpich-1.2.0/lib/) is a cross-compiler... no
+checking whether we are using GNU C... (cached) yes
+checking whether gcc accepts -g... (cached) yes
+checking for a BSD compatible install... (cached) /usr/bin/install -c
+checking whether make sets ${MAKE}... (cached) yes
+checking for c++... (cached) c++
+checking whether the C++ compiler (c++  -L/usr/local/mpich-1.2.0/lib/) works... yes
+checking whether the C++ compiler (c++  -L/usr/local/mpich-1.2.0/lib/) is a cross-compiler... no
+checking whether we are using GNU C++... (cached) yes
+checking whether c++ accepts -g... (cached) yes
+checking for gnu make... (cached) yes
+checking for sqrt in -lm... (cached) yes
+checking for MPI_Send in -lmpi... (cached) no
+checking for expect in -lnsl... (cached) no
+checking for accept in -lsocket... (cached) no
+checking how to run the C preprocessor... -I/usr/local/mpich-1.2.0/include/
+checking for ANSI C header files... (cached) no
+checking for limits.h... (cached) no
+checking for malloc.h... (cached) no
+checking for sys/time.h... (cached) no
+checking for working const... (cached) yes
+checking for inline... (cached) inline
+checking for size_t... (cached) no
+checking whether time.h and sys/time.h may both be included... (cached) yes
+checking for mpi.h... (cached) no
+checking for 8-bit clean memcmp... (cached) yes
+checking for gettimeofday... (cached) yes
+checking for builtin bool type in c++ compiler... yes
+checking for old style friends of template classes... no
+creating ./config.status
+creating Makefile.common
+creating warped_global_config.h
+warped_global_config.h is unchanged

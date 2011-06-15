@@ -1,0 +1,23 @@
+The Queuing Model Library
+-------------------------
+
+This directory contains the fundamental queuing objects with which you can
+model a simple queuing network model.
+
+There are seven basic objects. They are :
+
+		DelayObject.hh		DelayObject.cc 
+		ForkObject.hh		ForkObject.cc
+		JoinObject.hh		JoinObject.cc
+		QueueObject.hh		QueueObject.cc
+		ServerObject.hh		ServerObject.cc
+		SourceObject.hh		SourceObject.cc
+
+Associated with each object is its state. There will certain aspects of
+the model which the user will want to remember during the course of a
+simulation. All these variables (for example, statistical data) will have
+to be put in the state of the object.
+
+The files QueuingTypes.hh and SidTypes.hh declare the options avaible to
+you for modelling particular objects. The fork can be setup to be round
+robin, or alternating and so on.

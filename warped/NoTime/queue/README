@@ -1,0 +1,76 @@
+The Queuing model
+-----------------
+
+Queuing model models a queuing system we encounter in lots of places, 
+where you have clients arriving and waiting in a queue before being serviced
+by a server. 
+
+[a] QUEUE simulation object files
+---------------------------------
+
+1) Source.hh,cc
+
+This object generates the queuing requests based on a distribution which
+is given as input to the object. The most fequently encountered
+distribution for the source is the poisson distribution
+
+2) Queue.hh,cc
+
+This object collects all the queuing requests from the source and sends
+them to a server if a server is idle or enqueues them if all the servers
+are busy.
+
+3) Server.hh,cc
+
+This object services the queueing requests based on a distribution for the
+service time. The most frequently used distribution is the normal
+distribution. After servicing the request it sends statistical information
+to the StatCollector object. It also sends a message to the queue object
+to inform that it's idle.
+
+4) StatCollector.hh,cc
+
+This object collects statistics from all the servers about their clients.
+
+5) ParseInput.hh, cc
+   
+   This object reads the input configuration of the Queuing system.
+
+[b] QUEUE configuration file (Queue.config)
+----------------------------
+
+The Queue configuration file (Queue.config) contains parameters for Queue
+simulation in the following order
+
+1) The source distribution for generating the queuing requests. For every
+distribution the mean and the variance has to be given
+2) The number of requests to be generated
+3) The number of servers, their distribution, mean and variance.
+   Here suppose you have specified 10 servers and you want the
+   distribution to be different for each of the servers you can specify
+   it. For example, you  have 10 servers following could be the server
+   distributions 
+      
+   1..3 normal 20 5 (means servers 1 to 3 have the same distribution)
+   4, 5, 10 normal 30 5 (server 4, 6 and 8 have the same distribution)	
+   6..9 normal 40 5   
+
+4) The number of LPs.
+
+A sample configuration is shown below (next 5 lines).
+
+  poisson 15 5  
+  100000
+  9 
+  1..9 normal 150 15
+  4
+
+[c] Other files
+---------------
+
+main.cc   - the QUEUE main file
+procgroup - file which MPI needs to determine the number of processors to
+            use in the simulation.
+
+
+

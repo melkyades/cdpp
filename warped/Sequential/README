@@ -1,0 +1,14 @@
+This directory contains warped's Sequential kernel.
+
+The Sequential Kernel is capable of selecting the InputQueues at
+run-time. The InputQueue implementation to be chosen can be specified in a
+file called "InputQConfig". An entry of 0 specifies a linear list
+implementation and 1 implies SplayTree implementation. If the file is not
+found or any other value is found, SplayTree implementation is chosen as
+default, as this implementation provides excellent performance under most
+circumstances.
+
+If explicit selection of the queue type is desired, the file InputQConfig
+should to be in the directory where the application is executed with a
+single entry specifying 0 or 1.
+

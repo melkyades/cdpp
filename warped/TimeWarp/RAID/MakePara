@@ -1,0 +1,90 @@
+#-*-makefile-*-
+export 
+
+CXX = /usr/local/paragon/paragon/bin.sun4/iCC
+AR = /usr/local/paragon/paragon/bin.sun4/ar860
+ARCH        = paragon
+COMM        = nx
+
+TOP = ..
+TWDIR = $(TOP)/src
+TWOBJ = $(TWDIR)/obj
+RNDDIR = $(TOP)/rnd
+RAIDOBJ = $(RNDDIR)/obj
+RNDOBJ = $(RNDDIR)/obj
+MPIDIR = /usr/local/MPI/mpich
+
+CPPFLAGS = -I$(TWDIR) -I$(MPIDIR)/include -DMPI_$(ARCH) -DFINALSTATS\
+	-DCOMMITSTATS -DFORTRANUNDERSCORE   -DHAVE_STDLIB_H=1\
+	-DMALLOC_RET_VOID=1 -DMPI\
+	-DUSENONBLOCKINGMPICALLS
+CXXFLAGS = -nx -tlocal -O4
+#LDFLAGS = -L$(MPIDIR)/lib/paragon/nx
+LOADLIBES = -lmpi -nx -lm 
+DEPENDINC = -I/usr/local/paragon/paragon/include/CC
+
+SIMSRCS = main.cc\
+	RAIDProcess.cc\
+	RAIDFork.cc\
+	RAIDDisk.cc
+
+RAIDOBJS = $(RAIDOBJ)/main.o\
+	$(RAIDOBJ)/RAIDProcess.o\
+	$(RAIDOBJ)/RAIDFork.o\
+        $(RAIDOBJ)/RAIDDisk.o
+
+.PHONY: $(TWOBJ)/libTW.a $(RNDOBJ)/libRnd.a
+
+all: $(RAIDOBJ) RAID
+
+$(RAIDOBJ):
+	mkdir $(RAIDOBJ)
+
+#Just build a normal executable
+RAID: $(RAIDOBJS) $(TWOBJ)/libTW.a $(RNDOBJ)/libRnd.a
+	$(CXX) -g $^\
+	$(LDFLAGS) $(LOADLIBES)\
+	-o $@
+
+RAID.pure: $(RAIDOBJS) $(TWOBJ)/libTW.a  $(RNDOBJ)/libRnd.a
+	/local/packages/pure/bin/purify -g++ $(CXX) $^\
+	$(LDFLAGS) $(LOADLIBES)\
+	-o $@
+
+RAID.quantify: $(RAIDOBJS) $(TWOBJ)/libTW.a  $(RNDOBJ)/libRnd.a
+	/local/packages/pure/bin/quantify $(CXX) $^\
+	$(LDFLAGS) $(LOADLIBES)\
+	-o $@
+
+$(TWOBJ)/libTW.a:
+	$(MAKE) -C $(TWDIR)
+
+$(RNDOBJ)/libRnd.a:
+	$(MAKE) -C $(RNDDIR)
+
+ # rule to make all the process .o files
+$(RAIDOBJ)/%.o : %.cc
+	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) \
+		$< -o $@
+
+depend:
+	makedepend -p$(RAIDOBJ)/ -- $(CPPFLAGS) $(CXXFLAGS) -- $(DEPENDINC) $(SIMSRCS)
+	$(MAKE) -C $(RNDDIR) depend
+	$(MAKE) -C $(TWDIR) depend
+
+cleandep:
+	$(TOP)/bin/cleandepend ./Makefile > ./Makefile.clean
+	mv ./Makefile.clean ./Makefile
+	$(MAKE) -C $(TWDIR) cleandep
+	$(MAKE) -C $(RNDDIR) cleandep
+
+clean:	
+	rm -f *~ \#*\#
+	rm -f $(RAIDOBJ)/*.o $(RAIDOBJ)/RAID
+	$(MAKE) -C $(TWDIR) clean
+	$(MAKE) -C $(RNDDIR) clean
+
+it: clean depend RAID
+
+# DO NOT DELETE THIS LINE -- make depend depends on it.
+

@@ -1,0 +1,1 @@
+..\drawlog -mgas.ma -cgas -lgas.log -w3 -p0 -0 >output

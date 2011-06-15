@@ -1,0 +1,481 @@
+Source Directory :
+------------------
+
+Introduction:
+-------------
+This directory constitutes the warped kernel. All the files specific to
+the warped kernel are present in this directory. The following section
+will try to give the user an appreciation of how the warped kernel is
+built. 
+
+The Nickel Tour:
+---------------
+
+The file "config.hh" is a configuration file which sets the default
+configuration for the warped kernel. It selects a set of options for the
+user. The options are: 
+
+(a) Type of scheduler to use.
+(b) A State Manager.
+(c) A fossil collection manager.
+(d) A Cancellation strategy.                       
+(e) A dynamic Memory Manager.
+(f) A Physical Communication Manager.
+(g) Warped Communication Manager.
+
+The files associated with these options are as follows:
+
+(a) Schedulers :
+
+	LTSFScheduler.hh		LTSFScheduler.cc  
+
+(b) State Managers:
+
+	StateManager.hh			StateManager.cc
+	InfreqStateManager.hh		InfreqStateManager.cc
+	CostFuncStateManager.hh		CostFuncStateManager.cc
+	LinStateManager.hh		LinStateManager.cc
+	NashStateManager.hh		NashStateManager.cc
+
+(c) Fossil Collection Managers:
+
+	GVTManager.hh			GVTManager.cc
+	MatternGVTManager.hh		MatternGVTManager.cc
+
+(d) Cancellation Strategy:
+
+	DynamicCancellation.hh		DynamicCancellation.cc
+        (handles : Aggressive Cancellation, Lazy Cancellation, and
+                   dynamically switching between the two)
+
+(e) Memory Managers:
+
+	GlobalMemoryManager.hh          GlobalMemoryManager.cc
+	BuddyMemoryManager.hh           BuddyMemoryManager.cc
+	SegregatedMemAlloc.hh           SegregatedMemAlloc.cc
+	BrentMemAlloc.hh                BrentMemAlloc.cc
+
+(f) Physical Communication Managers:
+
+        CommPhyInterface.hh             CommPhyInteface.cc
+	CommPhyDefault.hh		CommPhyDefault.cc
+	CommPhyMPI.hh			CommPhyMPI.cc
+	CommPhyTCPMPL.hh		CommPhyTCPMPL.cc
+
+(g) Warped Communication Managers:
+
+        CommMgrInterface.hh             CommMgrInterface.cc
+	CommMgrDefault.hh		CommMgrDefault.cc
+	CommMgrMsgAgg.hh		CommMgrMsgAgg.cc
+
+The heart of the Time Warp kernel is supported by the following files:
+
+	BasicTimeWarp.hh		BasicTimeWarp.cc
+	LogicalProcess.hh		LogicalProcess.cc
+        TimeWarp.hh                     TimeWarp.cc
+
+
+Each TimeWarp object has an input queue, output queue and a state
+queue. The following files support the queue structure.
+
+	LTSFInputQueue.hh		LTSFInputQueue.cc
+	OutputQueue.hh			OutputQueue.cc
+	StateQueue.hh			StateQueue.cc	
+
+A simulation object may also instantiate file queues to handle file
+I/O. This feature is supported by the following files (located in
+warped/common/ directory):
+
+	FileData.hh
+	FileQueue.hh			FileQueue.cc
+
+Also to support the queue structure, a few basic list classes are
+provided, so that queues can be built from these classes. They are:
+
+	MultiList.hh			MultiList.cc
+
+(This is a double linked list, with two extra links to connect containers
+within the double linked list. Useful for unifying the input queues into
+one queue and maintaining a list of events for each simulation object
+using these extra links). Located in warped/common/ directory:
+
+	SortedList.hh			SortedList.cc
+
+(A double linked list class with a set of methods for seeking, finding,
+removing etc. Containers forms the nodes of the linked list)
+
+	SortedListOfEvents.hh		SortedListOfEvents.cc
+
+(Similar to SortedList, except that nodes of the list are BasicEvents
+themselves and not Containers)
+
+MessageManager
+--------------
+
+MessageManager module is built on top of the MPI communication library,
+that resides in the CommManager module. This is responsible for the
+dynamic aggregation of Messages. For more understanding of Dynamic Message
+Aggregation(DMA), refer to /home/paw/papers/warped/wdag97/orig
+
+To enable the Message Aggregation the following things have to be done.
+
+Before Compilation
+-------------------
+1) Add -DMESSAGE_AGGREGATION in the CPPFLAGS of Makefile.
+2) Currently there are three strategies namely:
+	FIXED_PESSIMISM (FAW), MEAN_OF_FACTORS (SAAW), FIXED_MSG_COUNT (FMC),
+
+Depending on the strategy you want, Add the flag corresponding into the
+Makefile.
+
+(for example) FIXED_PESSIMISM strategy is preferred, add to CPPFLAGS in
+Makefile -DFIXED_PESSIMISM (FIXED_PESSIMISM and MEAN_OF_FACTORS are
+recommended strategies).
+
+
+Before Running the Simulation:
+-----------------------------
+
+MessageManager needs certain information for its proper functioning. These
+information can be passed through command line arguments, or can be read
+from the file.  The necessary information are:
+
+	A) maximumAge - Maximum Age, a message is allowed to wait.
+
+	B) maxReceiveDelay - A value that specifies the desired delay
+           before every message receive operation. (recommended value is
+           20) 
+
+	C) aggregateCtrlMsg - A flag that specifies if Control messages
+           have to be aggregated or not. 
+           At compile time it is fixed to 1
+           By specifying 1, Messages of type:
+           LGVTMSG,        LOWERLGVTMSG,   CHECKIDLEMSG,   NEWGVTMSG, 
+           GVTACKMSG,      LPACKMSG,       DUMMYMSG,       DUMMYREQUESTMSG, 
+           RESTORECKPTMSG, TIMEWARPOBJMSG, TRANSFEROBJMSG, OUTPUTQOBJMSG, 
+	   INPUTQOBJMSG,   STATEQOBJMSG,   AGGREGATEMSG,   MATTERNGVTMSG, 
+           EXTAGENTMSG 
+
+are all aggregated. This flag has no effect on control messages of type
+INITMSG, STARTMSG and TERMINATEMSG.
+
+The two values are to be passed as commandline. main.cc should add the
+line getMessageManagerParameters(argc, argv);
+
+to work on different window sizes. Otherwise a default value of age 10 and
+recive delay 20 is taken. 
+
+The order of Parameters when passed as argument is: age, receive_delay
+
+The other parameter in MessageManager is the INTERNAL_BUFFER_SIZE, and the
+desired value is 50000, but can be changed based on memory availability.
+
+
+---------------------------------------------------------------------------
+************ COMPILER FLAGS USED IN THE WARPED SOURCE CODE ****************
+---------------------------------------------------------------------------
+
+[a] Debugging flags :
+---------------------
+
+COMMDEBUG
+- for debugging the communication manager of warped 
+i.e. the class CommManager
+
+DEBUGXX && _DEBUG
+- when DEBUGXX is defined _DEBUG gets defined.
+Then _DEBUG is used as in #define _DEBUG(s) s
+Otherwise _DEBUG is used as in #define _DEBUG(s) 
+
+FILEDBG
+- used for debugging file queues
+
+LPDEBUG
+- for debugging the functioning of a logical process implemented by class
+LogicalProcess 
+
+MEMDEBUG
+- for debugging the various custom memory managers implemented
+
+OBJECTDEBUG
+- for debugging the simulation object's code .
+This code is distributed across various classes
+
+STATEDEBUG
+- for debugging state saving strategy's implementation.
+
+[b] Statistics collection flags:
+--------------------------------
+
+STATS
+- prints out event rate, time taken etc for sequential.
+For parallel run a separate file containing stats for each LP is
+created. The stats number of rollbacks ,positive messages sent and other 
+statistics. Prints out simulation objects statistics separate from LP
+statistics. Also if any other optimization is turned on then those statistics
+will be reported along with Time Warp statistics. 
+
+DEBUGTIMINGS
+This flag should be used with LPDEBUG and STATEDEBUG. This opens a file
+for each LP in which state saving time is logged.
+
+ONE_ANTI_MESSAGE_STATS
+Prints out info regarding the number of remote and local events
+suppressed.Used only while running ONE_ANTI_MESSAGE optimization.
+
+REUSE
+This flag is used when by the container class.
+Should be defined if reuse of the containers is desired
+
+REUSESTATS
+Used for the container class.
+
+[c] Memory Manager flags:
+-------------------------
+
+BRENTMEMALLOC
+Uncomment this define in config.hh to use the custom memory manager based
+on Brent's Implementation of First Fit Allocation Strategy.
+
+BUDDYMEMORYMANAGER
+Uncomment this define in config.hh to use the custom memory manager based
+on Buddy memory allocation strategy by Knuth.
+
+GLOBALMEMORYMANAGER
+Uncomment this define in config.hh to use the custom memory manager based
+on CustomMalloc strategy for dynamic memory allocation.
+
+SEGREGATEDMEMALLOC
+Uncomment this define in config.hh to use the custom memory manager based
+on segregated memory allocation strategy.
+
+[d] Message Aggregations flags:
+-------------------------------
+
+MESSAGE_AGGREGATION
+Uncomment this define in config.hh to use the message aggregation
+optimization.
+
+All of the following message aggregation flags influence aggregation of
+messages on the basis of window size. Window size is associated per LP.
+
+FIXED_MSG_COUNT
+The window size here is a fixed number of messages to send across the net.
+This means each LP waits for fixed number of messages to aggregate in the
+buffer before sending them across. But if we get a negative message we
+flush the buffer immediately.Note this flag is still in experimentation stage. 
+
+FIXED_PESSIMISM
+Let the window size be n and let the average processing time of each event be
+t (real time). The each LP waits for for time t*n before flushing the buffer.
+
+MEAN_OF_FACTORS
+This strategy takes the initial window size from fixed pessimism and also
+keeps a record of previous message sending rates. If the message rate is
+on a upward curve then we increase the window size. If it on downward
+bcurve we decrease the window size.
+
+
+[e] Cancellation flags:
+-----------------------
+
+LAZYAGGR_CANCELLATION
+Uncomment this define in config.hh to use dynamic cancellation strategy.
+
+LAZYCANCELLATION
+Uncomment this define in config.hh to use lazy cancellation strategy.
+
+PERMANENTLYSET
+Define this if you want dynamic cancellation to switch either to lazy or
+agressive cancellation permanently after a particular number of hits or
+misses have been experienced.
+
+PERMANENTLY_AGGR
+Define this if you want dynamic cancellation to switch to 
+agressive cancellation permanently after a particular number of
+misses have been experienced.
+
+[f] GVT Manager flags:
+------------------------
+
+GVTMANAGER
+Uncomment this define in config.hh to use the pGVT algorithm for GVT
+estimation. 
+
+MATTERNGVTMANAGER
+Uncomment this define in config.hh to use Mattern's algorithm for GVT
+estimation. 
+
+[g] State Manager flags:
+------------------------
+
+INFREQSTATEMANAGER
+Uncomment this define in config.hh to save state infrequently. Current
+implementation saves state every 3 states.
+
+LINSTATEMANAGER
+Uncomment this define in config.hh if you want to use
+Lin's adaptive state savings strategy.
+
+NASHSTATEMANAGER
+Uncomment this define in config.hh if you want to use
+Palaniswamy's adaptive state savings strategy.
+
+COSTFUNCSTATEMANAGER
+Uncomment this define in config.hh if you want to use
+Fleischman's adaptive state savings strategy.
+
+[g] MPI related flags:
+----------------------
+
+MPI
+Define this if you are using MPI
+
+USENONBLOCKINGMPICALLS
+Define this if you want MPI to use non blocking calls .
+
+
+[h] Infrequent Polling (of the message communication subsystem) Flags
+
+The flags are : INFREQ_POLLING, INFREQ_STATIC, INFREQ_FXD_INCREMENT,
+    INFREQ_VAR_INCREMENT, INFREQ_TRACE, MCS_TRACE and are explained below :
+    
+Currently one static and two dynamic infrequent polling strategies
+are implemented.
+To use Infrequent Polling define INFREQ_POLLING and ONE of the following
+INFREQ_STATIC          -- for static strategy
+INFREQ_FXD_INCREMENT   -- for the first dynamic strategy
+INFREQ_VAR_INCREMENT   -- for the second dynamic strategy
+
+Static Infrequent Polling strategy (INFREQ_STATIC):
+In this strategy, an initial period for polling is selected at compile
+time, and enforced on all the processes. This period is read from
+a file "infreqPolling.config" in the application's directory.
+For example if you want a static polling period of 5, the file
+"infreqPolling.config" should have the value 5 .
+
+Fixed-Increment Adaptive Policy (INFREQ_FXD_INCREMENT):
+This adaptive strategy attempts to vary the polling frequency such
+that exactly one message is received in each period.  If more than one
+message is received, then the period is too long, and it is shortened
+by a fixed number (determined at compile-time).  If no messages are
+received, then it is likely that the process is polling too
+aggressively, and the period should be increased.
+In this case a user specified value is used to control the maximum value
+the dynamic frequency can be allowed to take.
+The file "infreqPolling.config" should have this max value as it's first
+entry and the fixed increment as it's second entry.
+
+Variable-Increment Adaptive Policy (INFREQ_VAR_INCREMENT):
+This policy differs from the fixed-increment policy in that it
+increases (or decreases) the polling frequency by an increment
+(or a decrement) that is a function of the current polling frequency.  More
+specifically, it is incremented (or decrement) by a fixed percentage of
+the current polling frequency.
+Again the file "infreqPolling.config" has a max value as it's first
+entry and the variable percentage as it's second entry.
+
+In order to get trace of the changing polling frequency define
+INFREQ_TRACE with any strategy. The trace will be written to files
+(one for each LP) with names like infreqTraceLP0 etc.
+
+To get the trace of the messages received from the Message Communication
+Subsystem define MCS_TRACE.The trace will be written to files
+(one for each LP) with names like MCS_TraceLP0 etc.
+
+Facility for all defines is in config.hh
+
+
+[i] Miscellaneous flags:
+------------------------
+
+EXTERNALAGENT
+Defining this pushes the decision making to Logical Process from the
+simulation object. The decision making is regarding switching between lazy
+cancellation and aggressive cancellation. This is only used with Mattern
+GVT manager.
+
+LTSFSCHEDULER
+Uncomment this define in config.hh.
+In the current implementation only Least Time Stamp First scheduling is
+used.
+
+ONE_ANTI_MESSAGE
+Uncomment this define in config.hh to use one anti message optimization.
+
+REUSE
+Should be defined when reuse of containers is desired
+
+USE_USER_VTIME
+Define this if you want your own defintion of virtual time.
+
+
+[j] Physical Communication Manager:
+-----------------------------------
+
+To accomodate different physical communication libraries, we have a
+interface class called CommPhyInterface in CommPhyInterface.hh and
+CommPhyInterface.cc. The methods in the interface class are all pure
+virtual.  Therefore, when a new physical communication manager is to be
+built, one has to write a physical communication manager derived from
+CommPhyInterface class and re-implement the functions specified in it.
+Right now the following physical communication maangers are supported:
+
+i)  CommPhyDefault  -  for 1 LP simulation without MPI or any library
+support.
+ii) CommPhyMPI      -  for making calls to MPI library
+iii)CommPhyTCPMPL   -  for making calls to TCPMPL library
+
+
+Different physical communication managers are setup through #define
+flags. The following flags achieve this purpose
+
+MPI
+This flag enables CommPhyMPI to be used which means, the MPI library is
+used for message passing. 
+
+TCPLIB
+This flag enables CommPhyTCPMPL to be used which means, the TCPMPL library
+is used for message passing
+For TCPMPL, along with flag, one has to specify whether one is running on
+SUNOS or LINUX through these flags.
+For TCPMPL to be used, one has to set MPIDIR in the Makefile of the
+specific application to the directory where TCPMPL is located and similary
+the LDFLAGS and LOADLIBES.  Apart from this one has to define whether it
+is run on SUNOS or LINUX through one of these two flags.
+
+
+Therefore depending upon the flags defined, warped automatically uses the
+appropriate physical communication manager.  This is done in config.hh
+
+
+[k] Warped Communication Manager:
+---------------------------------
+
+To accomodate optimizations at the Communication Manager level which is
+the interface seen by the warped kernel, we have the CommMgrInterface
+class in CommMgrInterface.hh and CommMgrInterface.cc.  This class provides
+the basic functionalities and makes certain functions to be pure virtual
+which is implemented in the different Communication Managers.  Right now,
+we have two Communication Manager as seen by warped kernel
+
+i)   CommMgrDefault  - This is the default Communication Manager seen by
+warped kernel. There are no optimizations built in this manager.
+ii)  CommMgrMsgAgg   - This is the message aggregation communication
+manager.  This implements the messages aggregation optimization.
+
+How to invoke different Communication Managers.
+This is done by different optimization flags. If you define
+MESSAGE_AGGREGATION, it automatically uses CommMgrMsgAgg communication
+manager for message aggregation. Therefore if you do not define
+MESSAGE_AGGREGATION it automatically uses CommMgrDefault without any
+optimizations.  This is done in the config.hh
+
+
+
+
+
+
+
+
+

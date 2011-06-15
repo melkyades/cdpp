@@ -1,0 +1,46 @@
+# Project state of the `nettest'.
+
+[Project Options]
+1 = -tb -sb -db -rt2 -le -ll300 -lnl256 -bf
+
+[Geometry]
+prj.geometry = 1012x688+0+0
+prj.log_pane_height = 0
+prj.log_folders_state = 0,0,0
+prj.tree_origins = 0,4
+prj.tree_selected = 1.1.17
+prj.tree_sort = 0
+prj.desk_origins = 0,0
+prj.desk_current = 0
+prj.use_fsd = 0
+fsd.full_info_sorting = 0,v
+fsd.representation = 0
+fsd.dir_tree_width = 0
+fsd.filter_position = 0
+fsd.filter_pattern = *
+prj.smed_open_mode = 1
+prj.icon_mode = 0
+prj.log_as_tear_off = 0
+prj.log_show_prompt = 0
+prj.views.num = 2
+prj.views.orientation = vertical
+prj.views.current = 1
+
+[View Areas]
+1 = current_tab=1, size=442, tree_origins="0,4", desk_origins="0,0", fsd.directory="/home/atroccol/tesis/PCD++/nettest/", fsd.dir_tree_width=170, fsd.full_info_layout="Name:0,120;User:1,32;Group:2,36;Size:3,40;Date:4,64;Permissions:5,72;Link to:6,306", fsd.representation=3, fsd.full_info_sorting="1,v", fsd.filter_position=1, fsd.filter_pattern="*", fsd.orientation="horizontal"
+2 = current_tab=2, size=142, tree_origins="0,0", desk_origins="0,0", fsd.directory="/home/atroccol/tesis/PCD++/nettest/", fsd.dir_tree_width=170, fsd.full_info_layout="Name:0,120;User:1,32;Group:2,36;Size:3,40;Date:4,64;Permissions:5,72;Link to:6,144", fsd.representation=3, fsd.full_info_sorting="1,v", fsd.filter_position=1, fsd.filter_pattern="*", fsd.orientation="horizontal"
+
+[Opened Items]
+1 = 1.1,1.1.1,1.1.2,1.1.3,1.1.4,1.1.6,1.1.7,1.1.9
+
+[Edited Nodes]
+
+[Viewed Nodes]
+
+[Reserved Nodes]
+
+[Debuggers]
+
+[Default Actions]
+
+[Run Parameters]

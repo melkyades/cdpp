@@ -1,0 +1,147 @@
+#-*-makefile-*-
+
+ifndef RNDOBJ
+RNDOBJ=obj
+endif
+
+RNDSRCS = Uniform.cc\
+	Poisson.cc\
+	NegExp.cc\
+	DiscUnif.cc\
+	Normal.cc\
+	Binomial.cc\
+	MLCG.cc\
+	gcd.cc\
+	RNG.cc\
+	Random.cc
+
+RNDOBJS = $(RNDOBJ)/Uniform.o\
+	$(RNDOBJ)/Poisson.o\
+	$(RNDOBJ)/NegExp.o\
+	$(RNDOBJ)/DiscUnif.o\
+	$(RNDOBJ)/Normal.o\
+	$(RNDOBJ)/Binomial.o\
+	$(RNDOBJ)/RNG.o\
+	$(RNDOBJ)/gcd.o\
+	$(RNDOBJ)/MLCG.o\
+	$(RNDOBJ)/Random.o
+
+
+all: obj $(RNDOBJ)/libRnd.a
+
+obj:
+	mkdir $(RNDOBJ)
+
+$(RNDOBJ)/libRnd.a: $(RNDOBJS)
+	-rm -f $(RNDOBJ)/libRnd.a
+	$(AR) cr $(RNDOBJ)/libRnd.a $^
+# Rule to make all the TimeWarp .o files
+$(RNDOBJ)/%.o : %.cc
+	$(CXX) -c\
+	$(CPPFLAGS) $(CXXFLAGS)\
+	$< -o $@
+
+depend:
+	makedepend -p$(RNDOBJ)/ -- $(CPPFLAGS) $(CXXFLAGS) -- $(DEPENDINC) $(RNDSRCS) 
+
+cleandep:
+	../bin/cleandepend ./Makefile > ./Makefile.clean
+	mv ./Makefile.clean ./Makefile
+
+clean:
+	rm -f *~ \#*\#\
+	rm -rf $(RNDOBJ)
+
+# DO NOT DELETE THIS LINE -- make depend depends on it.
+
+../rnd/obj/Uniform.o: builtin.h
+../rnd/obj/Uniform.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stddef.h
+../rnd/obj/Uniform.o: cmath.h /usr/include/_G_config.h
+../rnd/obj/Uniform.o: /usr/include/bits/types.h /usr/include/features.h
+../rnd/obj/Uniform.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+../rnd/obj/Uniform.o: /usr/include/math.h /usr/include/bits/huge_val.h
+../rnd/obj/Uniform.o: /usr/include/bits/mathdef.h
+../rnd/obj/Uniform.o: /usr/include/bits/mathcalls.h
+../rnd/obj/Uniform.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/float.h
+../rnd/obj/Uniform.o: gcd.h Random.h RNG.h /usr/include/assert.h Uniform.h
+../rnd/obj/Poisson.o: builtin.h
+../rnd/obj/Poisson.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stddef.h
+../rnd/obj/Poisson.o: cmath.h /usr/include/_G_config.h
+../rnd/obj/Poisson.o: /usr/include/bits/types.h /usr/include/features.h
+../rnd/obj/Poisson.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+../rnd/obj/Poisson.o: /usr/include/math.h /usr/include/bits/huge_val.h
+../rnd/obj/Poisson.o: /usr/include/bits/mathdef.h
+../rnd/obj/Poisson.o: /usr/include/bits/mathcalls.h
+../rnd/obj/Poisson.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/float.h
+../rnd/obj/Poisson.o: gcd.h Random.h RNG.h /usr/include/assert.h Poisson.h
+../rnd/obj/NegExp.o: builtin.h
+../rnd/obj/NegExp.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stddef.h
+../rnd/obj/NegExp.o: cmath.h /usr/include/_G_config.h
+../rnd/obj/NegExp.o: /usr/include/bits/types.h /usr/include/features.h
+../rnd/obj/NegExp.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+../rnd/obj/NegExp.o: /usr/include/math.h /usr/include/bits/huge_val.h
+../rnd/obj/NegExp.o: /usr/include/bits/mathdef.h
+../rnd/obj/NegExp.o: /usr/include/bits/mathcalls.h
+../rnd/obj/NegExp.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/float.h
+../rnd/obj/NegExp.o: gcd.h Random.h RNG.h /usr/include/assert.h NegExp.h
+../rnd/obj/DiscUnif.o: builtin.h
+../rnd/obj/DiscUnif.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stddef.h
+../rnd/obj/DiscUnif.o: cmath.h /usr/include/_G_config.h
+../rnd/obj/DiscUnif.o: /usr/include/bits/types.h /usr/include/features.h
+../rnd/obj/DiscUnif.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+../rnd/obj/DiscUnif.o: /usr/include/math.h /usr/include/bits/huge_val.h
+../rnd/obj/DiscUnif.o: /usr/include/bits/mathdef.h
+../rnd/obj/DiscUnif.o: /usr/include/bits/mathcalls.h
+../rnd/obj/DiscUnif.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/float.h
+../rnd/obj/DiscUnif.o: gcd.h Random.h RNG.h /usr/include/assert.h DiscUnif.h
+../rnd/obj/Normal.o: builtin.h
+../rnd/obj/Normal.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stddef.h
+../rnd/obj/Normal.o: cmath.h /usr/include/_G_config.h
+../rnd/obj/Normal.o: /usr/include/bits/types.h /usr/include/features.h
+../rnd/obj/Normal.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+../rnd/obj/Normal.o: /usr/include/math.h /usr/include/bits/huge_val.h
+../rnd/obj/Normal.o: /usr/include/bits/mathdef.h
+../rnd/obj/Normal.o: /usr/include/bits/mathcalls.h
+../rnd/obj/Normal.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/float.h
+../rnd/obj/Normal.o: gcd.h Random.h RNG.h /usr/include/assert.h Normal.h
+../rnd/obj/Binomial.o: builtin.h
+../rnd/obj/Binomial.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stddef.h
+../rnd/obj/Binomial.o: cmath.h /usr/include/_G_config.h
+../rnd/obj/Binomial.o: /usr/include/bits/types.h /usr/include/features.h
+../rnd/obj/Binomial.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+../rnd/obj/Binomial.o: /usr/include/math.h /usr/include/bits/huge_val.h
+../rnd/obj/Binomial.o: /usr/include/bits/mathdef.h
+../rnd/obj/Binomial.o: /usr/include/bits/mathcalls.h
+../rnd/obj/Binomial.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/float.h
+../rnd/obj/Binomial.o: gcd.h Random.h RNG.h /usr/include/assert.h Binomial.h
+../rnd/obj/MLCG.o: MLCG.h RNG.h /usr/include/assert.h /usr/include/features.h
+../rnd/obj/MLCG.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+../rnd/obj/MLCG.o: /usr/include/math.h /usr/include/bits/huge_val.h
+../rnd/obj/MLCG.o: /usr/include/bits/mathdef.h /usr/include/bits/mathcalls.h
+../rnd/obj/MLCG.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/float.h
+../rnd/obj/MLCG.o: /usr/include/_G_config.h /usr/include/bits/types.h
+../rnd/obj/MLCG.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stddef.h
+../rnd/obj/gcd.o: gcd.h builtin.h
+../rnd/obj/gcd.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stddef.h
+../rnd/obj/gcd.o: cmath.h /usr/include/_G_config.h /usr/include/bits/types.h
+../rnd/obj/gcd.o: /usr/include/features.h /usr/include/sys/cdefs.h
+../rnd/obj/gcd.o: /usr/include/gnu/stubs.h /usr/include/math.h
+../rnd/obj/gcd.o: /usr/include/bits/huge_val.h /usr/include/bits/mathdef.h
+../rnd/obj/gcd.o: /usr/include/bits/mathcalls.h
+../rnd/obj/gcd.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/float.h
+../rnd/obj/RNG.o: /usr/include/assert.h /usr/include/features.h
+../rnd/obj/RNG.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h builtin.h
+../rnd/obj/RNG.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stddef.h
+../rnd/obj/RNG.o: cmath.h /usr/include/_G_config.h /usr/include/bits/types.h
+../rnd/obj/RNG.o: /usr/include/math.h /usr/include/bits/huge_val.h
+../rnd/obj/RNG.o: /usr/include/bits/mathdef.h /usr/include/bits/mathcalls.h
+../rnd/obj/RNG.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/float.h
+../rnd/obj/RNG.o: gcd.h RNG.h
+../rnd/obj/Random.o: Random.h /usr/include/math.h /usr/include/features.h
+../rnd/obj/Random.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+../rnd/obj/Random.o: /usr/include/bits/huge_val.h /usr/include/bits/mathdef.h
+../rnd/obj/Random.o: /usr/include/bits/mathcalls.h
+../rnd/obj/Random.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/float.h
+../rnd/obj/Random.o: RNG.h /usr/include/assert.h /usr/include/_G_config.h
+../rnd/obj/Random.o: /usr/include/bits/types.h
+../rnd/obj/Random.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stddef.h

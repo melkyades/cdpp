@@ -1,0 +1,4 @@
+# Generated automatically from Makefile.common.in by configure.
+
+include ../Makefile.common
+

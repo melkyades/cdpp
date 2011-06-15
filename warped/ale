@@ -1,0 +1,139 @@
+make -C NoTime all
+make[1]: Entering directory `/home/atroccol/warped/warped/NoTime'
+make -C src all
+make[2]: Entering directory `/home/atroccol/warped/warped/NoTime/src'
+mpiCC -c\
+-I.  -DHAS_BOOLEAN -DMPI -I/usr/include/g++ -I/usr/lib/gcc-lib/i586-pc-linux-gnu/2.8.0/include -Werror\
+CommManager.cc -o obj/CommManager.o
+In file included from /usr/local/mpich-1.2.0/include/mpi.h:687,
+                 from CommManager.hh:39,
+                 from CommManager.cc:31:
+/usr/local/mpich-1.2.0/include/c++/mpi++.h:94: parse error before `{'
+In file included from /usr/local/mpich-1.2.0/include/c++/mpi++.h:117,
+                 from /usr/local/mpich-1.2.0/include/mpi.h:687,
+                 from CommManager.hh:39,
+                 from CommManager.cc:31:
+/usr/local/mpich-1.2.0/include/c++/constants.h:30: uninitialized const `int const SUCCESS'
+/usr/local/mpich-1.2.0/include/c++/constants.h:31: uninitialized const `int const ERR_BUFFER'
+/usr/local/mpich-1.2.0/include/c++/constants.h:32: uninitialized const `int const ERR_COUNT'
+/usr/local/mpich-1.2.0/include/c++/constants.h:33: uninitialized const `int const ERR_TYPE'
+/usr/local/mpich-1.2.0/include/c++/constants.h:34: uninitialized const `int const ERR_TAG'
+/usr/local/mpich-1.2.0/include/c++/constants.h:35: uninitialized const `int const ERR_COMM'
+/usr/local/mpich-1.2.0/include/c++/constants.h:36: uninitialized const `int const ERR_RANK'
+/usr/local/mpich-1.2.0/include/c++/constants.h:37: uninitialized const `int const ERR_REQUEST'
+/usr/local/mpich-1.2.0/include/c++/constants.h:38: uninitialized const `int const ERR_ROOT'
+/usr/local/mpich-1.2.0/include/c++/constants.h:39: uninitialized const `int const ERR_GROUP'
+/usr/local/mpich-1.2.0/include/c++/constants.h:40: uninitialized const `int const ERR_OP'
+/usr/local/mpich-1.2.0/include/c++/constants.h:41: uninitialized const `int const ERR_TOPOLOGY'
+/usr/local/mpich-1.2.0/include/c++/constants.h:42: uninitialized const `int const ERR_DIMS'
+/usr/local/mpich-1.2.0/include/c++/constants.h:43: uninitialized const `int const ERR_ARG'
+/usr/local/mpich-1.2.0/include/c++/constants.h:44: uninitialized const `int const ERR_UNKNOWN'
+/usr/local/mpich-1.2.0/include/c++/constants.h:45: uninitialized const `int const ERR_TRUNCATE'
+/usr/local/mpich-1.2.0/include/c++/constants.h:46: uninitialized const `int const ERR_OTHER'
+/usr/local/mpich-1.2.0/include/c++/constants.h:47: uninitialized const `int const ERR_INTERN'
+/usr/local/mpich-1.2.0/include/c++/constants.h:48: uninitialized const `int const ERR_PENDING'
+/usr/local/mpich-1.2.0/include/c++/constants.h:49: uninitialized const `int const ERR_IN_STATUS'
+/usr/local/mpich-1.2.0/include/c++/constants.h:50: uninitialized const `int const ERR_LASTCODE'
+/usr/local/mpich-1.2.0/include/c++/constants.h:54: uninitialized const `int const PROC_NULL'
+/usr/local/mpich-1.2.0/include/c++/constants.h:55: uninitialized const `int const ANY_SOURCE'
+/usr/local/mpich-1.2.0/include/c++/constants.h:56: uninitialized const `int const ANY_TAG'
+/usr/local/mpich-1.2.0/include/c++/constants.h:57: uninitialized const `int const UNDEFINED'
+/usr/local/mpich-1.2.0/include/c++/constants.h:58: uninitialized const `int const BSEND_OVERHEAD'
+/usr/local/mpich-1.2.0/include/c++/constants.h:59: uninitialized const `int const KEYVAL_INVALID'
+/usr/local/mpich-1.2.0/include/c++/constants.h:62: aggregate `class Errhandler const ERRORS_ARE_FATAL' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:63: aggregate `class Errhandler const ERRORS_RETURN' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:64: aggregate `class Errhandler const ERRORS_THROW_EXCEPTIONS' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:67: uninitialized const `int const MAX_PROCESSOR_NAME'
+/usr/local/mpich-1.2.0/include/c++/constants.h:68: uninitialized const `int const MAX_ERROR_STRING'
+/usr/local/mpich-1.2.0/include/c++/constants.h:71: aggregate `class Datatype const CHAR' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:72: aggregate `class Datatype const SHORT' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:73: aggregate `class Datatype const INT' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:74: aggregate `class Datatype const LONG' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:75: aggregate `class Datatype const SIGNED_CHAR' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:76: aggregate `class Datatype const UNSIGNED_CHAR' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:77: aggregate `class Datatype const UNSIGNED_SHORT' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:78: aggregate `class Datatype const UNSIGNED' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:79: aggregate `class Datatype const UNSIGNED_LONG' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:80: aggregate `class Datatype const FLOAT' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:81: aggregate `class Datatype const DOUBLE' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:82: aggregate `class Datatype const LONG_DOUBLE' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:83: aggregate `class Datatype const BYTE' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:84: aggregate `class Datatype const PACKED' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:87: aggregate `class Datatype const FLOAT_INT' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:88: aggregate `class Datatype const DOUBLE_INT' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:89: aggregate `class Datatype const LONG_INT' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:90: aggregate `class Datatype const TWOINT' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:91: aggregate `class Datatype const SHORT_INT' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:92: aggregate `class Datatype const LONG_DOUBLE_INT' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:96: aggregate `class Datatype const INTEGER' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:97: aggregate `class Datatype const REAL' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:98: aggregate `class Datatype const DOUBLE_PRECISION' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:99: aggregate `class Datatype const F_COMPLEX' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:100: aggregate `class Datatype const LOGICAL' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:101: aggregate `class Datatype const CHARACTER' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:104: aggregate `class Datatype const TWOREAL' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:105: aggregate `class Datatype const TWODOUBLE_PRECISION' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:106: aggregate `class Datatype const TWOINTEGER' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:118: aggregate `class Datatype const INTEGER2' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:119: aggregate `class Datatype const REAL2' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:137: aggregate `class Datatype const UB' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:138: aggregate `class Datatype const LB' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:142: aggregate `class Intracomm COMM_WORLD' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:143: aggregate `class Intracomm COMM_SELF' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:146: uninitialized const `int const IDENT'
+/usr/local/mpich-1.2.0/include/c++/constants.h:147: uninitialized const `int const CONGRUENT'
+/usr/local/mpich-1.2.0/include/c++/constants.h:148: uninitialized const `int const SIMILAR'
+/usr/local/mpich-1.2.0/include/c++/constants.h:149: uninitialized const `int const UNEQUAL'
+/usr/local/mpich-1.2.0/include/c++/constants.h:152: uninitialized const `int const TAG_UB'
+/usr/local/mpich-1.2.0/include/c++/constants.h:153: uninitialized const `int const IO'
+/usr/local/mpich-1.2.0/include/c++/constants.h:154: uninitialized const `int const HOST'
+/usr/local/mpich-1.2.0/include/c++/constants.h:155: uninitialized const `int const WTIME_IS_GLOBAL'
+/usr/local/mpich-1.2.0/include/c++/constants.h:158: aggregate `class Op const MAX' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:159: aggregate `class Op const MIN' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:160: aggregate `class Op const SUM' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:161: aggregate `class Op const PROD' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:162: aggregate `class Op const MAXLOC' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:163: aggregate `class Op const MINLOC' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:164: aggregate `class Op const BAND' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:165: aggregate `class Op const BOR' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:166: aggregate `class Op const BXOR' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:167: aggregate `class Op const LAND' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:168: aggregate `class Op const LOR' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:169: aggregate `class Op const LXOR' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:172: aggregate `class Group const GROUP_NULL' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:175: aggregate `class Comm_Null COMM_NULL' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:176: aggregate `class Datatype const DATATYPE_NULL' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:177: aggregate `class Request REQUEST_NULL' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:178: aggregate `class Op const OP_NULL' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:179: aggregate `class Errhandler const ERRHANDLER_NULL' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:182: aggregate `class Group const GROUP_EMPTY' has incomplete type and cannot be initialized
+/usr/local/mpich-1.2.0/include/c++/constants.h:185: uninitialized const `int const GRAPH'
+/usr/local/mpich-1.2.0/include/c++/constants.h:186: uninitialized const `int const CART'
+In file included from /usr/local/mpich-1.2.0/include/c++/mpi++.h:134,
+                 from /usr/local/mpich-1.2.0/include/mpi.h:687,
+                 from CommManager.hh:39,
+                 from CommManager.cc:31:
+/usr/local/mpich-1.2.0/include/c++/status.h:33: parse error before `::'
+/usr/local/mpich-1.2.0/include/c++/status.h:34: parse error before `::'
+In file included from /usr/local/mpich-1.2.0/include/mpi.h:687,
+                 from CommManager.hh:39,
+                 from CommManager.cc:31:
+/usr/local/mpich-1.2.0/include/c++/mpi++.h:144: parse error before `private'
+/usr/local/mpich-1.2.0/include/c++/functions_inln.h: In function `static void PMPI::Real_init()':
+In file included from /usr/local/mpich-1.2.0/include/c++/mpi++.h:168,
+                 from /usr/local/mpich-1.2.0/include/mpi.h:687,
+                 from CommManager.hh:39,
+                 from CommManager.cc:31:
+/usr/local/mpich-1.2.0/include/c++/functions_inln.h:97: parse error before `::'
+/usr/local/mpich-1.2.0/include/c++/intracomm_inln.h: In method `PMPI::Intracomm::Intracomm(const int &)':
+In file included from /usr/local/mpich-1.2.0/include/c++/mpi++.h:171,
+                 from /usr/local/mpich-1.2.0/include/mpi.h:687,
+                 from CommManager.hh:39,
+                 from CommManager.cc:31:
+/usr/local/mpich-1.2.0/include/c++/intracomm_inln.h:31: parse error before `::'
+/usr/local/mpich-1.2.0/include/c++/intracomm_inln.h:37: confused by earlier errors, bailing out
+make[2]: *** [obj/CommManager.o] Error 1
+make[2]: Leaving directory `/home/atroccol/warped/warped/NoTime/src'
+make[1]: *** [all] Error 2
+make[1]: Leaving directory `/home/atroccol/warped/warped/NoTime'
+make: *** [all] Error 2

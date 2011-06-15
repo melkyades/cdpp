@@ -1,0 +1,105 @@
+#include <iostream.h>
+#include <stdlib.h>
+#include "PingObject.hh"
+
+#include "LogicalProcess.hh"
+
+extern "C" {
+#include "mpi.h"
+}
+
+const VTime LogicalProcess::SIMUNTIL = PINFINITY;
+
+int main(int argc, char **argv)
+{
+
+	unsigned long numMachines = 0, numObjects = 0, numMessages = 0;
+	int id = 0, currentMachine = 0, currentObject;
+
+	physicalCommInit(&argc , &argv);
+	id = physicalCommGetId();
+
+	cout << endl;
+
+	while( --argc )
+	{
+		if( argv[ argc ][ 0 ] == '-' )
+		{
+			switch( argv[ argc ][ 1 ] )
+			{
+				case 'm': // number of machines
+					numMachines = atol( argv[argc] + 2);
+					//cout << "Machines " << numMachines << endl;
+					break;
+
+				case 'n': //number of messages
+					numMessages = atol( argv[argc] + 2);
+					break;
+
+				case 'o': //number of objects
+					numObjects = atol( argv[argc] + 2);
+					break;
+
+				default:
+					cerr << "Warning: Invalid option " << argv[argc] << endl;
+
+			}
+		} else {
+			cerr << "Warning: invalid parameter " << argv[argc] << endl;
+		}
+	}
+
+	cout << "Starting simulation: Machines: " << numMachines << " Objects: " << numObjects << " Messages: " << numMessages << endl;
+
+	if ( numMachines == 0 || numObjects == 0 || numMessages == 0 )
+	{
+		cout << "Missing parameters: need to specifiy machines, objects and messages" << endl;
+		exit(1);
+	}
+
+
+	int processesOnThisLP  = 0;
+
+	for (currentObject = 0; currentObject < numObjects; currentObject++)
+	{
+		if (currentMachine == id)
+			processesOnThisLP++;
+
+		currentMachine++;
+		if (currentMachine == numMachines)
+			currentMachine = 0;
+	}
+
+
+
+	pingObject** pingObjectArray = new pingObject*[processesOnThisLP];
+
+
+	currentMachine = 0;
+	LogicalProcess lp(numObjects, processesOnThisLP, numMachines);
+
+	int index;
+	for (currentObject = 0, index = 0; currentObject < numObjects; currentObject++, index++)
+	{
+		if (currentMachine == id)
+		{
+			pingObjectArray[index] = new pingObject(currentObject,0,numMessages, numObjects);
+			lp.registerObject(pingObjectArray[index]);
+		}	
+
+		currentMachine++;
+		if (currentMachine == numMachines)
+			currentMachine = 0;
+	}
+
+	lp.allRegistered();
+
+      //OK done. let's start this Logical Process's simulation
+	lp.simulate();
+
+	cout << "Simulation ended" << endl;
+
+	MPI_Finalize();
+}
+
+

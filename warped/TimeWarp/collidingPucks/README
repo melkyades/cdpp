@@ -1,0 +1,28 @@
+The Colliding Pucks application,takes in the number of sector/row n,
+Sectorwidth Number of Pucks and Number of LPs in a Config file and
+Simulates accordingly.  The config file is used so that we need to compile
+only once.
+
+The executable is generated in PUCK.The SimUntil,the value of GVT until
+which U want to simulate must be given in the main file.
+
+The Number of Events that are processed and hence the size of the
+Simulation can be increased by increasing both the number of Pucks and the
+Simuntil value.
+
+The executable can be got using the Makefile provided.
+
+U need a file called procgroup which specifies the Processors on which u r
+running the simulation.
+
+The Application Simulates a table with a number of Pucks on it.These Pucks
+move with different velocities in different directions.The application
+mimmicks the effects of the collision of these pucks.Inorder to this the
+table is divided into a number of sectors which monitor the Pucks within
+the sector.These sectors r modelled as Simulation Objects.The Simulation
+goes on till the GVT reaches the SimUntil value specified by the user.
+
+**************************************************************************
+For more detailed documentation, please refer to the latex documentation
+in the doc directory.
+**************************************************************************

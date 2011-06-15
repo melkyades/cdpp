@@ -1,0 +1,345 @@
+#-*-makefile-*-
+
+AR = ar cr
+
+ifndef QOBJ
+QOBJ=obj
+endif
+
+QLIBSRCS = SourceObject.cc\
+	ForkObject.cc\
+        JoinObject.cc\
+        QueueObject.cc\
+        SinkObject.cc\
+        ServerObject.cc\
+	DelayObject.cc\
+	DelayState.cc\
+	ForkState.cc\
+	JoinState.cc\
+	QueueState.cc\
+	ServerState.cc\
+	SinkState.cc\
+	SourceState.cc
+
+QLIBOBJS = $(QOBJ)/SourceObject.o\
+	$(QOBJ)/ForkObject.o\
+	$(QOBJ)/JoinObject.o\
+	$(QOBJ)/QueueObject.o\
+        $(QOBJ)/SinkObject.o\
+        $(QOBJ)/ServerObject.o\
+        $(QOBJ)/DelayObject.o\
+	$(QOBJ)/DelayState.o\
+	$(QOBJ)/ForkState.o\
+	$(QOBJ)/JoinState.o\
+	$(QOBJ)/QueueState.o\
+	$(QOBJ)/ServerState.o\
+	$(QOBJ)/SinkState.o\
+	$(QOBJ)/SourceState.o
+
+
+all: $(QOBJ) $(QOBJ)/libQ.a 
+
+# rule to make all the process .o files
+$(QOBJ)/libQ.a : $(QLIBOBJS)
+	$(AR) $(QOBJ)/libQ.a $?
+
+$(QOBJ)/%.o: %.cc
+	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS)\
+		$< -o $@
+
+$(QOBJ):
+	mkdir $(QOBJ)
+
+depend:
+	makedepend -p$(QOBJ)/ -- $(CPPFLAGS) $(CXXFLAGS) -- $(DEPENDINC) $(QLIBSRCS)
+
+cleandep:
+	$(TOP)/bin/cleandepend ./Makefile > ./Makefile.clean
+	mv ./Makefile.clean ./Makefile
+
+clean:	
+	rm -f *~ \#*\#
+	rm -f $(QOBJ)/*.o $(QOBJ)/libQ.a
+
+
+it: clean depend
+
+# DO NOT DELETE THIS LINE -- make depend depends on it.
+
+../objectLib/obj/SourceObject.o: SourceObject.hh /usr/include/g++/iostream.h
+../objectLib/obj/SourceObject.o: /usr/include/g++/streambuf.h
+../objectLib/obj/SourceObject.o: /usr/include/libio.h /usr/include/features.h
+../objectLib/obj/SourceObject.o: /usr/include/sys/cdefs.h
+../objectLib/obj/SourceObject.o: /usr/include/gnu/stubs.h
+../objectLib/obj/SourceObject.o: /usr/include/_G_config.h
+../objectLib/obj/SourceObject.o: /usr/include/gnu/types.h
+../objectLib/obj/SourceObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+../objectLib/obj/SourceObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stdarg.h
+../objectLib/obj/SourceObject.o: ../rnd/Normal.h ../rnd/Random.h
+../objectLib/obj/SourceObject.o: /usr/include/math.h /usr/include/huge_val.h
+../objectLib/obj/SourceObject.o: /usr/include/mathcalls.h
+../objectLib/obj/SourceObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/float.h
+../objectLib/obj/SourceObject.o: ../rnd/RNG.h /usr/include/assert.h
+../objectLib/obj/SourceObject.o: ../rnd/Poisson.h ../rnd/Binomial.h
+../objectLib/obj/SourceObject.o: ../rnd/Uniform.h ../rnd/NegExp.h
+../objectLib/obj/SourceObject.o: ../rnd/Random.h ../rnd/RndInt.h SidTypes.hh
+../objectLib/obj/SourceObject.o: QueuingTypes.hh /usr/include/stdlib.h
+../objectLib/obj/SourceObject.o: /usr/include/sys/types.h /usr/include/time.h
+../objectLib/obj/SourceObject.o: /usr/include/endian.h /usr/include/bytesex.h
+../objectLib/obj/SourceObject.o: /usr/include/sys/select.h
+../objectLib/obj/SourceObject.o: /usr/include/selectbits.h
+../objectLib/obj/SourceObject.o: /usr/include/alloca.h
+../objectLib/obj/SourceObject.o: ../../common/include/BasicEvent.hh
+../objectLib/obj/SourceObject.o: ../../common/include/SimulationObj.hh
+../objectLib/obj/SourceObject.o: SourceState.hh ../rnd/MLCG.h
+../objectLib/obj/SourceObject.o: ../../common/include/BasicState.hh
+../objectLib/obj/ForkObject.o: ForkObject.hh /usr/include/g++/iostream.h
+../objectLib/obj/ForkObject.o: /usr/include/g++/streambuf.h
+../objectLib/obj/ForkObject.o: /usr/include/libio.h /usr/include/features.h
+../objectLib/obj/ForkObject.o: /usr/include/sys/cdefs.h
+../objectLib/obj/ForkObject.o: /usr/include/gnu/stubs.h
+../objectLib/obj/ForkObject.o: /usr/include/_G_config.h
+../objectLib/obj/ForkObject.o: /usr/include/gnu/types.h
+../objectLib/obj/ForkObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+../objectLib/obj/ForkObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stdarg.h
+../objectLib/obj/ForkObject.o: ../rnd/MLCG.h ../rnd/RNG.h
+../objectLib/obj/ForkObject.o: /usr/include/assert.h /usr/include/math.h
+../objectLib/obj/ForkObject.o: /usr/include/huge_val.h
+../objectLib/obj/ForkObject.o: /usr/include/mathcalls.h
+../objectLib/obj/ForkObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/float.h
+../objectLib/obj/ForkObject.o: ../rnd/Normal.h ../rnd/Random.h
+../objectLib/obj/ForkObject.o: ../rnd/Poisson.h ../rnd/Binomial.h
+../objectLib/obj/ForkObject.o: ../rnd/Uniform.h ../rnd/NegExp.h
+../objectLib/obj/ForkObject.o: ../rnd/Random.h SidTypes.hh
+../objectLib/obj/ForkObject.o: ../../common/include/SimulationObj.hh
+../objectLib/obj/ForkObject.o: ForkState.hh QueuingTypes.hh
+../objectLib/obj/ForkObject.o: /usr/include/stdlib.h /usr/include/sys/types.h
+../objectLib/obj/ForkObject.o: /usr/include/time.h /usr/include/endian.h
+../objectLib/obj/ForkObject.o: /usr/include/bytesex.h
+../objectLib/obj/ForkObject.o: /usr/include/sys/select.h
+../objectLib/obj/ForkObject.o: /usr/include/selectbits.h
+../objectLib/obj/ForkObject.o: /usr/include/alloca.h
+../objectLib/obj/ForkObject.o: ../../common/include/BasicEvent.hh
+../objectLib/obj/ForkObject.o: ../../common/include/BasicState.hh
+../objectLib/obj/ForkObject.o: /usr/include/values.h /usr/include/limits.h
+../objectLib/obj/ForkObject.o: /usr/include/posix1_lim.h
+../objectLib/obj/ForkObject.o: /usr/include/local_lim.h
+../objectLib/obj/ForkObject.o: /usr/include/linux/limits.h
+../objectLib/obj/ForkObject.o: /usr/include/posix2_lim.h
+../objectLib/obj/JoinObject.o: JoinObject.hh /usr/include/g++/iostream.h
+../objectLib/obj/JoinObject.o: /usr/include/g++/streambuf.h
+../objectLib/obj/JoinObject.o: /usr/include/libio.h /usr/include/features.h
+../objectLib/obj/JoinObject.o: /usr/include/sys/cdefs.h
+../objectLib/obj/JoinObject.o: /usr/include/gnu/stubs.h
+../objectLib/obj/JoinObject.o: /usr/include/_G_config.h
+../objectLib/obj/JoinObject.o: /usr/include/gnu/types.h
+../objectLib/obj/JoinObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+../objectLib/obj/JoinObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stdarg.h
+../objectLib/obj/JoinObject.o: SidTypes.hh QueuingTypes.hh
+../objectLib/obj/JoinObject.o: /usr/include/stdlib.h /usr/include/sys/types.h
+../objectLib/obj/JoinObject.o: /usr/include/time.h /usr/include/endian.h
+../objectLib/obj/JoinObject.o: /usr/include/bytesex.h
+../objectLib/obj/JoinObject.o: /usr/include/sys/select.h
+../objectLib/obj/JoinObject.o: /usr/include/selectbits.h
+../objectLib/obj/JoinObject.o: /usr/include/alloca.h
+../objectLib/obj/JoinObject.o: ../../common/include/BasicEvent.hh
+../objectLib/obj/JoinObject.o: ../../common/include/SimulationObj.hh
+../objectLib/obj/JoinObject.o: JoinState.hh
+../objectLib/obj/JoinObject.o: ../../common/include/BasicState.hh
+../objectLib/obj/QueueObject.o: QueueObject.hh /usr/include/g++/iostream.h
+../objectLib/obj/QueueObject.o: /usr/include/g++/streambuf.h
+../objectLib/obj/QueueObject.o: /usr/include/libio.h /usr/include/features.h
+../objectLib/obj/QueueObject.o: /usr/include/sys/cdefs.h
+../objectLib/obj/QueueObject.o: /usr/include/gnu/stubs.h
+../objectLib/obj/QueueObject.o: /usr/include/_G_config.h
+../objectLib/obj/QueueObject.o: /usr/include/gnu/types.h
+../objectLib/obj/QueueObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+../objectLib/obj/QueueObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stdarg.h
+../objectLib/obj/QueueObject.o: SidTypes.hh QueuingTypes.hh
+../objectLib/obj/QueueObject.o: /usr/include/stdlib.h
+../objectLib/obj/QueueObject.o: /usr/include/sys/types.h /usr/include/time.h
+../objectLib/obj/QueueObject.o: /usr/include/endian.h /usr/include/bytesex.h
+../objectLib/obj/QueueObject.o: /usr/include/sys/select.h
+../objectLib/obj/QueueObject.o: /usr/include/selectbits.h
+../objectLib/obj/QueueObject.o: /usr/include/alloca.h
+../objectLib/obj/QueueObject.o: ../../common/include/BasicEvent.hh
+../objectLib/obj/QueueObject.o: ../../common/include/SimulationObj.hh
+../objectLib/obj/QueueObject.o: QueueState.hh
+../objectLib/obj/QueueObject.o: ../../common/include/BasicState.hh
+../objectLib/obj/SinkObject.o: SinkObject.hh QueuingTypes.hh
+../objectLib/obj/SinkObject.o: /usr/include/stdlib.h /usr/include/features.h
+../objectLib/obj/SinkObject.o: /usr/include/sys/cdefs.h
+../objectLib/obj/SinkObject.o: /usr/include/gnu/stubs.h
+../objectLib/obj/SinkObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+../objectLib/obj/SinkObject.o: /usr/include/sys/types.h
+../objectLib/obj/SinkObject.o: /usr/include/gnu/types.h /usr/include/time.h
+../objectLib/obj/SinkObject.o: /usr/include/endian.h /usr/include/bytesex.h
+../objectLib/obj/SinkObject.o: /usr/include/sys/select.h
+../objectLib/obj/SinkObject.o: /usr/include/selectbits.h
+../objectLib/obj/SinkObject.o: /usr/include/alloca.h
+../objectLib/obj/SinkObject.o: ../../common/include/BasicEvent.hh
+../objectLib/obj/SinkObject.o: ../../common/include/SimulationObj.hh
+../objectLib/obj/SinkObject.o: SinkState.hh
+../objectLib/obj/SinkObject.o: ../../common/include/BasicState.hh
+../objectLib/obj/ServerObject.o: ServerObject.hh /usr/include/g++/iostream.h
+../objectLib/obj/ServerObject.o: /usr/include/g++/streambuf.h
+../objectLib/obj/ServerObject.o: /usr/include/libio.h /usr/include/features.h
+../objectLib/obj/ServerObject.o: /usr/include/sys/cdefs.h
+../objectLib/obj/ServerObject.o: /usr/include/gnu/stubs.h
+../objectLib/obj/ServerObject.o: /usr/include/_G_config.h
+../objectLib/obj/ServerObject.o: /usr/include/gnu/types.h
+../objectLib/obj/ServerObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+../objectLib/obj/ServerObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stdarg.h
+../objectLib/obj/ServerObject.o: ../rnd/Normal.h ../rnd/Random.h
+../objectLib/obj/ServerObject.o: /usr/include/math.h /usr/include/huge_val.h
+../objectLib/obj/ServerObject.o: /usr/include/mathcalls.h
+../objectLib/obj/ServerObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/float.h
+../objectLib/obj/ServerObject.o: ../rnd/RNG.h /usr/include/assert.h
+../objectLib/obj/ServerObject.o: ../rnd/Poisson.h ../rnd/Binomial.h
+../objectLib/obj/ServerObject.o: ../rnd/Uniform.h ../rnd/NegExp.h
+../objectLib/obj/ServerObject.o: ../rnd/Random.h SidTypes.hh QueuingTypes.hh
+../objectLib/obj/ServerObject.o: /usr/include/stdlib.h
+../objectLib/obj/ServerObject.o: /usr/include/sys/types.h /usr/include/time.h
+../objectLib/obj/ServerObject.o: /usr/include/endian.h /usr/include/bytesex.h
+../objectLib/obj/ServerObject.o: /usr/include/sys/select.h
+../objectLib/obj/ServerObject.o: /usr/include/selectbits.h
+../objectLib/obj/ServerObject.o: /usr/include/alloca.h
+../objectLib/obj/ServerObject.o: ../../common/include/BasicEvent.hh
+../objectLib/obj/ServerObject.o: ../../common/include/SimulationObj.hh
+../objectLib/obj/ServerObject.o: ServerState.hh ../rnd/MLCG.h
+../objectLib/obj/ServerObject.o: ../../common/include/BasicState.hh
+../objectLib/obj/DelayObject.o: DelayObject.hh /usr/include/g++/iostream.h
+../objectLib/obj/DelayObject.o: /usr/include/g++/streambuf.h
+../objectLib/obj/DelayObject.o: /usr/include/libio.h /usr/include/features.h
+../objectLib/obj/DelayObject.o: /usr/include/sys/cdefs.h
+../objectLib/obj/DelayObject.o: /usr/include/gnu/stubs.h
+../objectLib/obj/DelayObject.o: /usr/include/_G_config.h
+../objectLib/obj/DelayObject.o: /usr/include/gnu/types.h
+../objectLib/obj/DelayObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+../objectLib/obj/DelayObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stdarg.h
+../objectLib/obj/DelayObject.o: ../rnd/Normal.h ../rnd/Random.h
+../objectLib/obj/DelayObject.o: /usr/include/math.h /usr/include/huge_val.h
+../objectLib/obj/DelayObject.o: /usr/include/mathcalls.h
+../objectLib/obj/DelayObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/float.h
+../objectLib/obj/DelayObject.o: ../rnd/RNG.h /usr/include/assert.h
+../objectLib/obj/DelayObject.o: ../rnd/Poisson.h ../rnd/Binomial.h
+../objectLib/obj/DelayObject.o: ../rnd/Uniform.h ../rnd/NegExp.h
+../objectLib/obj/DelayObject.o: ../rnd/Random.h SidTypes.hh
+../objectLib/obj/DelayObject.o: ../../common/include/SimulationObj.hh
+../objectLib/obj/DelayObject.o: DelayState.hh ../rnd/MLCG.h QueuingTypes.hh
+../objectLib/obj/DelayObject.o: /usr/include/stdlib.h
+../objectLib/obj/DelayObject.o: /usr/include/sys/types.h /usr/include/time.h
+../objectLib/obj/DelayObject.o: /usr/include/endian.h /usr/include/bytesex.h
+../objectLib/obj/DelayObject.o: /usr/include/sys/select.h
+../objectLib/obj/DelayObject.o: /usr/include/selectbits.h
+../objectLib/obj/DelayObject.o: /usr/include/alloca.h
+../objectLib/obj/DelayObject.o: ../../common/include/BasicEvent.hh
+../objectLib/obj/DelayObject.o: ../../common/include/BasicState.hh
+../objectLib/obj/DelayState.o: DelayState.hh ../rnd/MLCG.h ../rnd/RNG.h
+../objectLib/obj/DelayState.o: /usr/include/assert.h /usr/include/features.h
+../objectLib/obj/DelayState.o: /usr/include/sys/cdefs.h
+../objectLib/obj/DelayState.o: /usr/include/gnu/stubs.h /usr/include/math.h
+../objectLib/obj/DelayState.o: /usr/include/huge_val.h
+../objectLib/obj/DelayState.o: /usr/include/mathcalls.h
+../objectLib/obj/DelayState.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/float.h
+../objectLib/obj/DelayState.o: /usr/include/_G_config.h
+../objectLib/obj/DelayState.o: /usr/include/gnu/types.h
+../objectLib/obj/DelayState.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+../objectLib/obj/DelayState.o: QueuingTypes.hh /usr/include/stdlib.h
+../objectLib/obj/DelayState.o: /usr/include/sys/types.h /usr/include/time.h
+../objectLib/obj/DelayState.o: /usr/include/endian.h /usr/include/bytesex.h
+../objectLib/obj/DelayState.o: /usr/include/sys/select.h
+../objectLib/obj/DelayState.o: /usr/include/selectbits.h
+../objectLib/obj/DelayState.o: /usr/include/alloca.h
+../objectLib/obj/DelayState.o: ../../common/include/BasicEvent.hh
+../objectLib/obj/DelayState.o: ../../common/include/BasicState.hh
+../objectLib/obj/ForkState.o: ForkState.hh ../rnd/MLCG.h ../rnd/RNG.h
+../objectLib/obj/ForkState.o: /usr/include/assert.h /usr/include/features.h
+../objectLib/obj/ForkState.o: /usr/include/sys/cdefs.h
+../objectLib/obj/ForkState.o: /usr/include/gnu/stubs.h /usr/include/math.h
+../objectLib/obj/ForkState.o: /usr/include/huge_val.h
+../objectLib/obj/ForkState.o: /usr/include/mathcalls.h
+../objectLib/obj/ForkState.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/float.h
+../objectLib/obj/ForkState.o: /usr/include/_G_config.h
+../objectLib/obj/ForkState.o: /usr/include/gnu/types.h
+../objectLib/obj/ForkState.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+../objectLib/obj/ForkState.o: QueuingTypes.hh /usr/include/stdlib.h
+../objectLib/obj/ForkState.o: /usr/include/sys/types.h /usr/include/time.h
+../objectLib/obj/ForkState.o: /usr/include/endian.h /usr/include/bytesex.h
+../objectLib/obj/ForkState.o: /usr/include/sys/select.h
+../objectLib/obj/ForkState.o: /usr/include/selectbits.h /usr/include/alloca.h
+../objectLib/obj/ForkState.o: ../../common/include/BasicEvent.hh
+../objectLib/obj/ForkState.o: ../../common/include/BasicState.hh
+../objectLib/obj/JoinState.o: JoinState.hh QueuingTypes.hh
+../objectLib/obj/JoinState.o: /usr/include/stdlib.h /usr/include/features.h
+../objectLib/obj/JoinState.o: /usr/include/sys/cdefs.h
+../objectLib/obj/JoinState.o: /usr/include/gnu/stubs.h
+../objectLib/obj/JoinState.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+../objectLib/obj/JoinState.o: /usr/include/sys/types.h
+../objectLib/obj/JoinState.o: /usr/include/gnu/types.h /usr/include/time.h
+../objectLib/obj/JoinState.o: /usr/include/endian.h /usr/include/bytesex.h
+../objectLib/obj/JoinState.o: /usr/include/sys/select.h
+../objectLib/obj/JoinState.o: /usr/include/selectbits.h /usr/include/alloca.h
+../objectLib/obj/JoinState.o: ../../common/include/BasicEvent.hh
+../objectLib/obj/JoinState.o: ../../common/include/BasicState.hh
+../objectLib/obj/QueueState.o: QueueState.hh QueuingTypes.hh
+../objectLib/obj/QueueState.o: /usr/include/stdlib.h /usr/include/features.h
+../objectLib/obj/QueueState.o: /usr/include/sys/cdefs.h
+../objectLib/obj/QueueState.o: /usr/include/gnu/stubs.h
+../objectLib/obj/QueueState.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+../objectLib/obj/QueueState.o: /usr/include/sys/types.h
+../objectLib/obj/QueueState.o: /usr/include/gnu/types.h /usr/include/time.h
+../objectLib/obj/QueueState.o: /usr/include/endian.h /usr/include/bytesex.h
+../objectLib/obj/QueueState.o: /usr/include/sys/select.h
+../objectLib/obj/QueueState.o: /usr/include/selectbits.h
+../objectLib/obj/QueueState.o: /usr/include/alloca.h
+../objectLib/obj/QueueState.o: ../../common/include/BasicEvent.hh
+../objectLib/obj/QueueState.o: ../../common/include/BasicState.hh
+../objectLib/obj/ServerState.o: ServerState.hh ../rnd/MLCG.h ../rnd/RNG.h
+../objectLib/obj/ServerState.o: /usr/include/assert.h /usr/include/features.h
+../objectLib/obj/ServerState.o: /usr/include/sys/cdefs.h
+../objectLib/obj/ServerState.o: /usr/include/gnu/stubs.h /usr/include/math.h
+../objectLib/obj/ServerState.o: /usr/include/huge_val.h
+../objectLib/obj/ServerState.o: /usr/include/mathcalls.h
+../objectLib/obj/ServerState.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/float.h
+../objectLib/obj/ServerState.o: /usr/include/_G_config.h
+../objectLib/obj/ServerState.o: /usr/include/gnu/types.h
+../objectLib/obj/ServerState.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+../objectLib/obj/ServerState.o: QueuingTypes.hh /usr/include/stdlib.h
+../objectLib/obj/ServerState.o: /usr/include/sys/types.h /usr/include/time.h
+../objectLib/obj/ServerState.o: /usr/include/endian.h /usr/include/bytesex.h
+../objectLib/obj/ServerState.o: /usr/include/sys/select.h
+../objectLib/obj/ServerState.o: /usr/include/selectbits.h
+../objectLib/obj/ServerState.o: /usr/include/alloca.h
+../objectLib/obj/ServerState.o: ../../common/include/BasicEvent.hh
+../objectLib/obj/ServerState.o: ../../common/include/BasicState.hh
+../objectLib/obj/SinkState.o: SinkState.hh QueuingTypes.hh
+../objectLib/obj/SinkState.o: /usr/include/stdlib.h /usr/include/features.h
+../objectLib/obj/SinkState.o: /usr/include/sys/cdefs.h
+../objectLib/obj/SinkState.o: /usr/include/gnu/stubs.h
+../objectLib/obj/SinkState.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+../objectLib/obj/SinkState.o: /usr/include/sys/types.h
+../objectLib/obj/SinkState.o: /usr/include/gnu/types.h /usr/include/time.h
+../objectLib/obj/SinkState.o: /usr/include/endian.h /usr/include/bytesex.h
+../objectLib/obj/SinkState.o: /usr/include/sys/select.h
+../objectLib/obj/SinkState.o: /usr/include/selectbits.h /usr/include/alloca.h
+../objectLib/obj/SinkState.o: ../../common/include/BasicEvent.hh
+../objectLib/obj/SinkState.o: ../../common/include/BasicState.hh
+../objectLib/obj/SourceState.o: SourceState.hh ../rnd/MLCG.h ../rnd/RNG.h
+../objectLib/obj/SourceState.o: /usr/include/assert.h /usr/include/features.h
+../objectLib/obj/SourceState.o: /usr/include/sys/cdefs.h
+../objectLib/obj/SourceState.o: /usr/include/gnu/stubs.h /usr/include/math.h
+../objectLib/obj/SourceState.o: /usr/include/huge_val.h
+../objectLib/obj/SourceState.o: /usr/include/mathcalls.h
+../objectLib/obj/SourceState.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/float.h
+../objectLib/obj/SourceState.o: /usr/include/_G_config.h
+../objectLib/obj/SourceState.o: /usr/include/gnu/types.h
+../objectLib/obj/SourceState.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+../objectLib/obj/SourceState.o: QueuingTypes.hh /usr/include/stdlib.h
+../objectLib/obj/SourceState.o: /usr/include/sys/types.h /usr/include/time.h
+../objectLib/obj/SourceState.o: /usr/include/endian.h /usr/include/bytesex.h
+../objectLib/obj/SourceState.o: /usr/include/sys/select.h
+../objectLib/obj/SourceState.o: /usr/include/selectbits.h
+../objectLib/obj/SourceState.o: /usr/include/alloca.h
+../objectLib/obj/SourceState.o: ../../common/include/BasicEvent.hh
+../objectLib/obj/SourceState.o: ../../common/include/BasicState.hh

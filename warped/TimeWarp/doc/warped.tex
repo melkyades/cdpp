@@ -1,0 +1,2478 @@
+\documentclass[11pt]{report}
+
+\usepackage{alltt,color,fullpage,psfig}
+
+\newcommand{\version}{1.02}
+
+\begin{document}
+
+\title{
+\textbf{ {\sc warped} }\\
+A TimeWarp Parallel Discrete Event Simulator\\
+(Documentation for version \version)}
+
+\author{
+\emph{Dale E. Martin}, \emph{Timothy J. McBrayer},\\
+\emph{Radharamanan Radhakrishnan} and \emph{Philip A.  Wilsey} \\ 
+Computer Architecture Design Laboratory \\
+Dept of ECECS, PO Box 210030 \\
+Cincinnati, OH  45221--0030 \\
+\texttt{warped@ececs.uc.edu}
+}
+
+\date{}
+
+\maketitle
+
+\vspace*{6in}
+
+\noindent
+Copyright $\copyright$ 1995--1999 The University of Cincinnati.  All
+rights reserved.  
+
+\bigskip
+
+\noindent
+Published by the University of Cincinnati \\
+Dept of ECECS, PO Box 210030 \\
+Cincinnati, OH  45221--0030 USA 
+
+\bigskip
+
+\noindent
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+\medskip
+\noindent
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+\medskip
+\noindent
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.
+
+\newpage
+
+\tableofcontents
+
+\chapter{Introduction}
+
+The TimeWarp parallel synchronization protocol has been the topic of
+research for a number of years, and many modifications/optimizations
+have been proposed and analyzed.  However, these investigations are
+generally conducted in distinct environments with each optimization
+reimplemented for comparative analysis.  Besides the obvious waste of
+manpower to re-implement TimeWarp and its affiliated optimizations, the
+possibility for a varying quality of the implemented optimizations
+exists.  The {\sc warped} project is an attempt to make a freely
+available TimeWarp simulation kernel that is easily ported, simple to
+modify and extend, and readily attached to new applications.  The
+primary goal of this project is to release a system that is freely
+available to the research community for analysis of the TimeWarp design
+space.  In order to make {\sc  warped} useful, the system must be easy to
+obtain, available with running applications, operational on several
+processing platforms, and easy to install, port, and modify.
+
+The {\sc warped} system is implemented in C++ and utilizes the object
+oriented capabilities built into that language.  Even if one is
+interested in {\sc warped} only at the system interface level, they must
+understand concepts such as inheritance, virtual functions, and
+overloading.  The benefit of this type of design is that the end user
+can redefine and reconfigure functions without directly changing kernel
+code.  Any system function can be overloaded to fit the user's needs and
+any basic system structure can be redefined.  This capability allows the
+user to easily modify the system queues, GVT algorithms, or practically
+anything else.  This flexibility makes the {\sc warped} system a powerful
+tool in TimeWarp experimentation.
+
+Another benefit to the object oriented nature of the {\sc warped} system
+is that by its very design it is simple to ``plug in'' a different
+kernel to get an {\emph extremely} efficient sequential simulation.  A
+sequential simulation kernel is supplied in the {\sc warped} distribution
+in addition to the TimeWarp kernel.  If an application is developed on
+a stand-alone machine using the sequential kernel, the transition to
+running the simulation on the parallel kernel should be relatively
+simple.
+
+\chapter{Requirements}
+
+The implementation presented was written and compiled using the GNU C++
+compiler, g++, version 2.7.0. (At the time of writing, the authors
+believe that the {\sc warped} system will compile under g++ version
+2.6.3, but not under 2.5.8 or earlier.)  It should also be noted that
+some of the classes that are defined in libg++ are used within the
+applications that are distributed with the {\sc warped} system, so if
+these applications are to be used, libg++ will be required as well.
+
+{\sc warped} was designed to run on top of the MPI message protocol.
+(The developers used the {\it mpich} implementation of the MPI
+standard, version 1.1.0.  Information on {\it mpich} is available from
+{\it http://www.mcs.anl.gov/home/lusk/mpich/index.html} ) It is
+possible to develop sequential applications with {\sc warped} without
+having MPI installed on a system, but in order to use {\sc warped} in
+parallel, MPI must be installed.  It is also worth noting that the
+functions used from MPI are very simple point to point communication,
+and that most message passing libraries would have similar functions.
+Thus, porting {\sc warped} to a different message passing library should
+be a relatively simple endeavor.
+
+The {\sc warped} system is intended for two types of users - those
+wishing to build distributed applications model as discrete event
+simulations, and those wishing to experiment with TimeWarp itself.
+The application level user needs no knowledge of MPI or internal details
+of the simulation kernel, but the TimeWarp experimenter most likely
+will.
+
+\chapter{Organization}
+
+The first chapter will discuss the application level interface.  An
+overview of this interface is given, followed by detailed descriptions
+of the individual pieces.  The second chapter will discuss in detail the
+internal structure of {\sc warped}, for those who are interested in
+experimenting with TimeWarp.
+
+\section{The Application Interface}
+%%@section The Big Picture
+
+The {\sc warped} kernel presents an interface to the application that is
+based on Jefferson's original paper on TimeWarp.  Objects are modeled
+as entities which send and receive events to and from each other, and
+act on these events by applying them to their internal state.  This
+being the case, basic functions that the kernel provides to the
+application are methods for sending and receiving events \footnote{
+Within this document, {\emph events} are defined as the communication
+between simulation objects, and {\emph messages} are defined as the
+communication between kernel processes.} between simulation objects, and
+the ability to specify different types of objects with unique
+definitions of state.
+
+One departure from Jefferson's presentation of TimeWarp is that
+simulation objects are placed into groups called ``logical processes.''
+(LPs) Simulation objects on the same logical process communicate with
+each other without intervention from the message system, which is
+{\it much} faster than communication through it.  Hence, objects
+which communicate frequently should be placed on the same logical
+process.  Another feature of the logical process is that it is
+responsible for scheduling the simulation objects.  Note that the
+simulation objects within an LP operate as TimeWarp processes; even
+though they are grouped together, they aren't coerced into
+synchronization.
+
+Control is passed between the application and the kernel through the
+cooperative use of function calls.  This means that when a function is
+called in application code, the application is not allowed block for any
+reason.  Since the application has control of the single thread of
+control through its LP, it could end up waiting forever.
+
+In order for the kernel to correctly interact with the application code,
+the user must provide several functions to the kernel. These functions
+define such things as how to initialize each simulation object, and what
+each simulation object does during a simulation cycle.  In addition, if
+the user would like to use a non-integer definition of time, facilities
+are in place to provide a user-defined time class to the kernel.
+
+The application interface to the system is achieved through several
+features of the C++ language.  The simulation kernel is defined as
+several template classes, allowing the user to define system parameters
+without rewriting system code.  Application specific code is derived
+from the {\sc warped} kernel. This allows application code to
+transparently access kernel functions.  
+
+In the following sections, a detailed description of the application
+interface is presented.  As an example, a ``ping pong'' application will
+be developed.  Each object in the system merely forwards any event that it
+receives to the next object in a circular fashion.  If there are only two
+objects in the simulation, the event will be passed back and forth as
+though they are playing ping pong.  We will model our simulation objects
+so that they will hit the ``ball'' a maximum number of times, at which
+time the simulation will be complete. The actual source code of this
+example application is available in the {\it examples} directory within
+the {\sc warped} distribution. Refer to the {\sf README} file in the
+examples directory on detailed instructions on running the
+example\footnote{Infact, this simple example can be simulated using the
+sequential kernel or with the parallel kernel. For the parallel version,
+we have devised two different partitioning strategies for the objects in
+the simulation - a worst case and a best case partition.}.
+
+\section{The {\it TimeWarp} class}
+
+The {\it TimeWarp} class defines the data and methods that each
+simulation object needs to operate within the system.  The user can
+define many different types of simulation objects, all of which will be
+derived from the {\it TimeWarp} class.  In order for the kernel to be
+able to construct instances of the user-defined state, the
+{\it TimeWarp} class is templatized on the user's state class.  For the
+example being developed, there is only one type of object, and one
+definition of state.
+
+\subsection{Defining the state of an object}
+
+The state of a simulation object is the data that is required at any
+simulation time to determine the object's actions at the next simulation
+time, given an event to process.  Normally, the only data that needs to
+be in an object's state is data that can change each simulation cycle.
+
+For example, in our ping pong application, the number of times the
+object has received a ball and the number of times the object has
+hit the ball will vary between simulation cycles.  The total number
+of times that the object is supposed to hit the ball is constant
+throughout the simulation.  Although this data could be put into the
+state, it is not necessary to do so, and will make the simulation less
+efficient.  (Due to the way the TimeWarp algorithm works, an object's
+state will be copied a significant number of times throughout the
+simulation.)  A better choice would be to make the maximum number of
+hits for an object part of its class data, and the number of balls
+sent and received part of the definition of state.  The following code
+fragment shows how state is defined for the {\it PingObject} class:
+
+\begin{verbatim}
+#include "BasicState.hh"
+
+class PingState : public BasicState {
+public:
+  int numSent;
+  int numReceived;
+
+  PingState(){};
+  ~PingState(){};
+
+  void initialize(){
+    numSent = 0;
+    numReceived = 0;
+  }
+};
+
+\end{verbatim}
+
+Notice that the default constructor in the example is empty.  It was
+previously noted that the TimeWarp algorithm calls for the state to be
+copied a significant number of times.  Likewise, a significant number of
+states are ``newed'' and ``deleted'', so to reduce the overhead of this
+memory allocation, the default constructors and destructors should be
+left empty.  The method {\it initialize} will be called explicitly on
+the first state the object instantiates, and after that, the data from
+an old state will immediately be copied over the uninitialized memory of
+the new state.  It should be noted that if there are any pointers
+defined in an object's state, proper copy constructors must be written
+to ensure the copying is done correctly.
+
+\subsection{Methods the application provides to the kernel}
+
+There are three main methods that the kernel calls in the application
+code.  The first is {\it initialize}.  This method takes no parameters,
+and is called exactly once in each simulation object at the beginning of
+the simulation.  Since {\sc warped} requires that every object in the
+system is event driven, a good use of the {\it initialize} function is
+to have some objects send themselves events to ``prime'' the simulation.
+The {\it PingObject} with {\it id == 0} does this using the following
+code:
+
+\begin{verbatim}
+void  
+PingObject::initialize(){
+  state.current->initialize();
+
+  if( id == 0 ){
+    // we need to give ourselves the first ball to start...
+    BasicEvent *firstBall = new BasicEvent;
+    firstBall->dest = id;
+    firstBall->recvTime = 0;
+    firstBall->size = sizeof( *firstBall );
+    
+    sendEvent( firstBall );
+  }
+  
+}
+
+\end{verbatim}
+
+Note the call to {\it state.current-$>$initialize()}.  As previously
+discussed, default constructors to initialize the states would be
+inefficient due to the fact that states are normally copied over once
+they have been allocated.  This being the case, an explicit call to the
+user-defined initialize function is necessary once at the beginning of
+the simulation.
+
+The rest of the method arbitrarily chooses object with {\it id == 0} to
+start the simulation by sending an event to itself.  The method
+{\it sendEvent} will be discussed in detail shortly.
+
+The next application method that the kernel will call is
+{\it executeProcess}.  This method defines the simulation object's
+behavior each time it gets scheduled for execution.  If an object has no
+event to process, it is considered idle and won't get scheduled.
+Furthermore, once {\it executeProcess} has been called, control has
+passed completely from the kernel to the application.  Until control is
+returned to the kernel, no other simulation objects on the same logical
+process can be scheduled.
+
+A ``typical'' simulation will perform the following activities in a
+single simulation cycle:
+
+\begin{itemize}
+\item 
+Make one or more calls to {\it getEvent()} to get events to process
+from the kernel.
+\item
+Process the event(s) using {\it state.current} for accessing state
+information and storing new state.
+\item 
+Send any new events generated to other processes through calls to
+{\it sendEvent()}.
+\item
+Return control to the kernel.
+\end{itemize}
+
+The function {\it executeProcess} from the {\it PingObject} class
+follows:
+
+\begin{verbatim} 
+
+void 
+PingObject::executeProcess(){
+  //we got an event
+  //let's get the event
+  BasicEvent *msgGot = getEvent();
+  
+  if(msgGot != NULL)
+    {
+      state.current->numBallsRecvd-- ;
+      
+      if(id != 0 || (id == 0 && state.current->numBallsRecvd != 0))
+        {
+          //we want to send another event
+          BasicEvent *newMsg = (BasicEvent*) new char[sizeof(BasicEvent)] ;
+          new (newMsg) BasicEvent();
+          
+          newMsg->dest = dest;
+          newMsg->recvTime = state.current->lVT + 1 ;
+          newMsg->size = sizeof(BasicEvent);
+      
+          state.current->numBallsSent++;
+          sendEvent(newMsg);
+        }
+    }   
+}
+\end{verbatim}
+
+The last method defined in the application that is called by the kernel
+is {\it finalize()}.  This optional method is called once at the end of
+a simulation in each object.  This call is intended to allow the object
+to collect statistics or do any required housekeeping.  The
+{\it PingObject} simply prints a summary of its final state
+information: 
+
+\begin{verbatim}
+void 
+PingObject::finalize(){
+  cout << name << " sent " << state.current->numSent << " balls." << endl;
+  cout << name << " received " << state.current->numReceived <<
+    " balls." << endl;
+}
+\end{verbatim}
+
+\subsection{Data defined by the User}
+
+The events passed between the simulation objects will most likely need
+to be defined by the user.  Many types of events might need to be
+defined, which is easy to do.  All user defined event types must be
+derived from the {\it BasicEvent} class.  The definition of this class
+follows:
+
+\begin{verbatim}
+class BasicEvent {
+   int size;        // the sender MUST fill this in!
+   VTime sendTime;   // this is filled in when it's sent
+   VTime recvTime;   // the sender must fill this in!  This is the time
+                    // that the message should be received by the
+                    // receiving object
+   int sender;      // this gets filled in when it's sent
+   int dest;        // the user must fill this in
+}
+\end{verbatim}
+
+This data represents the minimum amount of information needed to send an
+event from one object to another.  A description of which fields must be
+filled in before passing an event to {\it sendEvent} is in the section
+describing that method.
+
+Since the ``ping pong'' application needs no additional data to that of a
+{\it BasicEvent}, it does not explicitly declare it's own event type.
+However, if one wished to, they could simply do a {\it typedef BasicEvent
+Ball;} to have a ``Ball'' class.
+
+By default, {\sc warped} has a simple notion of time.  More precisely,
+time is defined in the class {\it VTime} as a signed integer.  Obviously,
+particular instances of a simulation with the {\sc warped} kernel may have
+different requirements for the concept of time.  For instance, simulators
+for the hardware description language VHDL require a more complex
+definition of time.  Thus, {\sc warped} includes a mechanism for defining
+a more complex structure for time.
+
+If the simple, kernel-supplied version of time is insufficient, the
+application programmer need only define the preprocessor macro {\it
+USE\_USER\_VTIME} during compilation. (This will be discussed more in the
+section on the configuration file, {\it config.hh}) In addition, the user
+must define the class {\it VTime} with data members appropriate to the
+application's needs.  In addition to the definition requirements, the {\sc
+warped} kernel has requirements about the defined methods of the type {\it
+VTime}.  More specifically, the implementation of {\it VTime} must supply
+the following operators and data, either by default or through explicit
+instantiation: 
+
+\begin{itemize}
+
+\item
+Assignment (=), Addition (+), and subtraction (--) operators.
+\item 
+Equivalence and non-equivalence, via the $==$ and $!=$ operators.
+\item 
+The relational operators: $>=$, $<=$, $>$, and $<$.
+\item 
+Constant objects of type {\it VTime} named {\it INVALID\_TIME}, {\it ZERO},
+and {\it PINFINITY}.  The time {\it INVALID\_TIME} must be less than
+{\it ZERO} with the defined $<$ operator.  {\it ZERO} must define the
+smallest valid time, and {\it PINFINITY} must define the largest valid
+time.
+\item The insertion operator ($<<$) for class ostream, for type
+{\it VTime}.
+\end{itemize}
+
+\subsection{Calls the kernel provides to the user}
+
+The method {\it getEvent} defined in the {\it TimeWarp} class is what
+the application uses to get the next event that it needs to process.
+This function returns a pointer to a {\it BasicEvent}.  Something that
+should be noted is that the data pointed to by the pointer returned from
+a call to this function will always have other pointers to it as well.
+This means that changes made to the data will also effect the other
+entities holding pointers to this data, including the simulation kernel.
+This will have undesirable effects such as crashing the simulation.
+Therefore, data pointed to by a pointer returned from {\it getEvent}
+must {\emph never} be modified by a simulation object.
+
+If the application defines one or more types of events, the pointer
+returned from {\it getEvent} will need to be casted to the appropriate
+type to be accessed. One way to easily distinguish between multiple
+event types is to derive an intermediate type from {\it BasicEvent}
+that has an enumerated {\it messageType} field in it.  Each event type
+derived from this intermediate class automatically fills in the
+appropriate type upon construction.  Upon receiving an event, first it
+is cast to the intermediate type, and then based on the
+{\it messageType} field, cast into the appropriate type.
+
+The method {\it sendEvent} takes a pointer to a {\it BasicEvent} (or a
+type derived from {\it BasicEvent}) as an argument and delivers it to
+the object specified by {\it BasicEvent::dest}.  If {\it dest} holds
+an invalid object id, the result is undefined.  The other fields that
+{\emph must} be filled out before sending the event are {\it size} and
+{\it recvTime}.  {\it size} refers to the size of the event in bytes,
+in its ``most derived'' form.  (The kernel handles user messages
+internally as {\it BasicEvent}s with extra data stuck on the end, so it
+needs to know to total size of the event.)  {\it recvTime} is the time
+at which object with {\it id == dest} should receive this event.
+
+Examples of both {\it getEvent} and {\it sendEvent} can be found in
+the code fragment for {\it executeProcess}.
+
+\subsection{Other data defined in the kernel}
+
+The {\it TimeWarp} class defines several other variables which need to
+be correctly utilized for the simulation to operate correctly.  For
+instance, the integer {\it id} needs to be initialized in each
+simulation object by the user prior to starting the simulation.  Each
+{\it TimeWarp}'s {\it id} must be unique across the simulation.  In a
+simulation with {\it n} objects, {\it id}s must range from 0 to {\it n} -
+1.
+
+Another identifier defined in the {\it TimeWarp} class is {\it name}.
+Name is a C++-style string ({\it char *}) that is not required to be
+unique, but is probably most useful if it is.  When error messages are
+generated by the kernel in a simulation object, they are normally
+printed with the {\it name} of the object first, and then the error
+that occured.
+
+The complete application interface for the {\it TimeWarp} class
+follows:
+
+\begin{verbatim}
+template < class State > 
+class TimeWarp {
+
+  TimeWarp();
+  virtual ~TimeWarp();
+
+  BasicEvent *getEvent();       // gets an event from the input queue
+  void sendEvent(BasicEvent *); // put an event on the output queue
+
+  // this calls the application to execute its code for one simulation cycle
+  virtual void executeProcess() = 0;
+  
+  // the user overloads these two functions, if desired, to contain code
+  // to be executed before and after simulation starts and ends.
+  virtual void initialize() {};
+  virtual void finalize() {};
+
+};
+
+\end{verbatim}
+
+\section{The {\it LogicalProcess} class}
+
+The {\it LogicalProcess} class groups together one or more simulation
+objects which will share a {\it GVTManager}, a {\it CommManager}, and a
+{\it Scheduler}.  The main loop of execution resides in the method {\it
+LogicalProcess::simulate}, which tells the {\it LogicalProcess} to keep
+executing the simulation loop until it receives a new GVT broadcast of
+{\it PINFINITY}.  In the current implementation, there may only be one
+{\it LogicalProcess} per Unix heavy-weight process.  This may change in
+the future to allow one {\it LogicalProcess} per thread.
+
+\subsection{Constructing {\it LogicalProcess}es}
+
+The {\it LogicalProcess} class has no default constructor.  Instances of
+the {\it LogicalProcess} class must call a constructor with three integer
+arguments:
+
+\begin{itemize}
+\item
+The total number of simulation objects in this simulation.
+\item
+The number of simulation objects local to this LP.
+\item
+The number of LPs for this simulation.
+\end{itemize}
+
+\subsection{Registering simulation objects with an LP}
+
+Each simulation object grouped on an LP needs a method called {\it
+registerObject} in that LP on its behalf.  This tells the LP that it will
+be responsible for the object for the simulation.  This is normally done
+in the application defined {\it main} routine.  {\it registerObject} takes
+a pointer to a {\it BasicTimeWarp} ({\it TimeWarp}'s base class) as an
+argument.  Before an object is registered with an LP, the {\it id} must be
+initialized.  If more objects try to register than are specified in the
+construction of the LP, an error will occur.
+
+\subsection{Telling the LP to start the simulation}
+
+After all of the simulation objects have registered with their LP, calls
+should be made to {\it LogicalProcess::allRegistered} and {\it
+LogicalProcess::simulate}, which takes an optional {\it VTime} parameter.
+If invoked with a parameter, the simulation will run until the global
+simulation time has exceeded the {\it VTime} specified.  If no parameter
+is supplied, then the simulation will run until completion.
+
+\subsection{Other kernel defined data in an LP}
+
+Like the {\it TimeWarp} class, the {\it LogicalProcess} class has an
+integer {\it id}.  Assuming the simulation is running in parallel and MPI
+is being used, the {\it id} should be the same as the {\it rank} assigned
+by MPI.  If MPI is being used, the {\it LogicalProcess} will actually get
+the rank from MPI itself and initialize the {\it id}.  However, there are
+times when the {\it MPI\_RANK} needs to be known before the construction of
+the {\it LogicalProcess}.  For instance, if there are two LPs in a
+simulation which we want to run on two networked workstations, we might
+want to use the same executable for both machines.  We can use C++'s
+scoping mechanism to instantiate exactly what we need if we get our {\it
+MPI\_RANK} before instantiating any simulation objects or LPs.
+
+See the following example:
+
+\begin{verbatim}
+main(int argc, char *argv[]) {
+  
+  int id;
+
+  MPI_Init( &argc, &argv );
+  MPI_Comm_rank( MPI_COMM_WORLD, &id);
+
+  if(id == 0) {
+    LogicalProcess lp(2,1,2);  // total, local, LPs
+
+    PingObject player0;
+    player0.id = 0;
+    player0.name = "player0";
+    lp.registerObject(&player0);
+  }
+  else if (id == 1) {
+    LogicalProcess lp(2,1,2);  // total, local, LPs
+
+    PingObject player1;
+    player1.id = 1;
+    player1.name = "player1";
+    lp.registerObject(&player1);
+  }
+}
+\end{verbatim}
+
+Since the LPs are defined within the scope of the if tests, only those
+objects that need to will construct on each machine (or under each
+process.)
+
+\section{The configuration file {\it config.hh}}
+
+The configuration file allows the user to change many compile time
+characteristics of the simulation kernel. (For detailed information on
+the options available, see {\it config.hh} itself.) These options fall under
+several broad categories:
+
+\begin{itemize}
+
+\item
+Schedulers
+
+\begin{itemize}	
+\item
+{\it LTSFSscheduler} - All of the simulation objects on an LP share a
+single input queue, and the simulation object with the lowest
+timestamped event executes next.
+\end{itemize}
+
+\item
+Fossil Managers
+
+\begin{itemize}
+\item
+{\it GVTManager} - PGVT algorithm implemented without message
+acknowledgment.
+\item
+{\it MatternGVTManager} - Mattern's GVT algorithm implemented without
+message acknowledgement.
+\item
+{\it OfcManager} - Implements optimistic fossil collection.  Uses
+statistical methods to perform fossil collection.
+\end{itemize}
+
+\item
+State Managers
+
+\begin{itemize}
+\item
+{\it StateManager} - The traditional TimeWarp state management strategy
+- save state after each simulation cycle.
+\item
+{\it InfreqStateManager} - Allows objects to save state periodically -
+every other simulation cycle, for instance.
+\item
+{\it LinStateManager} - Implements Lin's adaptive state state savings strategy.
+\item
+{\it NashStateManager} - Implements Palaniswamy's adaptive state state
+savings strategy.
+\item
+{\it CostFuncStateManager} - Implements Fleischman's adaptive state state
+savings strategy.
+\end{itemize}
+
+\item
+Memory Managers
+
+\begin{itemize}
+\item
+{\it GlobalMemoryManager} - Implements the CustomMalloc strategy for
+dynamic memory allocation.
+\item
+{\it BuddyMemoryManager} - Implements the Buddy Allocation paradigm for
+dynamic memory allocation.
+\item
+{\it SegregatedMemAlloc} - Implements the First-Fit strategy using
+segregated lists.
+\item
+{\it BrentMemAlloc} - Implements an efficient First-Fit strategy.
+\end{itemize}
+
+\item 
+TimeWarp optimizations
+
+\begin{itemize}
+\item
+{\it Cancelation strategies} - The choices are aggressive cancelation,
+lazy cancelation, and adaptive switching between the two (Dynamic
+Cancellation). 
+
+\item 
+{\it One antimessage per rollback} - only one antimessage is sent out upon
+rollback. The lowest timestamp antimessage is sent out and the other
+antimessages are suppressed. At the receipient's end, upon receiving an
+antimessage, all messages with timestamps greater than that of the
+antimessages are deleted. This greatly reduces the total number of
+messages that are generated in the system and improves performance.
+
+\end{itemize}
+\end{itemize}
+
+\section{Performing I/O in {\sc warped}}
+
+{\sc warped} allows for file input and output from simulation objects
+which behave as one would wish with respect to TimeWarp.  That is, the
+{\it FileQueue} class is handled properly by the {\sc warped} kernel
+during garbage collection and rollback.  Currently, files may only be
+opened for output; support for input files is not integrated into the
+kernel yet.  If a simulation object needs an output file during
+simulation, it must inform the TimeWarp kernel of this prior to the
+beginning of execution.  A good place to do this is in the simulation
+object's constructor.  Three tasks must be accomplished; informing the
+kernel of the number of files needed, creating the proper number of {\it
+FileQueue}s, and informing each {\it FileQueue} the name of the physical
+file it is associated with.  The number of output files is stored in a
+kernel variable named {\it numOutFiles}, while a pointer to a {\it
+FileQueue} named {\it outFileQ} acts as an access point for an array of
+{\it FileQueue}s.
+
+\subsection{Allocating a file queue}
+
+If a PingObject wanted to access an output file, its constructor might
+contain the following code:
+
+\begin{verbatim}
+PingObject::PingObject() {
+  :
+  :
+  numOutFiles = 1;
+  outFileQ = new FileQueue[1]("ping_output.out");
+  :
+  :
+};
+\end{verbatim}
+
+The application programmer does not have to worry about deallocating the
+{\it outFileQ}s.  The kernel takes care of flushing and closing the
+physical file, and deallocating the {\it FileQueue}s.
+
+\subsection{Writing to a file queue}
+
+Writing to a {\it outFileQ} is performed by inserting pointer to an
+object of type {\it FileData} into the appropriate {\it outFileQ}.
+The structure of a {\it FileData} is as follows:
+
+\begin{verbatim}
+struct FileData {
+  VTime time;  // The time at which the data is written
+  int length;  // The number of bytes pointed to by the pointer 'line'
+  char *line;  // Pointer to the data to be written
+};
+\end{verbatim}
+
+When the simulation object needs to write a line to a file, it must
+allocate an object of type {\it FileData} and fill in all three fields of
+the structure.  {\it FileData::line} is somewhat of a misnomer; output is
+not limited to a single line, although that is a common amount to write at
+once.  {\sc warped} will accept any arbitrary string of bytes of length
+{\it FileData::length} and pointed to by {\it FileData::line} in a {\it
+FileData} struct.
+
+The {\it outFileQ} stores all lines generated in its internal data
+structure.  When {\it GVT} is updated, all lines in the queue with time
+fields less than or equal to {\it GVT} are physically written to the disk
+file.  If uncommitted lines are rolled back, the {\it FileData} structures
+for the rolled back lines are deleted from the {\it outFileQ}.  As the
+simulation progress forward again, it will regenerate suitable
+replacements for the cancelled lines, causing only the appropriate output
+to eventually be written to the file.
+
+\chapter{The Internal Structure of the Simulation Kernel}
+
+This chapter presents the internal details that were omitted in the
+first chapter.  Information presented in the first chapter is not
+repeated in this chapter.  It is assumed that if you are reading this
+section, that you are familiar with TimeWarp.
+
+\section{The Internal View of the {\it TimeWarp} class}
+
+As previously described, the class {\it TimeWarp} defines all of the
+methods needed by a process to interact with other processes in a time
+warp simulation.  {\it TimeWarp} is derived from a class called {\it
+BasicTimeWarp} which contains data that is common to any TimeWarp object.
+This data includes the input queue, output queue, and the local virtual
+time (lVT).  Each TimeWarp object might have a unique definition of
+state, so that information is declared in the derived template class, {\it
+TimeWarp}.  Within this document, any reference to the class {\it
+TimeWarp} will mean the derived class {\it TimeWarp} including the
+functions and data inherited from {\it BasicTimeWarp}.
+
+\subsection{Data of the {\it TimeWarp} class}
+
+The basic pieces of a TimeWarp simulation object include an input queue,
+an output queue, and a state queue.  The input queue holds events that the
+object needs to process (and possibly some that it has already processed).
+The output queue holds events that the object has generated and sent to
+other objects.  In the event of a rollback, the object has a record of
+each message that it has sent during the simulation so it can send out
+negative messages (as mandated by the TimeWarp algorithm.) The state
+queue holds the old states necessary to perform a rollback to any time
+after GVT.
+
+Each of the three queue classes, the {\it InputQueue} class, the {\it
+OutputQueue} class, and the {\it StateQueue} class, are derived from the
+{\it SortedList} template class.  This is a utility class and is discussed
+in detail the appendix.
+
+\subsubsection{The {\it InputQueue} class}
+
+The {\it InputQueue} class is a {\it SortedList} instantiated with {\it
+BasicEvent *}'s as the type of object to be handled. (Documentation for
+the {\it SortedList} class can be found in Appendix A.) The comparison
+function given to the {\it InputQueue} is a comparison for {\it
+BasicEvent}s, allowing the sorting to occur based on {\it recvTime}s.
+
+In addition, the insert function has been overridden so that identical
+events with opposite signs annihilate each other automatically, as should
+occur according to the TimeWarp methodology.  After inserting an event,
+the {\it insert} function returns a boolean that indicates whether or not
+the event's receive time was before that of the last executed event's, so
+that the simulation object can do rollback processing if needed.  A return
+value of {\it true} indicated that the message was in the past, while a
+return value of {\it false} indicates that it was not.
+
+Another function that is available to the {\it InputQueue} is {\it
+gcollect(VTime)}.  {\it gcollect} invalidates any elements in a queue
+before the {\it VTime} passed in.  Note that in the {\it InputQueue}, {\it
+Container}s will be removed from the list as part of garbage collection,
+but {\emph the data in them won't be deleted}.  Elements in the {\it
+InputQ} of one {\it TimeWarp} object will also be in the {\it outputQ} of
+another.  In the {\sc warped} system, it is assumed that the object
+responsible for {\it new}ing memory is also responsible for {\it
+delete}ing it, so the sender (who will have a record of the event in it's
+output queue) will delete it.  The {\it gcollect} function was intended to
+be called from {\it TimeWarp::gcollect(VTime)} as part of the overall
+garbage collection that occurs when {\it gVT} advances.
+
+Several utility functions have been added to the {\it SortedList} class by
+the {\it InputQueue} class. For instance, the {\it find} method in the
+{\it InputQueue} class has been overloaded so that it accepts a {\it
+VTime} as the search parameter rather than a pointer to a record.  In
+addition, a method called {\it getAndSeek()}, which returns a {\it
+BasicEvent}, has been defined in the {\it InputQueue} class.  This method
+returns the next event scheduled for processing, and advances the queue's
+internal pointer to the next event that should be scheduled.
+
+The interface for the {\it InputQueue} class follows:
+
+\begin{verbatim} 
+class InputQueue: public SortedList<BasicEvent> {
+
+public:
+  InputQueue();
+  ~InputQueue(){};
+ 
+  bool insert(BasicEvent *toInsert);  // returns a bool indicating if
+                                      // the message inserted was in the
+                                      // past or not
+
+  BasicEvent *getAndSeek();  // returns the next event to process, and
+                             // advances the internal pointer to the 
+                             // NEXT event to process.
+  BasicEvent *get() const;   // get the current event without advancing
+                             // the internal pointer.
+  BasicEvent *find(VTime, findMode_t = EQUAL);  // nicer interface to find.
+  int gcollect(VTime);  // perform garbage collection up until Time.
+  VTime calculateMin(); // return the time of the lowest unprocessed event.
+
+  VTime lastExecuted;   // the time of the last event executed.  This gets
+                        // updated externally by TimeWarp
+
+};
+\end{verbatim}
+
+\subsubsection{The {\it OutputQueue} class}
+
+The {\it OutputQueue} class is a {\it SortedList} instantiated with {\it
+BasicEvent *}'s as the type of object to be handled. The comparison
+function given to the {\it SortedList} is a comparison for {\it
+BasicEvent}s, allowing the sorting to occur based on {\it sendTime}s.
+
+The {\it OutputQueue} class has a function called {\it gcollect(Time)}
+that is similar in nature to {\it InputQueue::gcollect}, except {\it
+OutputQueue::gcollect} deletes the data from the {\it Container}s that it
+removes.
+
+Another similarity the {\it OutputQueue} has with the {\it InputQueue}
+class is that the method {\it find} has been overload in the {\it
+OutputQueue} class to accept a {\it VTime} as an argument.
+
+The interface for the {\it OutputQueue} class follows:
+
+\begin{verbatim}
+class OutputQueue:public SortedList< BasicEvent > {
+
+public:
+  OutputQueue() { setFunc( BasicEventCompareSend ); };
+  ~OutputQueue(){};
+  BasicEvent*  find( VTime, findMode_t = EQUAL );  // nicer interface to find.
+  void gcollect(VTime);  // perform garbage collection up until VTime.  
+                         // deletes containers, AND data.
+};
+\end{verbatim}
+
+\subsubsection{The {\it StateQueue} class}
+
+The {\it StateQueue} class is a {\it SortedList} instantiated with {\it
+BasicState *}'s as the type of object to be handled. The comparison
+function given to the {\it SortedList} is a comparison for {\it
+BasicState}s, allowing the sorting to occur based on {\it lVT}s.
+
+Like the {\it InputQueue} and {\it OutputQueue} class, the {\it
+StateQueue} class has a function called {\it gcollect(VTime)} that is
+responsible for the removal of all states in the queue before the {\it
+VTime} passed in.  In the {\it StateQueue} however, one state
+{\emph before} this time must be saved as well.  This is to ensure that
+if a rollback to {\it gVT} occurs, the state immediately before {\it gVT}
+can be restored.  Like the {\it OutputQueue}, the {\it StateQueue} must
+{\it delete} the data from {\it Container}s it removes.
+
+Here is the interface of the {\it StateQueue} class:
+
+\begin{verbatim}
+class StateQueue : public SortedList< BasicState>{
+public:
+  StateQueue(){
+    setFunc( BasicStateCompare );
+  }
+
+  BasicState* find(VTime, findMode_t );
+  VTime gcollect(VTime);
+};
+\end{verbatim}
+
+\subsection{Additional data defined in {\it TimeWarp}}
+
+\begin{itemize}
+\item
+The {\it commHandle} - The {\it commHandle} is a pointer to an array of
+{\it objectRecord}s. An {\it objectRecord} has the following definition: 
+
+\begin{verbatim}
+struct ObjectRecord {
+  BasicTimeWarp *ptr;
+  int lpNum;
+};
+\end{verbatim}
+
+As the name implies, the {\it commHandle} is intended to be used to enable
+simulation objects to communicate with each other.  The {\it commHandle}
+in a {\it TimeWarp} object points to the {\it simArray} in the LP it's
+associated with, which has an entry for every object in the simulation.
+If a simulation object is local an LP, the pointer in that LP's {\it
+simArray} points to the object.  For objects that are not local to the LP
+and the {\it ptr} points at the {\it CommManager} for the LP.  The items
+in the {\it simArray} are initialized when the objects call {\it
+LogicalProcess::register()}. This organization allows communication
+between simulation objects to be uniform whether they are located on the
+same LP or not.  Here is a ``snippet'' of code from {\it
+TimeWarp::sendEvent}:
+
+\begin{verbatim}
+BasicEvent *toSend;
+
+commHandle[toSend->dest].ptr->recvEvent(toSend);    
+\end{verbatim}
+
+This single line of code will send the message to the the appropriate
+destination, whether the object is local or not.  If the object is local
+{\it commHandle[toSend].ptr} will point at the actual destination of the
+event, which will simply enqueue the message directly.  Otherwise, it will
+point at the {\it CommManager} which will receive the event from the
+sender, and send the message through MPI on the sender's behalf.
+
+\item
+{\it timingsNeeded} - This {\it bool} is a flag used by the various
+adaptive state savings algorithms to determine if information is being
+gathered to compute the checkpointing interval.
+
+\item
+{\it MSGSUPPRESSION} - Certain algorithms require that the TimeWarp object
+doesn't send every event that it generates.  This enumerated type defines
+values corresponding to the different algorithms that might need
+suppression.  The possible values are {\it NONE, LAZYCANCEL,
+COASTFORWARD}, and {\it LAZYAGGRCANCEL}.
+
+\item
+{\it lazyCancelQ} - This {\it OutputQueue} is used for storing negative
+messages that would have been sent if using aggressive cancelation.  When
+new positive events are generated after a rollback, if they don't match
+the original event that was sent, the events from this queue are used to
+cancel the originals.
+\end{itemize} 
+
+\subsection{Additional methods defined in {\it TimeWarp}}
+
+\begin{itemize}
+\item
+{\it void rollback(VTime)} : this method is called by the object itself
+from the method {\it recvEvent} when the input queue reports that event
+being received is in the past.  This method restores the appropriate state
+and sends out antimessages based on the {\it recvTime} of the event.
+
+\item
+{\it void inputGcollect(VTime)} : this function performs garbage collection
+on the input queue only.  Garbage collection on the input queue only
+removes references to events from the queue --- it doesn't actually call
+{\it delete} on the enqueued events (as discussed in the section
+describing the {\it inputQueue} class).
+
+\item
+{\it void stateGcollect(VTime)} : same as {\it void inputGcollect}, but
+for the stateQ.
+
+\item
+{\it void outputGcollect(VTime)} : same as {\it void inputGcollect}, but
+for the outputQ.
+
+\item
+{\it void recvEvent(BasicEvent *)} : this is the method that other objects
+call if they want this object to receive an event.  This method gets
+called by local simulation objects, and the {\it CommManager} on the
+object's LP.
+
+\item
+{\it void setTimeWindow(VTime)} : this method can be called from the {\it
+LogicalProcess} to set size of the ``bounded time window.''  Bounded time
+windows may be desirable for objects which produce many events in a short
+amount of time in order to avoid swamping the message system --- this is
+especially true during startup.
+
+\item
+{\it bool withinTimeWindow()} : this method is called by the {\it
+LogicalProcess} associated with this simulation object to see if the
+object is within the time window established for it.
+
+\item
+{\it VTime calculateMin()} : this method is called by the {\it GVTManager}
+to get this simulation object's estimate for GVT calculation.
+
+\item
+{\it void coastForward(VTime timeRestored)} : this method is used for state
+reconstruction after a rollback when using periodic state savings or
+adaptive state savings.
+
+\item
+{\it virtual bool suppressMessageTest(BasicEvent* )} : this method is used
+to determine whether to send an event message or not. This method is
+invoked when there is a rollback, when lazy cancelation or any form of
+periodic state savings is being used.
+
+\item
+{\it cancelMessagesAggressively(const VTime rollbackTime)} : used during
+aggressive cancelation to dispatch negative messages for all positive
+messages with {\it sendTimes} greater than {\it rollbackTime}.
+
+\item
+{\it fillEventInfo(BasicEvent* )} : used during lazy cancelation to fill in
+information needed to compare event messages, for determining lazy hits
+and misses.
+
+\item
+{\it void sendEventUnconditionally(BasicEvent* eventToSend)} : this
+method is used for sending out events to others/itself and is used for
+both positive and negative events. The event is dispatched without
+performing any checks such as lazy hits or misses.
+
+\item
+{\it bool lazyCancel(BasicEvent* )} : this method is used during lazy
+cancelation to determine if a the same event message is generated after
+a rollback or not.
+
+\item
+{\it bool suppressLazyMessages(BasicEvent* toSend)} : this method is used
+during lazy cancelation to determine whether a regenerated event has
+to be sent or not.
+
+\item
+{\it void moveMessagesToLazyCancelQueue(VTime)} : this method is used to
+move all messages with send times greater than the {\it VTime} to the {\it
+lazyQueue} so that they can be used for doing the comparisons with the
+regenerated messages.
+
+\end{itemize}
+
+Here is the interface of the {\it TimeWarp} class :
+
+\begin{verbatim}
+template < class State > 
+class TimeWarp : public BasicTimeWarp {
+public:
+  TimeWarp();
+  virtual ~TimeWarp();
+
+  void executeSimulation();
+  void simulate();
+  void saveState();  // Save our current state.
+  int inputGcollect(VTime);
+  virtual VTime stateGcollect(VTime);
+  void outputGcollect(VTime);
+  BasicEvent *getEvent();       // gets an event from the input queue
+
+  void sendEvent(BasicEvent *); // put an event on the output queue
+  void recvEvent(BasicEvent *); // how to handle incoming messages
+
+  // this calls the application to execute its code for one simulation cycle
+  void executeProcess() = 0;
+
+  // the application overrides these two functions, if desired, to
+  // contain code to be executed before and after simulation starts
+  // and ends.
+  void initialize() {};
+  void finalize() {};
+
+  // this method is for the LP to query whether or not we are within
+  // our time window...
+  bool withinTimeWindow();
+
+  // this method allows our time window to be set.
+  void setTimeWindow( VTime newWindow ){
+    timeWindow = newWindow;
+  };
+
+  // this method returns the time of the earliest unexecuted event.
+  VTime calculateMin(); 
+
+  // returns this object's current simulation time
+  VTime getLVT() const { return state.current->lVT; };
+
+  // data structures for file access
+  int numOutFiles;
+  int numInFiles;
+  FileQueue *outFileQ;
+  FileQueue *inFileQ;
+
+  STATE_MANAGER<State> state;
+
+  enum MSGSUPPRESSION { NONE = 0,          // No Message Supression in effect.
+		        LAZYCANCEL = 01,    // Lazy Cancellation Suppression.
+		        COASTFORWARD = 02,  // Infrequent State Saving
+			 	            // Suppression
+		        LAZYAGGRCANCEL = 04 // For dynamic cancellation
+  };
+
+protected:
+  // rollback to the time specified
+  virtual void rollback(VTime);
+
+  // Flag to determine when to suppress a message
+  int suppressMessage; 
+
+  // Method to determine whether to suppress the message or not 
+  virtual bool suppressMessageTest(BasicEvent*);
+
+  virtual bool suppressLazyMessages(BasicEvent*);
+
+  // Queue used for lazy cancellation.
+  OutputQueue lazyCancelQ;
+
+  // Should we dispatch a message during lazy cancellation or not? 
+  // basically was the comparision a "hit" or a "miss"
+  bool lazyCancel(BasicEvent*);
+  // Used to terminate the simulation on error - can pass in a string
+  // describing the error
+
+private:
+  // this defines how far this object can execute into the future.
+  VTime timeWindow;
+
+  // increments each time we send an event to produce a unique id for 
+  // events (the id, eventID tuple is unique)
+  long long eventCounter;
+
+  // handle to this object's LP, to access terminateSimulation
+  LogicalProcess *lpHandle;
+
+  // for statistical use only
+  int rollbackCount;
+
+  bool timingsNeeded;
+  void coastForward(VTime );
+
+  // Invoked during aggressive cancellation
+  void cancelMessagesAggressively(const VTime );
+
+  // Invoked during lazy cancellation
+  void moveMessagesToLazyQueue(const VTime );
+
+  // Used only during lazy cancellation
+  void fillEventInfo(BasicEvent* );
+
+  // Same as sendEvent() but here the event is sent out without performing
+  // any checks.
+  void sendEventUnconditionally(BasicEvent* );
+};
+
+// Since this is a template class,  we need the actual code everywhere we
+// have the definitions...
+#include "TimeWarp.cc"
+\end{verbatim}
+
+\section{Internal view of the {\it LogicalProcess} class}
+
+As described in this first chapter, the {\it LogicalProcess} class groups
+together one or many simulation objects which will share a {\it
+GVTManager}, a {\it CommManager}, and a {\it Scheduler}.  The main loop of
+execution resides in the method {\it LogicalProcess::simulate}, which
+tells the {\it LogicalProcess} to keep executing the simulation loop until
+it receives a new GVT broadcast of {\it PINFINITY}.  In the current
+implementation, there may only be one {\it LogicalProcess} per Unix
+heavy-weight process.  This may change in the future to allow one {\it
+LogicalProcess} per thread.
+
+\section{Data of the {\it LogicalProcess} class}
+
+\subsection{Manager classes}
+The {\it LogicalProcess} has a one instantiation of each of the
+following classes:
+\begin{itemize}	
+\item
+A {\it GVTManager}
+\item	
+A {\it CommManager}  
+\item
+A {\it Scheduler}
+\end{itemize}
+
+These classes will be described in detail in the following sections.
+
+\subsection{{\it simArray}}
+
+The {\it simArray} is an array of {\it objectRecords}.  This array is used
+both by the LP and by individual simulation objects to access (other)
+simulation objects.  For instance, to call the {\it simulate()} function
+in simulation object number 2, the following line of code could be used:
+{\it simArray[2].ptr-$>$simulate();}
+
+Note that for objects that aren't local to the LP, the pointer in the {\it
+simArray} entry points to the {\it CommManager}, for reasons discussed in
+the section on {\it TimeWarp}.
+
+Any function that is publicly available in {\it TimeWarp} can be
+accessed through the LP's {\it simArray}.
+
+\subsection{The {\it lpIdle} flag}
+The {\it lpIdle} flag in the {\it LogicalProcess} class is defined as an
+instance of {\it OneShot$<$bool$>$} type.  The template class {\it
+OneShot$<$class foo$>$} instantiates a {\it foo} internally and mimics the
+{\it foo} class in all respects; all of the operators are defined to
+operate just like the {\it foo}'s operators.  However, the class {\it
+OneShot} adds two methods to the {\it foo} class, called {\it reset} and
+{\it didItChange}.  When the method {\it didItChange} is invoked, it
+returns a boolean whose value indicates whether or not its value has
+changed since the last time {\it reset} was accessed.  Once a new value is
+assigned to the {\it foo} instantiated inside the {\it OneShot}, {\it
+didItChange} will return {\it true} until {\it reset} is called again -
+hence the name {\it OneShot}.
+
+The {\it lpIdle} is used to indicate when the {\it LogicalProcess} is
+completely idle.  The definition of completely idle for an LP is that
+
+\begin{itemize}	
+\item	
+All of its simulation objects are idle.  For a simulation object to be
+idle, it has to have no unprocessed events in its queue.
+\item
+The {\it GVTManager} has no messages that it is waiting for
+acknowledgment on.  This means that {\it GVTManager::needAcked.size ==
+0}.
+\end{itemize}
+
+Since it is impossible for the LP to know if any messages for it are in
+transit, these conditions are sufficient only to tell if {\emph it} is
+idle.  The problem of determining if the entire simulation is idle is
+discussed in the section on termination.
+
+\section{Methods of the {\it LogicalProcess} class}
+
+\subsection{{\it simulate}}
+
+The {\it LogicalProcess} method {\it simulate} actually contains the
+main loop that ``drives'' a simulation.  This loop performs the
+following actions each simulation cycle:
+
+\begin{itemize}
+\item
+The GVT Manager performs local GVT (LGVT) computation, if necessary (as
+mandated by the PGVT algorithm or by the Mattern GVT algorithm).
+
+\item
+The Communication Manager receives messages from the message subsystem
+and delivers them to their desired destination.
+
+\item
+The Scheduler selects the next simulation object for execution.
+
+\end{itemize}
+
+The declaration for the {\it LogicalProcess} class follows:
+
+\begin{verbatim}
+class LogicalProcess {
+  friend class BasicTimeWarp;
+public:
+  LogicalProcess(int,int,int);    // pass in the total number of objects,
+                                  // pthe number of objects this 
+                                  // LP is dealing with, and number of LPs
+  ~LogicalProcess() {
+    delete [] simArray;
+#ifdef LPDEBUG
+    outFile.close();
+#endif
+  };
+
+  int getNumObjects();            
+  bool simulationFinished;
+
+  void simulate(VTime simUntil = PINFINITY );  // Simulate until time
+
+  ObjectRecord* simArray;
+  
+  void allRegistered( void ); // called by application to tell the kernel 
+                              // when all of the simulation objects in this
+                              // LP have registered
+  void registerObject( BasicTimeWarp* handle );
+
+  // Method for simulation objects to call when an error has occured, and
+  // the simulation needs to end...
+  void terminateSimulation( char *errorMsg ){
+    cerr << "LP" << id << " terminating because " << errorMsg << endl;
+    TerminateMsg die;
+    die.error[0] = '\0';
+    comm.recvMsg( &die );
+  }
+
+private:
+  bool initialized;     // flag that gets set if we've been initialized
+  
+  int numRegistered;
+  int numObjects;       // number of objects on this LP
+  int totalObjects;     // total number of sim objects
+  int numLPs;           // the number of LPs
+  int id;               // my LP id
+
+  CommManager comm;     // our walkie talkie to the other LPs
+
+  SCHEDULER scheduler;  
+  FOSSIL_MANAGER gVT;   // basically our GVT manager
+
+};
+\end{verbatim}
+
+\section{The {\it GVTManager} class}
+The important methods in the GVTManager class are discussed in the
+following subsections:
+\subsection{{\it calculateLGVT}}
+
+This method computes an estimate of GVT for the LP.  The LP calls this
+method at the end of each simulation cycle, and sends a message to the
+central manager under the conditions mandated by the PGVT algorithm.
+Essentially, the {\it GVTManager} for an LP has an array of pointers to
+the simulation objects local to the LP, and it walks through this array
+``asking'' the the simulation objects to calculate their estimates, and
+the minimum of these estimates is the new LGVT value.  Only objects that
+ran in the last simulation cycle or have something ready to execute are
+considered in the LGVT calculation.
+
+\subsection{{\it calculateGVT}}
+
+Another method, {\it calculateGVT} is called automatically when a {\it
+LGVTMsg} or {\it LowerLGVTMsg} is received from the LP that was furthest
+behind last time GVT was calculated.  If there were multiple LPs at the
+same time which determined GVT, then one is chosen arbitrarily as being
+the furthest behind.
+
+\subsection{{\it recvMsg}}
+
+The {\it GVTManager} has the ability to accept messages from the {\it
+CommManager} on the same LP as it, and the ability to accept {\it
+TerminateMsg}s from the simulation objects local to the LP.  As with the
+{\it CommManager} class, the method {\it recvMsg} has been overloaded to
+accept any type of message that the {\it GVTManager} class is allowed to
+accept, which include: {\it LGVTMsg}s, {\it LowerLGVTMsg}s, {\it
+NewGVTMsg}s, {\it LPAckMsg}s, {\it GVTAckMsg}s, {\it CheckIdleMsg}s, {\it
+DummyMsg}s, and {\it DummyRequestMsg}s.  These message types are discussed
+in detail in the section on the {\it CommManager} class.  Note that only
+the central GVT manager should receive {\it LGVTMsg}s and {\it
+LowerLGVTMsg}s, and should also be the only one to send {\it NewGVTMsg}s.
+
+Here is the class declaration for the {\it GVTManager} class:
+(Please note that this particular GVTManager implements the pGVT algorithm)
+
+\begin{verbatim}
+class GVTManager : public BasicTimeWarp {
+  friend class LogicalProcess;
+  friend class OfcManager;
+public:
+  GVTManager();
+  ~GVTManager();
+  void initialize(ObjectRecord*, CommManager*,int, int, int, int); 
+  // the array of simObjects
+  // the address of the commManager
+  // the id of this lp
+  // the total number of objects
+  // the number of local guys
+  // the number of LPs
+  
+  void recvMsg(LGVTMsg *);
+  void recvMsg(LowerLGVTMsg *);
+  void recvMsg(newGVTMsg *);
+  void recvMsg(LPAckMsg *);
+  void recvMsg(GVTAckMsg *);
+  void recvMsg(CheckIdleMsg *);
+  void recvMsg(DummyMsg *);
+  void recvMsg(DummyRequestMsg *);
+
+  virtual void calculateLGVT(); // calculate the local estimate of GVT
+                                // also figures out if the LP is idle or not...
+
+  void calculateGVT();   // calculate the actual value of gVT.  This
+                         // function should only be called in the function
+                         // that is responsible for the calculation of the
+                         // "real" gVT.  It is assumed that LP 0 is 
+                         // responisble for gVT calculation
+
+  VTime getGVT();         // return GVT to the caller
+  void setGVT(VTime);     // set a new internbal value for gVT
+  VTime getLGVT();        // return local estimate to the caller
+  void setLGVT(VTime);    // set the local estimate of GVT
+  
+  void sendEvent(LGVTMsg *);
+  void sendEvent(newGVTMsg *);
+  void sendEvent(CheckIdleMsg *);
+  void sendEvent(DummyMsg *);
+  void sendEvent(DummyRequestMsg *);
+  void sendEvent(TerminateMsg *);
+
+  // All of this stuff is to avoid message acknowledgement
+  void msgSendPeek( EventMsg *);
+  void msgRecvPeek( EventMsg *);
+
+  // these are here to make the compiler happy (since this class is 
+  // derived from BasicTimeWarp)
+  void simulate();
+  BasicEvent* getEvent();
+  void sendEvent(BasicEvent *);
+  void recvEvent(BasicEvent *);
+  VTime calculateMin();
+  void executeProcess();
+
+  ObjectRecord* getArrayHandle(){ return simArray; }
+
+  // the LP sets this flag when all of the local simulation objects have
+  // reported that they're idle
+  OneShot<bool> lpIdle;
+protected:
+  virtual void gcollect();
+
+private:
+  bool checkIdle();
+  void cancelToken(CheckIdleMsg *);
+  void passItOn(CheckIdleMsg *);
+  void startToken();
+  void calcMin();
+
+  ObjectRecord* simArray;  // This is a pointer to the array of 
+                           // simulation objects in the LP
+  CommManager* commHandle; // our handle to our communication 
+                           // manager
+
+  VTime* lGVTArray;               // array of gVT estimates for all LPs
+                                  // only valid for LP 0
+  bool* idleArray;
+
+  int definedGVT;                 // this is for the "head" GVT guy only -
+                                  // it is who set gVT last time
+
+  VTime gVT;                       // global virtual time
+  VTime lGVT;                      // our local estimate of gVT
+
+  VTime lastReported;              // the last lGVT value sent to the head
+                                  // gVT Manager
+  bool lastIdle;                  // our last idle
+
+  int numObjects;                 // the number of objects on our LP
+  int totalObjects;               // the total number of simulaiton objects
+  int numLPs;                     // the number of logical processes
+
+  VTime* lastTimeSent;  // array of the last times of event messages that
+                        // I sent to each LP (and are unacknowleged)
+
+  VTime* lastTimeReceived;  // array of the last
+  VTime lowestUnacknowledged;
+  SortedList<AckRecord> needAcked;
+  int currentToken;
+  bool tokenPending;
+  bool *dummyPending;
+  int noOfGVTToSkip;
+
+};
+\end{verbatim}
+There are three other GVTManagers, namely MatternGVTManager,
+GeoOfcManager and ChebyOfcManager.  
+
+\section{The {\it CommManager} class}
+
+The {\it CommManager} class defines functions required for communication
+between {\it LogicalProcess}es over MPI.  As previously mentioned,
+communication between simulation objects local to each other occurs by
+direct insertion into the input queue, so the {\it CommManager} is not
+involved.  Objects sending events to non-local destinations use the {\it
+CommManager} to do so.
+
+Like the simulation objects, the {\it CommManager} has a method called
+{\it recvEvent(BasicEvent *)} to receive events that simulation objects
+wish the {\it CommManager} to handle.  In addition, the {\it CommManager}
+has several overloaded versions of a method called {\it recvMsg} which are
+used by the LP and the {\it GVTManager} to send messages to other objects
+on other LPs.  The types of messages defined include the following (these
+definitions can be found in {\it KernelMsgs.hh}):
+
+\begin{itemize}	
+
+\item
+{\it BasicMsg}: this is the base message type.  This type defines the
+minimum information needed to pass a message from one LP to another.
+Every other message is derived from this type.  The information required
+to be filled in at the time of sending includes:
+
+\begin{itemize}
+
+\item
+{\it destLP}: this is the {\it id} of the destination {\it 
+LogicalProcess}.
+
+\item
+{\it type}: this is an enumerated type that gets filled in
+automatically when {\it new} is called to create any of the messages
+derived from the base type.  The value of {\it type} is the same for a
+class as its name, but all capitalized.  For instance, the value of type
+for an {\it InitMsg} is {\it INITMSG}.
+
+\end{itemize}
+
+Additional information in the fields {\it senderLP} and {\it sequence}
+is filled in automatically before the message is given to MPI.  {\it 
+senderLP} is the id of the LP sending the message, and sequence is a
+monotonically increasing long long the counts the number of messages
+sent from the sending LP to the destination LP.
+
+\item
+{\it InitMsg}: these are the messages that are exchanged between LPs to
+communicate where each simulation object resides.  In addition to the
+{\it BasicMsg} info, {\it objId} defines the {\it id} of the
+simulation object, and {\it lpId} contains the {\it id} of the LP that
+has that object.
+
+\item
+{\it StartMsg}: LP 0 sends these out when it the simulation is
+initialized and ready to begin.  These contain no additional information
+from a {\it BasicMsg}, other than the type itself.
+
+\item
+{\it TerminateMsg}: when received, the LP will immediately exit.  These
+are used for abnormal termination on error.  In addition to the
+{\it BasicMsg} information, this message contains a string of up to 255
+characters that contains an error message.
+
+\item
+{\it CheckIdleMsg}: these messages are circulated to all LPs to
+determine if there is an LP that isn't idle.  In addition to the {\it 
+BasicMsg} information, a {\it bool} flag {\it cancel} tells the
+receiving LP if the the sender wants to cancel this circulation or not,
+and the {\it int numCirculations} tells the receiver how many times
+this message has visited {\emph all} of the LPs.  Upon receiving this
+message, if the LP is idle, it passes it on to the LP with {\it  id =
+id + 1} (or {\it id = 0}, if this is the last LP).  If it is not idle,
+then it is return to LP 0 with {\it idle = false}.
+
+\item
+{\it EventMsg}: these messages are inherited from both {\it BasicMsg}
+and {\it BasicEvent}.  When the {\it CommManager} receives a {\it 
+BasicEvent} for delivery, it copies the {\it BasicEvent} into an {\it 
+EventMsg}, and fills in the destination from the LP's {\it simArray}.
+When received, the data is copied back out into a {\it BasicEvent} for
+delivery to the simulation object.
+
+\end{itemize}
+
+The above conclude the base message types.  The following message types
+are also included in the base {\sc warped} kernel to implement the PGVT
+algorithm.  Future releases of {\sc warped} will remove these message
+classes from the base kernel definition.
+
+\begin{itemize}
+
+\item
+{\it LGVTMsg}: these are messages passed between the {\it GVTManager}s
+to report changes in {\it LGVT}.  The {\it LGVT} value being reported
+is stored in {\it VTime lGVT}.  In addition, there is a {\it bool
+lpIdle} that tells if the LP was idle at the time of sending the
+message, to give the central {\it GVTManager} a hint as to which LPs
+are active.
+
+\item
+{\it LowerLGVTMsg}: this is the same as an {\it LGVTMsg} except that
+it tells the receiver to send back acknowledgment that the message has
+been processed.  This is for handling valley messages in the PGVT
+algorithm, which will be discussed in the next section.
+
+\item
+{\it NewGVTMsg}: these messages inform the LPs that GVT has advanced to
+a new value.  The new GVT value is a {\it VTime} called {\it  newGVT}.
+Upon receiving this message, the LP performs garbage collection on the
+input, output and state queues of each simulation object it is
+responsible for.
+
+\item
+{\it GVTAckMsg}: this is the type of message generated when a {\it 
+GVTManager} is acknowledging a {\it LowerLGVT} message from another
+{\it GVTManager}.  The sequence number of the message being
+acknowledged is copied into the {\it long long} called {\it 
+sequenceMsgAcked}, since each LP can have multiple {\it LowerLGVTMsg}s
+pending.
+
+\item
+{\it LPAckMsg}: this is the type of message sent from one LP to another
+to accept responsibility for a valley message as required by the PGVT
+algorithm.  As with {\it GVTAckMsg}s, the sequence number of the
+message that is being acknowledged is copied into the response.
+
+\item
+{\it DummyRequestMsg} and {\it DummyMsg}: these messages are used to
+avoid circumstances which can cause GVT to quit advancing before the end
+of the simulation.  They will be described in detail in the section on
+the {\it GVTManager}.
+\end{itemize}
+
+For each of the above message types, the method {\it CommManager::recvMsg}
+is overloaded to handle the message correctly.  For instance, if the {\it
+CommManager} receives a {\it TerminateMsg}, it will deliver the message to
+all of the LPs in the simulation.  In the case of an {\it EventMsg}, the
+message is simply delivered to the correct LP, and the receiving {\it
+CommManager} delivers the message to the correct simulation object.
+Similarly, the method {\it remoteSend} is overloaded for all of the
+mentioned message types to send messages over MPI to other LPs.
+
+The {\it CommManager}'s declaration follows:
+
+\begin{verbatim}
+class CommManager : public BasicTimeWarp {
+friend class GVTManager;
+public:
+  CommManager();
+  ~CommManager();
+  void initialize(ObjectRecord*,  // pointer to simulation array
+		  GVTManager*,    // pointer to the GVT Manager
+		  int);           // The number of LPs
+
+  int getID() { return id; };
+
+  // These methods are for the _Commucation Manager_ to receive the types
+  // of events passed in ( by local objects )
+  void recvEvent( BasicEvent* );
+  void recvMsg( TerminateMsg * );
+  void recvMsg( LGVTMsg * );
+  void recvMsg( LowerLGVTMsg * );
+  void recvMsg( newGVTMsg * );
+  void recvMsg( GVTAckMsg * );
+  void recvMsg( LPAckMsg * );
+  void recvMsg( InitMsg * );
+  void recvMsg( StartMsg * );
+  void recvMsg( CheckIdleMsg * );
+  void recvMsg( DummyMsg * );
+  void recvMsg( DummyRequestMsg * );
+
+  // this is a method the LP calls to let everyone know that he's got a
+  // certain simulation object in his posession.
+  void iHaveObject(int);
+
+
+  int recvMPI(int = 1); // wait for the number of messages specified (and
+                    // deliver them). If there aren't that many 
+                    // messages, stop receiving them.  In either case,
+                    // return the number of messages actually received.
+
+  BasicMsg * recvMPIMsg();  // grab ONE message from MPI and return it..
+                              // return NULL if there are none...
+
+  void terminateSimulation( TerminateMsg * );
+
+  long long getSequence( int );  // returns the sequence number of the
+                                 // next message to the LP with the id
+                                 // passed in
+  void waitForStart();
+  void waitForInit( int numExpected );
+
+  // since the general model of memory in this system is that whoever
+  // news memory, deletes it, the commanager gets to garbage collect
+  // too
+  void gcollect(VTime gtime);
+
+  // these are to please the compiler
+  void executeProcess();
+  BasicEvent* getEvent();
+  void simulate();
+  
+  VTime calculateMin();
+private:
+
+  int numLPs;
+  ObjectRecord *simArray;
+  GVTManager *gVTHandle;
+
+  // these will be filled in with arrays so that each communication channel
+  // has a unique sequence running
+
+  long long * sendSequenceArray;
+  long long * recvSequenceArray;
+
+  // we have to define this in order to please the compiler
+  void sendEvent( BasicEvent*);
+
+  // These methods are to allow the Communation Manager to deliver messages to
+  // local objects only
+  void deliver(BasicEvent *);
+  void deliver(LGVTMsg *);
+  void deliver(LowerLGVTMsg *);
+  void deliver(newGVTMsg *);
+  void deliver(LPAckMsg *);
+  void deliver(GVTAckMsg *);
+  void deliver(CheckIdleMsg *);
+  void deliver(DummyMsg *);
+  void deliver(DummyRequestMsg *);
+
+  // this method takes an LP Msg, figures out what kind of derived type it is,
+  // and then delivers it to the LOCAL entity that is receiving it.
+  void routeMsg( BasicMsg *);
+
+  void remoteSend( BasicMsg *, int );
+
+};
+\end{verbatim}
+
+\section{The {\it Scheduler} class}
+
+Currently, there is only one choice for scheduling - lowest timestamp
+first (LTSF). To perform LTSF scheduling, the input queue in the {\it
+TimeWarp} objects is declared {\it static}, so that they all share the
+same instance of it.  With all of the events in a single queue, selecting
+the next event to execute becomes trivial. This is done using {\it
+MultiList} class. The {\it MultiList} class will be explained in more
+detail in the next section. The scheduler class that incorporates this
+type of scheduling is the {\it LTSFScheduler} class.
+
+\section{Memory Management}
+
+Currently there are four alternatives for dynamic memory management - the
+{\it GlobalMemoryManager}, the {\it BuddyMemoryManager}, the {\it
+Segregated Storage Allocator} and the Brent's Implementation of {\it First
+Fit Allocation} Strategy.
+
+\subsection{The GlobalMemoryManager}
+
+The GlobalMemoryManager is our implementation of the CustoMalloc
+algorithm. The algorithm is dsimple. Maintain a hash table (say
+{\it HASHTABLESIZE} equal to 1024) and each hash table entry contains a
+list of memory blocks of a particular size. Whenever the application
+requests memory, allocate {\it EXTRABLOCKS} (a big chunk of memory
+equal to {\it EXTRABLOCKS*(SIZE + USERSIZE)}, where {\it USERSIZE} is
+the size of a block requested by the user and {\it SIZE} is the
+administrative space needed, probably 16 bytes is size and EXTRABLOCKS
+is the number of extra blocks to allocate with the one the user
+requested). The memory configuration is illustrated in
+Figure~\ref{fig:gMemMgrFig}. 
+
+\begin{figure}
+\centerline{\psfig{figure=figures/gMemMgr.ps,angle=270,width=4in,silent=}}
+\caption{16 Bytes of administrative space used by the Global Memory Mananger}\label{fig:gMemMgrFig}
+\end{figure}
+
+The next ptr is needed so that we can chain memory blocks together to form
+a single linked list. The masterblock ptr is needed to chain the head
+blocks of the big chucks of memory that is allocated. For example, assume
+the application requests a block of size 40 bytes, then allocate a big
+block of size equal to 20 * (40 + 16 )bytes. Then chain the basic blocks
+(of size 40+16 bytes) together and put this list in the hash table and
+insert the head block of this 20 piece memory into a separate linked list,
+called the MasterList. So at the end of the simulation, we can walk the
+MasterList (and note not the hash table of lists) and delete the chunks we
+have allocated.
+
+\subsection{The BuddyMemoryManager}
+
+This is an implementation of the classic buddy system (by Knuth). The idea
+is to keep separate lists of available blocks of each size $2^{k}$, 0 $<$
+k $<$ m, where the total memory pool is $2^{m}$. There is a 1 bit overhead
+for each block allocated , indicating whether the block is in use or
+not. Originally the whole block of $2^{m}$ is available. Later whenever a
+block of size {\it X} is requested it is rounded off to the nearest power
+of 2 and the block from the list of that size is returned. If the size is
+not available then a larger block is repeatedly split into two equal parts
+; ultimately , a block of the right size $2^{k}$ is finally returned. When
+one block split into two ( each of which is half as large as the original
+), these two blocks are called {\it buddies}. Later when both buddies are
+available again, they coalesce back into a single block, thus the process
+can be maintained indefinitely. When the first allocated block is totally
+used then another block is allocated and the process repeats. The generic
+{\sf new} and {\sf delete} functions have been overloaded to perform the
+buddy allocation system on the BuddyMemoryManager object.The constructor
+sets up the lists and get the first block of memory the rest of the
+operations are done by the new and delete functions.
+
+\subsection{The Segregated Storage Allocator}
+
+This method combines the basic ideas of buddy system and the first fit
+algorithm. It does not have the buddy systems disadvantage of being
+wasteful of space when requests are for sizes which are not powers of
+two. In the combined systems {\it k} lists of available space are kept.
+The {\it i}th list contains all available blocks whose sizes are greater
+than {\it A(i-1)} and less than or equal to {\it A(i)}, where {\it A(0)}
+is zero and {\it A(i)} is the total amount of space available. The
+remaining {\it A(i)}'s can be chosen in anyway so long as {\it A(i) $>$
+A(i-1)} for {\it 0 $<$ i $<=$ k}. The current choice is {\it A(1) = 1} and
+{\it A(i) = 2A(i-1)}. When a block of size {\it b} is requested, the first
+block from the list {\it i+1} is taken where {\it i} is chosen so that
+{\it A(i) $>=$ b $>$ A(i-1)}. If list {\it i+1} is empty then the next
+list is searched and so on. Once the block of atleast {\it b} cells is
+found, {\it b} cells are used to meet the original request, the remaining
+are returned to the appropriate list. When the block is freed then the
+neighbours of the block are check to see if they are also free, if so then
+the blocks are combined into one big block and returned to the appropriate
+list.
+
+{\it Allocate(size)} searches the lists for the avalability of memory
+and returns the pointer to the starting address. It also manages
+allocation of multiple block of memory from system. {\it SplitBlock}
+performs the splitting of blocks if the block found is too big (defined
+by MaxExtraSize). {\it DeAllocate(void *space)} free's the memory and
+returns it to the appropriate list. It also check for possible
+coalescing and calls {\it CollapseBlock} to collapse multiple adjacent
+free blocks into one to reduce fragmentation of memory. 
+
+\subsection{Brent's Implementation of First Fit Allocation Strategy}
+
+This algorithm has an overhaead of only 4 bytes per block to record the
+size of the block. The time require to free or allocate the block is
+{\it O(log W)} where {\it W} is the maximum number of words allocated
+dynamicaly. According to the paper this algoritm should be faster than
+other simple first fit, especially for large number of small blocks. The
+storage area is divided into {\it S} segments numbered
+{\it 0...S-1}. Basically two arrays are maintained : [a] {\it PointerArray[0
+... S-1]}, pointer to the first block in segment i and [b]{\it
+SegmentTree[0 ..2S-1]} which maintains the whole area as heap. Each block
+also has a control word which is a signed integer. The number gives the
+size of the block and the sign indicates whether the block is free or not.
+ 
+The {\it BrentMemAlloc} class has the following methods:
+
+\begin{itemize}
+\item 
+{\it BrentSeg(p)} - returns the index of the segment containing address p.
+\item
+{\it BrentDouble()} - this just doubles the number of segments actually
+in use.
+\item 
+{\it BrentFix1(p)} - does housekeeping if a block with control word
+{\it Size(p)} will be allocated or merged with a block on its left in a
+different segment.
+\item
+{\it BrentFix2(p)} - does the housekeeping after the block with control
+word {\it Size(p)} is freed or merged with the block on its right or 
+created by spliting. 
+\item
+{\it BrentPred(p)} - return the predessor of block p. 
+\item
+{\it BrentAllocate(size)} - Returns index of a block of size atleast "size".
+\item
+{\it BrentDeallocate(address)} - frees the block starting at "address".
+\end{itemize} 
+
+\chapter{Utility classes}
+
+These are general purpose (mostly template) classes that may or may not
+be used in the {\sc warped} kernel.  Most of the following documentation
+(except for the {\it SortedList} class) is either from the inline
+documentation, or from a README associated with the file. 
+
+\section{The {\it SortedList} class}
+
+The {\it SortedList} class is the base class for all of the queues.  The
+{\it SortedList} maintains a {\emph logical} list of pointers to {\it
+Element}s.  An {\it Element} can be anything, including a predefined C++
+type, a user defined class, or a pointer to one of these things. The
+distinction between the logical list and a list data structure is
+important, since the internal structure of the class might not be a list
+at all - it could be a b-tree or a hash table.  A logical list refers to
+the outside user's view of the list - no matter how the data is stored
+internally, the user's perception is that a sorted list is being
+maintained.  This was done so that the internal structure of the list
+could change without changing the interface.  For instance, the internal
+data structure of the {\it SortedList} could be based on a singly linked
+list, a doubly linked list, or a tree, and the interface will remain the
+same.  This provides for flexibility in changing the data structures of
+the TimeWarp object's queues.  If one wanted create a {\it SortedList}
+using an AVL tree as the data structure the information was being kept in,
+then the queues would continue to operate correctly, and all of the
+benefits of this using this data structure would automatically become
+benefits in the simulation queues as well.
+
+As was previously stated, the {\it SortedList} class actually holds
+pointers to its elements rather than copies.  This is to make the
+insertion and removal as efficient as possible - a pointer is copied
+rather than copying large chunks of memory.  A consequence of this style
+of storage is that data that appears to be ``in'' the list, and therefore
+protected by the list, is not.  For instance, if there is a pointer to
+element ``foo,'' and it is inserted into the list, if I keep the pointer
+to foo and modify the data in foo, the data in the list is modified too.
+
+A feature of the {\it SortedList} class is that the list has state.  The
+list keeps track of a "current" position that the user of the list can
+control, the last place that an element was inserted, and last element
+found in the list.  This state information will be referred to as {\it
+currentPos}, {\it insertPos}, and {\it findPos} from here on.
+
+Since the list is a template class that can store any type, the list
+cannot know in advance how to sort the data it is storing.  Some means
+must be made to tell it how to sort the stored data.  This is accomplished
+by supplying a comparison function to the list class that is specific to
+the data.  This function should have the following form:
+
+\begin{verbatim}
+int <func_name>(Element * a, Element * b) {
+  if (a goes before b in the list) return (integer less than 0)
+  if (b goes before a in the list) return (integer greater than 0)
+  else return (int) 0
+}
+\end{verbatim}
+
+Here is a list of the functions of the {\it SortedList} class:
+
+The following commands do not modify {\it currentPos}:
+
+{\it void insert(Element *)} - insert $<${\it Element}$>$ into the right place
+in the logical list, using the comparison function provided by the user.
+
+{\it Element * front()} - return a pointer to the front of the logical
+list.  Return {\it NULL} if list is empty.
+
+{\it Element * back()} - return a pointer to the back of the logical
+list.  Return {\it NULL} if list is empty.
+
+{\it Element * get()} - return pointer to the element at
+{\it currentPos}.  If {\it currentPos} is {\it NULL}, return
+{\it NULL} and leave {\it currentPos} set to {\it NULL}.
+
+The following commands do not modify the {\it currentPos} pointer, but
+modify the {\it findPos} pointer.  They also return a {\it Element *}:
+
+{\it find(Element * key, findMode\_t )} - pass in a pointer to a key
+which should have fields defined such that the comparison function can
+be invoked to find an element.  This function has a default
+{\it findMode} defined as {\it EQUAL}.
+
+{\it Element * findMode\_t} is defined as an enum:
+
+{\it enum findMode\_t {LESS,LESSEQUAL,EQUAL,GREATEREQUAL,GREATER}}
+
+This list will be used as an example:
+{\it 1,2,2,2,3,3,5,6,7,9}
+
+The operation on a mode basis is as described below: {\it LESS} - Find
+the first element in the logical list with a value less than the key.
+If a {\it find(3,LESS)} was executed on the example list, the
+{\it findPos} pointer would be pointed at the {\emph third} {\it 2}
+in the list, and the {\it Element *} returned in will equal that to
+{\it 2}.  If a {\it find(1,LESS)} was called, the findPos will be set
+{\it NULL} and the return value will be {\it NULL}.
+
+{\it LESSEQUAL} - Find the first element in the logical list with a
+value equal to the key, if no such element exists, return the first
+element less than the key. If a {\it find(3,LESSEQUAL)} was executed,
+the {\it findPos} pointer would be pointed at the {\emph first}
+{\it 3} in the list, the {\it Element *} returned will point at that
+{\it 3}.  If a {\it find(4,LESSEQUAL)} is executed on the example
+list, the {\it Element *} returned will point at the {\emph second}
+{\it 3} and {\it findPos} will be set there as well.  If no element
+exists matching either criteria ({\it find(0,LESSEQUAL)}), then a
+{\it NULL} is returned, and findPos is set to {\it NULL}.
+
+{\it EQUAL} - Find the first element in the logical list with a value
+equal to the key.  If a {\it find(3,EQUAL)} was executed, the
+{\it findPos} pointer would be pointed at the {\emph first} {\it 3}
+in the list, and the function will return the same pointer.  If a
+{\it find(4, EQUAL)} is executed on the list, then a {\it NULL} is
+returned, and findPos is set to {\it NULL}.
+
+{\it GREATEREQUAL} - The same as {\it LESSEQUAL}, except if an exact match
+isn't found, return the first element that is greater then the key.
+
+{\it GREATER} - The same as {\it LESS}, except that the first element
+greater than the key should be returned.
+
+{\it findNext()} - Find the next {\it Element} that has the same key
+values as the list element currently pointed to by the {\it findPos}
+pointer.  Start the search from the current {\it findPos}.  If
+{\it findPos} is {\it NULL}, then return {\it NULL} and leave
+{\it findPos} set to {\it NULL}.  If matching element exists to the
+right of {\it findPos}: Return {\it Element *} equal to the first
+matching element in the list.  Set {\it findPos} to this element as
+well.
+
+If no matching element exists to the right of {\it findPos}: Return
+{\it NULL} and set {\it findPos} to {\it NULL} as well.
+
+These functions modify the {\it currentPos} pointer, but don't modify
+the findPos pointer:
+{\it Element * setCurrentToFind()} - Set currentPos equal to findPos,
+and return {\it Element} that {\it currentPos} now points at.
+
+{\it Element * seek(int, seekMode\_t)} - return a status, update the
+{\it currentPos} pointer according to parameters passed into function.
+The {\it int} is an offset, and the {\it mode\_t} tells the function
+where to start seeking from.  The definition of {\it mode\_t} follows:
+{\it enum mode\_t  {START, CURRENT, END};}
+
+If any {\it seek} request goes off of the end of the list, return
+{\it NULL} and set {\it currentPos} to {\it NULL}.
+
+The {\it int size()} command returns an integer equal to the number of
+elements in the list.
+
+The {\it Element * removeCurrent()} command removes the element at
+{\it currentPos}.  If {\it currentPos} is {\it NULL} return
+{\it NULL} and do nothing.  If {\it currentPos} isn't {\it NULL},
+then remove the element, increment {\it currentPos}, and return a
+pointer to the {\it Element} removed.  If {\it findPos} is pointing at
+the element being removed, increment it too.  It is important to note
+that the {\it Container} is being removed from the {\it SortedList},
+but the object pointed to by the container is not deleted.
+
+The {\it Element * removeFind()} command removes the element at
+{\it findPos}.  If {\it findPos} is {\it NULL} return {\it NULL} and
+do nothing.  If {\it findPos} isn't {\it NULL}, then remove the
+element, increment {\it findPos}, and return a pointer to the
+{\it Element} removed.  If {\it currentPos} pointing at the element
+being removed, increment it too.   It is important to note
+that the {\it Container} is being removed from the {\it SortedList},
+but the object pointed to by the container is not deleted.
+
+The {\it SortedList} class has two constructors.  One takes an argument
+in the form of {\it SortedList(int (*)(Element *, Element *))}, which
+sets the compare function at the beginning.  The other takes no
+arguments.  If the list is constructed with no arguments, the function
+{\it void setFunc ( int (*)(Element *, Element *) );} should be called
+before a {\it find} or {\it insert} is called.  Otherwise, the result
+is undefined, but a segmentation fault will probably occur.
+
+The default implementation of the specification presented is based on a
+doubly linked list.  Theoretically any class conforming to this
+specification will work with the {\sc warped} kernel.  Users of the
+{\sc warped} kernel are encouraged to develop more efficient list
+classes, and let the authors use them.
+
+The interface for the default {\it SortedList} class follows:
+
+\begin{verbatim}
+template < class Element > class SortedList {
+public:
+  SortedList();
+  SortedList( int (*)(Element*, Element*) );  // construct with compare func
+  ~SortedList();
+  void setFunc( int (*)(Element*, Element*) );
+  int size() { return listsize; };
+  Element* front();
+  Element* back();
+  Element* seek (int, listMode_t);
+  void insert(Element*);
+  Element* get();
+  Element* removeFind();
+  Element* removeCurrent();
+  Element* find(Element*, findMode_t mode = EQUAL);
+  Element* findNext();
+  void print();
+  Element* setCurrentToInsert();
+  Element* setCurrentToFind();
+
+protected:
+  Container< Element > *head;
+  Container< Element > *tail;
+  Container< Element > *insertPos;
+  Container< Element > *currentPos;
+  Container< Element > *findPos;
+  int (*compare)(Element*, Element*);
+  
+  Element* remove(Container<Element> *);
+private:
+  int listsize;
+
+  Element* findElement (Element*, Container<Element>*, findMode_t);
+};
+
+\end{verbatim}
+
+\section{The {\it MultiList} class}
+
+This template class is derived from the {\it SortedList} class. The
+{\it MultiList} class is used exclusively for LTSF scheduling. Under
+LTSF scheduling, two extra pointers are included in the
+containers. These pointers are used to maintain each object's event list
+within the main input queue. All the member functions in the
+{\it SortedList} class have been modified in the {\it MultiList}
+class to act on the new data structure. Figure~\ref{fig:multilist}
+illustrates this data structure.
+
+\begin{figure}
+\centerline{\psfig{figure=figures/multilist.eps,width=5in,silent=}}
+\caption{The MultiList data structure}\label{fig:multilist}
+\end{figure}
+
+\section{The {\it FIR} class}
+
+This template class implements an nth order finite impulse response
+filter, where n is specified by the user.  To use it, {\it \#include
+"FIR.cc"} at the top of the file you'd like to use it in.  Then include
+a declaration similar to the following:
+
+\begin{verbatim}
+	FIR<double> filter(3)
+\end{verbatim}
+
+Replace "double" with whatever type you'd like it to input and output,
+and "3" with whatever order filter you'd like to use.  If you specify a
+0 or a 1 for a filter order, an error message is generated.
+
+NOTE: The current implementation of the filter makes it such that if
+2*INT\_MAX data points are passed into the filter (via the "update"
+method, overflow will occur and the output will be incorrect.  If you
+want it to handle that much data, the "update" method needs to be
+modified. Notify us by sending mail to {\it dmartin@ececs.uc.edu}.
+
+\section{The {\it IIR} class}
+
+This class implements a first order infinite impulse response filter.
+To use it, {\it \#include "IIR.cc"} into whatever file you want to have the
+class in.  Then you need a statement similar to the following for a
+declaration:
+
+\begin{verbatim}
+      IIR<float> filter(.25,.75)
+\end{verbatim}
+
+Replace "float" with whatever input/output type you want to use, and ".25"
+with the weight you want for the old average, and ".75" with your weight
+for the new data.  The weights must add up to 1.0, or you will get an
+error message when the filter is initialized.
+
+\section{The {\it SimpleStack} class}
+
+This is a template based stack.  It is extremely simple, the whole
+interface consists of two methods - push and pop.  According to
+"quantify", on a super sparc the push and pop take 18 clock cycles each.
+(Compiled with a patched g++ 2.6.3, with -O2 enabled.)  Enjoy!
+
+\section{The {\it Stopwatch} class}
+
+The stop watch is started and stopped by calling {\it start()} and {\it
+stop()}.  Once the watch has been started, {\it elapsed()} returns (as a
+{\it double}) the amount of real time, in seconds, which elapsed between
+the {\it start()} and {\it stop()} calls.  If the watch has been started
+but not stopped, the amount of elapsed time since {\it start()} is
+returned (without stopping the watch).
+                                                                   
+This class is set up so that when compiling under solaris, it will use
+calls to {\it gethrtime} to provide extremely accurate timing.  Under
+other operating systems, {\it gettimeofday()} is used.
+
+\chapter{What's new in {\sc warped}}
+
+Three types of dynamic memory managers have been added to the simulation
+kernel. In addition, five major features have been added to the simulation
+kernel code. 
+
+\begin{itemize}
+\item Feature One (Removal of containers from input and state queue):
+The inputQueue is now a queue of BasicEvents and the StateQueue is a queue
+of BasicStates. The output queue still retains its original structure and
+is a queue of containers with BasicEvent pointers.
+
+\item Feature Two(Introduction of queue pointers in the state): The
+second optimization was introduced to reduce the searching in the queues
+during rollback (this was found to be a major time consuming function in
+the {\sc warped} kernel). The basic idea is to have two pointers in the
+state. One pointer to point to the current position in the input Queue and
+the other to point to the tail of the output Queue (which indicates the
+messages that were sent out in this state).  Upon rollback, the
+correct state is restored and from the restored state, we can determine
+where to rollback in the inputQueue and in the output
+queue. Appendix A describes the implementation of this optimization in
+greater detail.
+
+\item Feature Three (One antimessage per rollback): Only one
+antimessage is sent out upon rollback. The lowest timestamp antimessage is
+sent out and the other antimessages are suppressed. At the receipient's
+end, upon receiving an antimessage, all messages with timestamps greater
+than that of the antimessages are deleted. This greatly reduces the total
+number of messages that are generated in the system and improves
+performance.
+
+\begin{figure}
+\centerline{\psfig{figure=figures/agg-layer.ps,width=5in,silent=}}
+\caption{Message Aggregation in {\sc warped}}\label{fig:aggregation}
+\end{figure}
+
+\item Feature Four(Message Aggregation capability): A MessageManager
+module has been built on top of the MPI communication library. This
+functionality has been added to the CommManager module.
+Figure~\ref{fig:aggregation} illustrates the basic scheme. In message
+passing environments, the message send time is dominated by overheads that
+are relatively independent of the message size. Therefore, fine-grained
+applications (such as TimeWarp simulators) suffer high overheads because
+of frequent communication.  This optimization optimizes the communication
+subsystem of Time-Warp simulators using {\emph dynamic message
+aggregation}.  Under this scheme, Time-Warp messages with the same
+destination LP, occuring in close temporal proximity are dynamically
+aggregated and sent as a single physical message.  Several aggregation
+strategies that attempt to minimize the communication overhead without
+harming the progress of the simulation (because of messages being delayed)
+have been developed.
+
+\item Feature Five (Terminate Simulation capability): A TimeWarp
+simulation object can now terminate simulation by calling the {\it
+terminateSimulation(char *)} method. When a TimeWarp object calls the {\it
+terminateSimulation(char *)} method, the logical process (LP) on which the
+object resides, sends a TERMINATE message to all other LPs. But be
+forewarned that even though a call to {\it terminateSimulation(char *)}
+causes the simulation to terminate cleanly\footnote{All LPs, even those on
+different processors will terminate as soon as they receive the TERMINATE
+message.}, it can violate causality in certain special cases and
+potentially cause an incorrect simulation. The use of this function is
+left to the user's discretion and it is the user's responsibility to make
+sure that an incorrect simulation does not occur.
+\end{itemize}
+
+\chapter*{Appendix A}
+
+\section*{Pointers in the State - Usages and Issues}
+
+Each Time Warp simulation object possesses a state queue for storing state
+histories (to aid in rollback recovery). Each object also has an input and
+an output queue for storing event histories. As each logical process (LP)
+is responsible for scheduling the simulation objects, the input queues of
+all objects in a logical process are merged into one big input queue (also
+referred to as the Scheduler's event list or the
+\emph{Multilist}). A lowest timestamp first (LTSF) scheduling strategy is
+followed for scheduling simulation objects within a LP. The events with
+the lowest timestamp in the multilist is scheduled first. So the
+simulation object with the lowest timestamped event is scheduled for
+execution. Even though all the events received by an LP is in the
+multilist, each simulation object only sees its own set of events in the
+multilist. We refer to a single object's list of events as the
+\emph{Minilist}. Due to the LTSF strategy, the multilist has to be sorted
+by increasing order of event receive times. The output queue is sorted by
+increasing order of event send times.
+
+A significant percentage of the event list management overhead can be
+attributed to the two most basic list operations, namely insertion and
+list traversal/searching. However, rollback and fossil collection also
+contribute a significant amount of latency to the overhead of list
+management.  Fossil collection is a perfect example of an operation which
+could perform significantly better if it were to posses knowledge about
+the other queues. Fossil collection is invariably done at the same time on
+all the queues. The fossil collection operation is usually initiated by
+the determination of the lowest time-stamp in use in the system. All
+time-stamps lower than this lowest time-stamp can be discarded
+safely. This lowest time-stamp is the Global Virtual Time (GVT). When a
+new GVT is determined in the simulation system, fossil collection is
+invoked with this new time-stamp value. All events older than GVT can be
+thrown away. Traditionally, the event queues are traversed to determine
+which events are older than GVT and then deleted. A good optimization
+would be store along with the state, the current positions of the input
+and output queues. This way, when fossil collection is invoked, the search
+is initiated for the state queue alone. The states to be discarded would
+have pointers into the corresponding events in the input and output queues
+that can be safely garbage collected. Fossil collection on the input and
+output queues is then guided by these pointers from the state. This
+eliminates the searching inside the input and output queues. This is what
+is done in the \textsc{warped} system.
+
+\begin{figure}
+\centerline{\psfig{figure=figures/pointer.eps,width=5in,silent=}}
+\caption{Pointer structure\label{fig:pointer}}
+\end{figure}
+
+In this strategy, the current position inside the input and the output
+queue are stored in two reference pointers which are then stored as part
+of the object's current state.  It is quite possible that there are other
+ways of accomplishing this, but for optimizing fossil collection, this
+seems to the simplest and most efficient recourse.  During fossil
+collection, all queue entries older than GVT can be removed.  This
+requires a search in each queue for the required time-stamp.  Due to the
+presence of multiple events at the same time-stamp in the input and the
+output queues, the search within the state queue should take the least
+time (as in general, the state queue is smaller in size in comparison to
+the input or output queue).  By performing only one search on the enhanced
+state queue, two access pointers to the input and output queue are got,
+such that fossil/garbage collection on these queues can now be handled by
+a simple loop. The fossil or garbage collection phase, which previously
+required three searches followed by three list traversals, was therefore
+reduced to a single search within the smallest queue (the state queue)
+followed by a list traversal.
+
+Although the general principle is quite simple, there are several issues
+that have to be taken care off. Special attention must be paid to when the
+pointers are stored and what they are pointing to when they are stored in
+the state. In case of the \textsc{warped} system:
+
+\begin{enumerate}
+
+\item the input queue reference in the state is pointing to the first element
+responsible for the creation of the state.
+
+\item the output queue reference in the state points to the last
+event generated during the current execution cycle. 
+\end{enumerate}
+
+Why was this particular storage scheme chosen? Because it is intuitive and
+for reasons that will be explained. When a state is restored after
+rollback, it needs to re-execute all events in this state (and hence the
+input queue reference points to the first element). It also needs to
+cancel all work done after this state (and hence the output queue
+reference points to the last event generated in this state as everything
+following this event will need to be cancelled).  In addition, to reduce
+the overhead of messages, only one copy of a message is allocated in a
+LP. This copy is then shared by the input and the output queue. The input
+and output queues store pointers to this message instead of the message
+itself. A closer look at the queue structure of a logical process with
+multiple physical processes is necessary to explain why the above
+references were chosen and why there must be an order to the fossil
+collection of the queues.
+
+Fossil collection has to be performed first on the state queue, then on
+the output queue, and then finally on the input queue.  This has to be
+enforced because the input queues are responsible for fossil collection of
+all events shared by input and output queue.  During fossil collection of
+the output queue, only the memory allocated to events sent to a different
+logical process will be reclaimed. These events will have been created and
+referenced only by the output queue and fossil collection of the input
+queue will not reclaim this memory.
+
+\begin{figure}
+\centerline{\psfig{figure=figures/twoProcesses.eps,width=5.5in,silent=}}
+\caption{Shared input queue structure of multiple physical processes
+  on one logical process\label{fig:twoProcesses}}
+\end{figure}
+
+The reason why the output reference in the state points to the last event
+generated in an execution cycle is not so trivial. As shown in
+Figure~\ref{fig:twoProcesses}, the output queue could then still include
+references to events which are already deleted by fossil collection in
+another process's input queue. In the figure, process~$A$ was last
+executed at a time much earlier than GVT. Process~$B$ on the other hand,
+is executing at a higher rate and it's last execution was just shortly
+before GVT. In this case, process~$A$ has sent an event to process~$B$ and
+assume that process~$B$ has already executed this event as well as one
+more event. Fossil collection called at the GVT time value will now result
+in deletion of the actual event by input queue fossil collection of
+process~$B$ whereas process~$A$ could still have it referenced in its
+output queue\footnote{This is because, process $A$'s state queue will have
+to store one state older than GVT (and so the state will contain a
+reference to the input event in process $B$'s input queue). Process $B$
+however, has a 2 states older than GVT and will remove the state (and
+corresponding input and output events associated with this state) causing
+a floating point in Process $A$'s output queue.}. The solution to this
+problem is simple and based on two lemmas on the definition of GVT. The
+first ensures that the output events created by a state older than the
+state at GVT need not be stored in the output queue. The definition of GVT
+states that GVT is equal to the time stamp of the earliest unprocessed
+event message in the system. It is therefore necessary to store a state
+before GVT to be able to rollback to GVT if this message is still in
+transit.  However, it is only necessary to rollback to the state at this
+point of time such that execution can be resumed. The actual output events
+created at that time point are valid (need not be cancelled) because (by
+the definition of GVT) no events can arrive that can rollback this process
+back before the GVT time value.  If the events are valid, there will never
+be a need to send antimessages for them and hence they do not have to be
+kept in the output queue.  The second lemma guarantees that if output
+events remain in the output queue, they will not be deleted by any input
+queue fossil collection. Remember that the output position points to the
+last event generated by the last state just before GVT. If output events
+are present in the output queue, they must have to be created by a state
+with a time stamp greater then GVT. Because output events can only be
+created with time stamps equal to or greater than the time of the
+process's local virtual time (LVT), the output events must possess virtual
+times than is greater than or equal to the GVT time.
+
+What actually guarantees that this protocol avoids the errors described
+above? We have identified three possible cases that need to be handled in 
+the system. The output reference in the state (outputPos pointer) can take 
+3 possible values (indicating the three different scenarios):
+
+\begin{itemize}
+
+\item \emph{(i)} No outputs that need to be cancelled were generated in
+  this state (for example, the initial state). In this case, the outputPos
+  pointer will be set to NULL and the output queue will need to be flushed
+  in the case of rollback and fossil collection to ensure that there are
+  no output events with virtual times less than this state's LVT are
+  present in the output queue.
+
+\item \emph{(ii)} The outputPos pointer points to the last event generated
+  in this execution cycle. This is the normal foward processing case where
+  the outputPos pointer is set to the tail of the output queue.
+
+\item \emph{(iii)} The outputPos pointer points to the last event
+  generated in the previous state, since no output events were generted in
+  this execution cycle. This is a side-effect of the previous case
+  wherein, a state is saved (somewhere in the middle of the simulation)
+  that didn't generate any output events. Since we set the outputPos
+  pointer to point to the output queue's tail, this state's outputPos
+  pointer will also be pointing to the last event generated in the
+  previous state. To handle this case, we needed to add extra logic to
+  handle the correct garbage collection of output events in the output 
+  queue. Basically, if you have states that didn't generate output, the
+  outputPos pointer in these states will be pointing to the last event 
+  generated in some earlier state. If this earlier state and the
+  corresponding events are garbage collected, the current state's
+  outputPos pointer needs to be corrected (it will be reset to
+  NULL). If the outputPos pointer is NULL, this is again like case
+  \emph{(i)} where the output queue will need to be flushed.
+
+\end{itemize}
+
+\chapter*{Acknowledgements}
+
+This research has been conducted with the participation of many
+investigators.  While not an complete list, the following individuals
+have made notable direct and/or indirect contributions to this effort
+(in alphabetical order):
+Perry Alexander,
+Scott Bilik,
+Harold Carter,
+David A. Charley,
+Praveen Chawla,
+Debra A. Hensgen
+John Hines,
+Balakrishnan Kannikeswaran,
+Venkatram Krishnaswamy,
+Lantz Moore,
+Avinash Palaniswamy,
+John Penix,
+Radharamanan Radhakrishnan,
+Raghunandan Rajan, 
+Dhananjai Madhava Rao, and
+Christopher Young.
+We wish to express our sincerest gratitude for the time that you spent
+reviewing and commenting on our designs.
+
+This research was supported in part by the Advanced Research Projects
+Agency, monitored by the Department of Justice under contract number
+J--FBI--93--116.  In addition, we benefited greatly from the technical
+support and guidance by the ARPA and DOJ program managers, notably:
+Bob Parker,
+John Hoyt, and
+Lt. Col. John Toole.
+Without this support and interaction, the work documented in this report
+would not have been possible.  Thank you.
+
+\end{document}
+
+

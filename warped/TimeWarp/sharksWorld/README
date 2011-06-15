@@ -1,0 +1,27 @@
+The SharksWorld application,takes in the number of sector/row ,
+Sectorwidth, Number of Sharks and fishes and Number of LPs in a Config
+file and Simulates accordingly.  The config file is used so that we need
+to compile only once.
+
+The executable is generated in SHARK.The SimUntil,the value of GVT until
+which U want to simulate must be given in the main file.
+
+The Number of Events that are processed and hence the size of the
+Simulation can be increased by increasing the number of Sharks/fishes and
+the Simuntil value.
+
+The executable can be got using the Makefile provided.
+
+U need a file called procgroup which specifies the Processors on which u r
+running the simulation.
+
+The application simulates an Ocean with sharks and fishes where a shark
+eats any fish that comes within its attack range.The application also
+allows for reincarnation of the fishes to ensure that the Simulation
+always has some events to process till the Simuntil value specified by the
+user.
+
+**************************************************************************
+For more detailed documentation, please refer to the latex documentation
+in the doc directory.
+**************************************************************************

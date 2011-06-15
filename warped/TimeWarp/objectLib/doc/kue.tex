@@ -1,0 +1,451 @@
+\documentclass[11pt]{report}
+
+\usepackage{alltt,color,fullpage,psfig-dvips}
+
+\newcommand{\version}{0.9}
+
+\begin{document}
+
+\title{
+\textbf{KUE}\\
+A queuing object Library for the {\sc warped} simulation kernel\\
+(Documentation for version \version)}
+
+\author{
+\emph{Radharamanan Radhakrishnan} and \emph{Philip A.  Wilsey} \\
+Computer Architecture Design Laboratory \\
+Dept of ECECS, PO Box 210030 \\
+Cincinnati, OH  45221--0030 \\
+\texttt{\{ramanan,paw\}@ececs.uc.edu}
+}
+
+\date{}
+
+\maketitle
+
+\vspace*{6in}
+
+\noindent
+Copyright $\copyright$ 1997 The University of Cincinnati.  All
+rights reserved.  
+
+\bigskip
+
+\noindent
+Published by the University of Cincinnati \\
+Dept of ECECS, PO Box 210030 \\
+Cincinnati, OH  45221--0030 USA 
+
+\bigskip
+
+\noindent
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+\medskip
+\noindent
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+\medskip
+\noindent
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.
+
+\newpage
+
+\tableofcontents
+
+\chapter{The Model Library}
+
+This file documents Kue version \version.  Kue is a design library for
+building queuing models.  The queuing models are instantiations of
+objects from the Kue library and the resulting model is implemented
+against the {\sc warped} application interface.  Thus, the resulting
+models can be simulated using one of the {\sc warped} simulation
+kernels.  The {\sc warped} system is described elsewhere in this
+distribution.  The remainder of this document addresses is concerned
+with the use and implementation of the Kue library.
+
+Queuing theory and queuing models are a powerful and widely used
+technique for the modeling of systems.  Models in general, and queuing
+Models in particular have become an important tool in the design and
+analysis of computer systems.  This is due to the fact that, for many
+applications, queuing network models achieve a favorable balance between
+efficiency, ease of modeling, and accuracy of the models.  Definition
+and design of the model is simplified because of the close
+correspondence between the attributes of queuing models and the
+attributes of computer systems.  Queuing models thus achieve a
+relatively high degree of accuracy at a relatively low cost.
+
+The flexibility of the warped kernel allows the user to simulate any
+example in a problem domain using queuing models.  An interface has been
+developed to allow the user to quickly create queuing model examples
+and simulate it.  This document will describe in detail, both the user
+interface and the actual implementation of the Queuing model application
+layer.
+
+\chapter{The Nickel Tour}
+
+The user has a library of queuing objects with which he can model any
+application.  The library consists of queuing objects, which the user
+will make use of in modeling a system.  In our implementation we assume
+that the queuing model may have a single queue or many queues.  A system
+in which there are many queues is called a queuing network.  In general,
+a model in which jobs departing from one queue arrive at another queue
+(or possibly the same queue) is called a queuing network.  Also a
+queuing network may be be classified into two types.  An {\it open
+queuing network} has external arrivals and departures.  The jobs enter
+the system at ``In'' and exit at the ``Out''.  A {\it closed queuing
+network} has no external arrivals or departures.  The jobs in the system
+keep circulating from one queue to the next.  It is possible to view a
+closed system as a system where the Out is connected back to the In.
+The jobs exiting the system immediately reenter the system.  There is an
+example of each type of queuing network in the application domain.
+
+\section{Queuing Objects}
+
+There are seven objects present in the library.  They are as follows: 
+
+\begin{itemize}
+\item Source Object
+\item Fork Object 
+\item Join Object 
+\item Delay Object 
+\item Queue Object 
+\item Server Object 
+\item Sink Object 
+\end{itemize}
+These objects are described in more detail in the remainder of this
+section. 
+
+\subsection{Source Object}
+
+In a queuing network, the role of the source object is to produce tokens
+or events.  Events or tokens are messages or jobs that will be routed by
+the join/fork/queue and processed by the server and sink.  Also each
+source has a distribution function with which it distributes the
+tokens.  The distribution can be any of the following:
+
+\begin{itemize}
+\item Normal 
+\item Poisson 
+\item Binomial 
+\item Exponential 
+\item Uniform 
+\item Fixed
+\end{itemize}
+
+The random number generator used for providing these distributions is
+the Multiplicative Linear Congruential Generator(MLCG).  This generator
+was chosen because it has a fairly long period and uses much less state
+than other generators.  If the fixed distribution is selected, for
+example, the source generates tokens at a fixed interval of time.  Also
+the input parameter seed is used to provide a random seed to the random
+number function used by the model for its distribution.  The source
+object provided in the library can be used for open queuing network
+models only.  The source object for a closed queuing network model has
+to be written by the user as the functionality of the source object in a
+closed network model differs from implementation to implementation.
+
+\subsection{Fork Object}
+
+A distribution module or Fork unit distributes input tokens (events)
+onto its output with different distribution characteristics.  The
+distribution characteristics can be specified for each Fork module in a
+simulation.  The Fork routes its input tokens to one or more outputs
+depending upon the user.  The choices are {\it ALTERNATE},
+{\it ROUND-ROBIN}, {\it ALL}, {\it CONDITIONAL} and {\it SPECIAL}.
+Once again the fork may have any of the distribution functions described
+earlier. 
+
+\subsection{Join Object}
+
+A Join module routes input events from various locations connected to
+its input arcs, to its output arc.  Similar to the fork module, the Join
+module is also a router of tokens (events).
+
+\subsection{Delay Object}
+
+The Delay module is a common module used in a queuing network.  The
+tokens passing through the Delay module are delayed for a
+probabilistically determined delay interval or fixed delay interval.  A
+terminal in a timeshared computer system is an example --- the delay
+module models the user's think time for an interactive job.  The fixed
+delay element may be used to model, in a lumped fashion, the various
+delays associated with different elements of a design.  The delay time
+could be a probabilistically determined delay interval, with a
+distribution that could be a {\it Uniform}, {\it Poisson}, or
+{\it Normal} distribution. 
+
+\subsection{Queue Object}
+
+A Queue object is defined with a buffer and a queuing discipline.  The
+queuing discipline can be {\it FIFO} or {\it LIFO}.  The queue object
+is designed to work with a server or many servers.  A queue object
+stores messages it receives in a private buffer and when a server
+requests a token or message, it send the first token in its buffer.  As
+the buffer size is limited, overflow is possible.  Handling of the
+overflow condition is left to the user.
+ 
+\subsection{Server Object}
+
+The Server module is one of the most important units in the queuing
+library.  One or more service stations form the service facility of the
+queuing network.  The server is an entity capable of producing the
+required service to the customer (token).  If all the servers in the
+service facility are busy when a customer enters the queuing network,
+the customer waits in the queue until a server is free.  When the server
+finishes processing an event, it sends a messages to its queue
+requesting another event to process.
+
+\subsection{Sink Object}
+
+The Sink module consumes tokens in a queuing network.  The token
+(events) after being serviced ultimately leaves the system in an open
+network model.  The sink represents the destruction of tokens in such an
+open network.
+
+Also associated with each object, is its state.  The state for each
+object is represented by an individual class definition.  This state
+contains the information, the object needs to remember, in the event of
+a rollback.  So the library contains a {\it SourceState}, {\it ForkState},
+{\it JoinState}, {\it QueueState}, {\it DelayState}, {\it ServerState} and
+a {\it SinkState}. 
+
+Basic statistic collecting information can be included along with each
+object.  Currently each object reports the number of tokens it
+processed.  Additional information can be easily added by embedding the
+collection information inside the object code and it's state code.
+ 
+\chapter{Interfacing to the WARPED Kernel}
+
+The application interface must be written by the user in a format which
+will be describe shortly.  This interface specification will describe
+how to transfer your queuing model design onto the warped kernel and to
+simulate your design.
+
+Shown in the next page is an example of a queuing network model written
+for the simulator in C++.  The warped kernel was designed to run on top
+of the MPI message protocol.  In order to use the warped kernel, MPI
+must be installed on that system (or systems) as well.  The application
+level user needs no knowledge of MPI, but the time warp experimenter
+may.  Also the implementation of the interface and the kernel was
+written and compiled using the GNU C++ compiler, g++.  Some classes that
+are defined in libg++ are used within the kernel, so if g++ isn't
+available, some functions will need to be reimplemented.
+
+As shown in the code extract, the user needs to code his design into the
+main function of the warped kernel.  Before describing the queuing model
+coding, we digress at this point to explain how the warped kernel sees
+the user's application and how it runs the application.
+
+The MPI message protocol will be the lowest layer in our simulation.
+The kernel runs on this MPI layer.  Thus before a simulation can begin,
+you must specify how many machines are involved, what are their
+identification numbers are and where the executable lies on these
+machines.  This is done by creating a file containing this information
+in the simulation directory. This file is named ``procgroup''.  For
+example if the simulation is to run on two machines, say m1.ece.uc.edu and
+m2.ece.uc.edu and m1 is the machine on which you start your simulation,
+then the file would contain the following lines:
+
+\begin{verbatim}
+procgroup:
+
+m1.ece.uc.edu 0 /home/username/warped/simulator_exec 
+m2.ece.uc.edu 1 /home/username/warped/simulator_exec
+\end{verbatim}
+
+where simulator\_exec is the executable file, m1.ece.uc.edu has an id 0
+and m2.ece.uc.edu has an id 1.
+
+From this example, the warped kernel will run the executable on machines
+``m1'' and ``m2''.  As they have distinct ids, we can allocate jobs to
+these machines independently.  This is done through an object
+instantiation of type {\it LogicalProcess}, where the constructor of
+the class is passed information regarding the number of jobs present in
+the system, number of the jobs that are present locally (i.e., the jobs
+it has to execute) and the number of machines that are taking part in
+the simulation.
+
+Next the user has to define the queuing objects to have on each machine.
+This is specified as follows:
+
+\begin{verbatim}
+#include <iostream.h>
+
+#include "QueuingTypes.hh"
+#include "LogicalProcess.hh"
+#include "SourceObject.hh"
+#include "SinkObject.hh"
+#include "ForkObject.hh"
+
+extern "C" {
+#include "mpi.h"
+}
+#include "SimulationTime.hh" 
+
+const VTime LogicalProcess::SIMUNTIL = PINFINITY;
+
+
+
+main(int argc, char *argv[]) {
+  
+  int id;
+  int obj_id[20] ;
+
+  MPI_Init( &argc, &argv );
+  MPI_Comm_rank( MPI_COMM_WORLD, &id);
+
+  if(id==0) {
+
+    LogicalProcess lp(2,1,2);  // total, local, LPs
+
+    SourceObject<SourceState> source0("source0", 5); // object name,
+                                                     // number of events 
+                                                     // to generate
+    source0.setDistribution(UNIFORM, 5, 1000);
+    source0.id = 0;
+    source0.dest = 1;
+    lp.registerObject(&source0);
+ 
+    lp.allRegistered();
+    lp.simulate();
+  }
+  else if(id==1){
+      LogicalProcess lp(2,1,2);  // total, local, LPs
+
+      SinkObject sink0("sink");
+      sink0.id = 1;
+      lp.registerObject(&sink0);
+
+      lp.allRegistered();
+      lp.simulate();
+    }
+    else {
+      cerr << "There is no LP " << id << endl;
+    }
+}
+\end{verbatim}
+
+\chapter{The Application Interface}
+
+An instance of a source object is created by creating an object of type
+{\it SourceObject}.  The distribution function, seed and size for the
+random number generator can be specified by calling the
+{\it setDistribution} function and passing these values as parameters.
+Then this source object is given an id, which is specified by the user
+to keep track of objects and to define an order (each and every object
+in a simulation is given an id and a name).  The destination (i.e.,
+where the generated tokens are to be routed) is specified by setting the
+{\it dest} field equal to the id of the destination object.  The object
+can be given a name through the name field.  Once all the information is
+given to the source object, we register this object as being on this
+Logical Process.  This is done by calling the {\it registerObject}
+member function and passing it the address of this source object.
+
+The same procedure is applied to the fork object, except that the fork
+has to send the input token to multiple destinations and hence an array
+of destinations is passed through the {\it setForkDistribution} member
+function, as well as the number of destinations.  The fork has extra
+parameter.  When sending the tokens to their destinations, the fork can
+either send a token to all the destinations or send tokens alternatively
+to two destinations or send tokens in a round robin fashion or send to a
+destination depending upon some condition.  This is achieved by
+specifying {\it ALL}, {\it ALTERNATE}, {\it ROUNDROBIN},
+{\it CONDITIONAL}, or {\it SPECIAL} in the extra parameter.  The
+{\it SPECIAL} flag is used when a user specified distribution scheme is
+to be used.
+
+The delay object is very similar to the source object.  It receives input
+tokens and adds a delay interval to the receive time of the token and
+sends it on to the object whose id is equal to the delay object's dest
+variable.  Once again the delay interval is determined using one of the
+distributions mentioned earlier.  The user sets the distribution, seed and
+size using the member function {\it setDelayDistribution}.
+
+The queue object is present for providing the server object with tokens.
+The queue object gets tokens from various sources and queues up those
+jobs that have to be processed at the same time.  If the buffer capacity
+is exceeded the extra incoming tokens are either ignored or redirected
+elsewhere.
+
+The server object is again very much like the source object.  Instead of
+producing tokens, it processes them and during this processing, a delay
+interval gets added to the token's receive time.  The server processes
+the token and send it on to an object specified by the variable dest.
+Again the processing delay can be modeled using one of the distribution
+functions described earlier.  The distribution function, seed, and size
+for the random number generator is specified by the use of
+{\it setServerDistribution} function.
+
+The join object plays the role of a router.  It collects tokens from
+multiple sources and passes the token on to a single destination.  It
+does not add any processing delay to the token.  There is a method to
+set the destination for the join object.
+
+Once all the objects that are local to a Logical Process have been
+registered, the user calls the {\it allRegistered} function and then
+the {\it simulate} function.  The simulate member function will in turn
+call the function {\it execute} and hence the simulation will take
+place.
+
+The same procedure is repeated for the other machine.  When the code is
+compiled and executed, each machine (Logical Process in this case) knows
+what objects it has and what objects are present on the other machine or
+Logical Process.  In the process of execution these two machines will
+exchange tokens or events or messages through the MPI message protocol.
+  
+Once each object has been registered with each Logical Process, the call
+to {\it simulate} starts the simulation.  The application layer has now
+been defined to the parallel time warp simulation kernel.
+
+The source starts producing tokens according to its distribution
+function.  The object, the source sends tokens to, may be on the same
+machine (or Logical Process) or on a different machine.  If it is on a
+different machine, the simulator passes the tokens to the MPI message
+protocol.  The kernel copy running on the receiving end receives these
+tokens from its message passing interface and processes them
+appropriately.  The destination of these tokens may be any one of the
+queuing objects except another source object(in a open queuing network
+model).  The fork receives tokens and sends these tokens on to its
+output arcs depending on how the user has specified the distribution of
+the tokens.
+
+\chapter{Note}
+
+Kue is {\emph not} the result of a well planned, organized design effort
+to implement a library for queuing models.  Rather, the code is an
+outgrowth of a much simpler library that was originally constructed to
+test out the code in the {\sc warped} kernel.  Kue evolved to support the
+construction of larger models to further stress the {\sc warped} kernel.
+We have packaged the code so that others might benefit from it's
+existence, but we make no claims that Kue is a good library for
+modeling.  We simply found it convenient and useful for our programming,
+debugging, analysis, and optimization.  We hope that you will also
+find it useful.
+
+\chapter*{Acknowledgments}
+
+This research has been conducted with the participation of many
+investigators.  While not an complete list, the following individuals
+have made notable direct and/or indirect contributions to this effort
+(in alphabetical order): Balakrishnan Kannikeswaran, Tim McBrayer,
+Sidhartha Mohanty, Raghunandan Rajan, and Christopher Young.  We wish to
+express our sincerest gratitude for the time that you spent reviewing
+and commenting on our designs.
+
+This research was supported in part by the Advanced Research Projects
+Agency, monitored by the Department of Justice under contract number
+J--FBI--93--116.  In addition, we benefited greatly from the technical
+support and guidance by the ARPA and DOJ program managers, notably: Bob
+Parker, John Hoyt, and Lt. Col. John Toole.  Without this support and
+interaction, the work documented in this report would not have been
+possible.  Thank you.
+
+\end{document}
+

@@ -1,0 +1,2756 @@
+Conflict in state 85 between rule 24 and token OP_ADD_SUB resolved as reduce.
+Conflict in state 85 between rule 24 and token OP_MUL_DIV resolved as desplaza.
+Conflict in state 86 between rule 25 and token OP_ADD_SUB resolved as reduce.
+Conflict in state 86 between rule 25 and token OP_MUL_DIV resolved as reduce.
+Conflict in state 98 between rule 14 and token AND resolved as reduce.
+Conflict in state 98 between rule 14 and token OR resolved as reduce.
+Conflict in state 98 between rule 14 and token XOR resolved as reduce.
+Conflict in state 98 between rule 14 and token IMP resolved as reduce.
+Conflict in state 98 between rule 14 and token EQV resolved as reduce.
+Conflict in state 127 between rule 15 and token AND resolved as reduce.
+Conflict in state 127 between rule 15 and token OR resolved as reduce.
+Conflict in state 127 between rule 15 and token XOR resolved as reduce.
+Conflict in state 127 between rule 15 and token IMP resolved as reduce.
+Conflict in state 127 between rule 15 and token EQV resolved as reduce.
+Conflict in state 128 between rule 16 and token AND resolved as reduce.
+Conflict in state 128 between rule 16 and token OR resolved as reduce.
+Conflict in state 128 between rule 16 and token XOR resolved as reduce.
+Conflict in state 128 between rule 16 and token IMP resolved as reduce.
+Conflict in state 128 between rule 16 and token EQV resolved as reduce.
+Conflict in state 129 between rule 17 and token AND resolved as reduce.
+Conflict in state 129 between rule 17 and token OR resolved as reduce.
+Conflict in state 129 between rule 17 and token XOR resolved as reduce.
+Conflict in state 129 between rule 17 and token IMP resolved as reduce.
+Conflict in state 129 between rule 17 and token EQV resolved as reduce.
+Conflict in state 130 between rule 18 and token AND resolved as reduce.
+Conflict in state 130 between rule 18 and token OR resolved as reduce.
+Conflict in state 130 between rule 18 and token XOR resolved as reduce.
+Conflict in state 130 between rule 18 and token IMP resolved as reduce.
+Conflict in state 130 between rule 18 and token EQV resolved as reduce.
+Conflict in state 131 between rule 19 and token AND resolved as reduce.
+Conflict in state 131 between rule 19 and token OR resolved as reduce.
+Conflict in state 131 between rule 19 and token XOR resolved as reduce.
+Conflict in state 131 between rule 19 and token IMP resolved as reduce.
+Conflict in state 131 between rule 19 and token EQV resolved as reduce.
+
+
+Gramática
+
+  Número, Línea, Regla
+    1 103 Language -> RuleList
+    2 108 RuleList -> Rule
+    3 110 RuleList -> Rule RuleList
+    4 114 Rule -> AssignResult Resultado '{' BoolExp '}'
+    5 118 Rule -> AssignResult '{' AssignSet '}' Resultado '{' BoolExp '}'
+    6 123 AssignResult -> Resultado
+    7 128 AssignResult -> '{' PortSendSet '}'
+    8 133 Resultado -> Constant
+    9 136 Resultado -> UNDEF
+   10 138 Resultado -> '{' RealExp '}'
+   11 143 BoolExp -> BOOL
+   12 146 BoolExp -> '(' BoolExp ')'
+   13 148 BoolExp -> RealRelExp
+   14 150 BoolExp -> NOT BoolExp
+   15 153 BoolExp -> BoolExp AND BoolExp
+   16 157 BoolExp -> BoolExp OR BoolExp
+   17 161 BoolExp -> BoolExp XOR BoolExp
+   18 165 BoolExp -> BoolExp IMP BoolExp
+   19 169 BoolExp -> BoolExp EQV BoolExp
+   20 177 RealRelExp -> RealExp OP_REL RealExp
+   21 182 RealRelExp -> COND_REAL_FUNC '(' RealExp ')'
+   22 188 RealExp -> IdRef
+   23 191 RealExp -> '(' RealExp ')'
+   24 193 RealExp -> RealExp OP_ADD_SUB RealExp
+   25 197 RealExp -> RealExp OP_MUL_DIV RealExp
+   26 203 IdRef -> CellRef OptPortName
+   27 207 IdRef -> Constant
+   28 209 IdRef -> Function
+   29 211 IdRef -> UNDEF
+   30 213 IdRef -> PORTREF '(' PORTNAME ')'
+   31 215 IdRef -> SEND '(' PORTNAME ',' RealExp ')'
+   32 218 IdRef -> CELLPOS '(' RealExp ')'
+   33 220 IdRef -> STVAR_NAME
+   34 224 OptPortName -> /* vacío */
+   35 227 OptPortName -> PORTNAME
+   36 231 AssignSet -> /* vacío */
+   37 234 AssignSet -> Assign AssignSet
+   38 239 Assign -> STVAR_NAME OP_ASSIGN RealExp ';'
+   39 247 PortSendSet -> /* vacío */
+   40 250 PortSendSet -> PortSend PortSendSet
+   41 255 PortSend -> SEND '(' PORTNAME ',' RealExp ')' ';'
+   42 259 PortSend -> PORTNAME OP_ASSIGN RealExp ';'
+   43 265 Constant -> INT
+   44 268 Constant -> REAL
+   45 270 Constant -> CONSTFUNC
+   46 275 Function -> COUNT
+   47 278 Function -> STATECOUNT '(' RealExp OptParamPort ')'
+   48 280 Function -> UNARY_FUNC '(' RealExp ')'
+   49 283 Function -> BINARY_FUNC '(' RealExp ',' RealExp ')'
+   50 287 Function -> WITHOUT_PARAM_FUNC_TIME
+   51 289 Function -> WITHOUT_PARAM_FUNC_RANDOM
+   52 292 Function -> UNARY_FUNC_RANDOM '(' RealExp ')'
+   53 295 Function -> BINARY_FUNC_RANDOM '(' RealExp ',' RealExp ')'
+   54 300 Function -> COND3_FUNC '(' BoolExp ',' RealExp ',' RealExp ')'
+   55 306 Function -> COND4_FUNC '(' BoolExp ',' RealExp ',' RealExp ',' RealExp ')'
+   56 316 OptParamPort -> /* vacío */
+   57 319 OptParamPort -> ',' PORTNAME
+   58 323 CellRef -> '(' Tupla
+   59 330 Tupla -> INT ',' INT Resto_nTupla
+   60 334 Resto_nTupla -> ',' INT Resto_nTupla
+   61 336 Resto_nTupla -> ')'
+
+
+Terminales con las reglas donde aparecen
+
+$ (-1)
+'(' (40) 12 21 23 30 31 32 41 47 48 49 52 53 54 55 58
+')' (41) 12 21 23 30 31 32 41 47 48 49 52 53 54 55 61
+',' (44) 31 41 49 53 54 55 57 59 60
+';' (59) 38 41 42
+'{' (123) 4 5 7 10
+'}' (125) 4 5 7 10
+error (256)
+AND (257) 15
+OR (258) 16
+XOR (259) 17
+IMP (260) 18
+EQV (261) 19
+NOT (262) 14
+OP_REL (263) 20
+OP_ASSIGN (264) 38 42
+OP_ADD_SUB (265) 24
+OP_MUL_DIV (266) 25
+REAL (267) 44
+INT (268) 43 59 60
+BOOL (269) 11
+COUNT (270) 46
+UNDEF (271) 9 29
+CONSTFUNC (272) 45
+WITHOUT_PARAM_FUNC_TIME (273) 50
+STVAR_NAME (274) 33 38
+WITHOUT_PARAM_FUNC_RANDOM (275) 51
+PORTREF (276) 30
+SEND (277) 31 41
+CELLPOS (278) 32
+BINARY_FUNC (279) 49
+BINARY_FUNC_RANDOM (280) 53
+COND3_FUNC (281) 54
+COND4_FUNC (282) 55
+STATECOUNT (283) 47
+UNARY_FUNC (284) 48
+COND_REAL_FUNC (285) 21
+UNARY_FUNC_RANDOM (286) 52
+PORTNAME (287) 30 31 35 41 42 57
+
+
+No terminales con las reglas donde aparecen
+
+Language (40)
+    en la izquierda: 1
+RuleList (41)
+    en la izquierda: 2 3, en la derecha: 1 3
+Rule (42)
+    en la izquierda: 4 5, en la derecha: 2 3
+AssignResult (43)
+    en la izquierda: 6 7, en la derecha: 4 5
+Resultado (44)
+    en la izquierda: 8 9 10, en la derecha: 4 5 6
+BoolExp (45)
+    en la izquierda: 11 12 13 14 15 16 17 18 19, en la derecha: 4 5
+    12 14 15 16 17 18 19 54 55
+RealRelExp (46)
+    en la izquierda: 20 21, en la derecha: 13
+RealExp (47)
+    en la izquierda: 22 23 24 25, en la derecha: 10 20 21 23 24 25
+    31 32 38 41 42 47 48 49 52 53 54 55
+IdRef (48)
+    en la izquierda: 26 27 28 29 30 31 32 33, en la derecha: 22
+OptPortName (49)
+    en la izquierda: 34 35, en la derecha: 26
+AssignSet (50)
+    en la izquierda: 36 37, en la derecha: 5 37
+Assign (51)
+    en la izquierda: 38, en la derecha: 37
+PortSendSet (52)
+    en la izquierda: 39 40, en la derecha: 7 40
+PortSend (53)
+    en la izquierda: 41 42, en la derecha: 40
+Constant (54)
+    en la izquierda: 43 44 45, en la derecha: 8 27
+Function (55)
+    en la izquierda: 46 47 48 49 50 51 52 53 54 55,
+    en la derecha: 28
+OptParamPort (56)
+    en la izquierda: 56 57, en la derecha: 47
+CellRef (57)
+    en la izquierda: 58, en la derecha: 26
+Tupla (58)
+    en la izquierda: 59, en la derecha: 58
+Resto_nTupla (59)
+    en la izquierda: 60 61, en la derecha: 59 60
+
+
+estado 0
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    UNDEF	desplazar e ir al estado 3
+    CONSTFUNC	desplazar e ir al estado 4
+    '{' 	desplazar e ir al estado 5
+
+    Language	ir al estado 165
+    RuleList	ir al estado 6
+    Rule	ir al estado 7
+    AssignResult	ir al estado 8
+    Resultado	ir al estado 9
+    Constant	ir al estado 10
+
+
+
+estado 1
+
+    Constant  ->  REAL .   (regla 44)
+
+    $default	reduce usando la regla 44 (Constant)
+
+
+
+estado 2
+
+    Constant  ->  INT .   (regla 43)
+
+    $default	reduce usando la regla 43 (Constant)
+
+
+
+estado 3
+
+    Resultado  ->  UNDEF .   (regla 9)
+
+    $default	reduce usando la regla 9 (Resultado)
+
+
+
+estado 4
+
+    Constant  ->  CONSTFUNC .   (regla 45)
+
+    $default	reduce usando la regla 45 (Constant)
+
+
+
+estado 5
+
+    AssignResult  ->  '{' . PortSendSet '}'   (regla 7)
+    Resultado  ->  '{' . RealExp '}'   (regla 10)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 17
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    PORTNAME	desplazar e ir al estado 26
+    '(' 	desplazar e ir al estado 27
+
+    $default	reduce usando la regla 39 (PortSendSet)
+
+    RealExp	ir al estado 28
+    IdRef	ir al estado 29
+    PortSendSet	ir al estado 30
+    PortSend	ir al estado 31
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 6
+
+    Language  ->  RuleList .   (regla 1)
+
+    $default	reduce usando la regla 1 (Language)
+
+
+
+estado 7
+
+    RuleList  ->  Rule .   (regla 2)
+    RuleList  ->  Rule . RuleList   (regla 3)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    UNDEF	desplazar e ir al estado 3
+    CONSTFUNC	desplazar e ir al estado 4
+    '{' 	desplazar e ir al estado 5
+
+    $default	reduce usando la regla 2 (RuleList)
+
+    RuleList	ir al estado 35
+    Rule	ir al estado 7
+    AssignResult	ir al estado 8
+    Resultado	ir al estado 9
+    Constant	ir al estado 10
+
+
+
+estado 8
+
+    Rule  ->  AssignResult . Resultado '{' BoolExp '}'   (regla 4)
+    Rule  ->  AssignResult . '{' AssignSet '}' Resultado '{' BoolExp '}'   (regla 5)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    UNDEF	desplazar e ir al estado 3
+    CONSTFUNC	desplazar e ir al estado 4
+    '{' 	desplazar e ir al estado 36
+
+    Resultado	ir al estado 37
+    Constant	ir al estado 10
+
+
+
+estado 9
+
+    AssignResult  ->  Resultado .   (regla 6)
+
+    $default	reduce usando la regla 6 (AssignResult)
+
+
+
+estado 10
+
+    Resultado  ->  Constant .   (regla 8)
+
+    $default	reduce usando la regla 8 (Resultado)
+
+
+
+estado 11
+
+    Function  ->  COUNT .   (regla 46)
+
+    $default	reduce usando la regla 46 (Function)
+
+
+
+estado 12
+
+    IdRef  ->  UNDEF .   (regla 29)
+
+    $default	reduce usando la regla 29 (IdRef)
+
+
+
+estado 13
+
+    Function  ->  WITHOUT_PARAM_FUNC_TIME .   (regla 50)
+
+    $default	reduce usando la regla 50 (Function)
+
+
+
+estado 14
+
+    IdRef  ->  STVAR_NAME .   (regla 33)
+
+    $default	reduce usando la regla 33 (IdRef)
+
+
+
+estado 15
+
+    Function  ->  WITHOUT_PARAM_FUNC_RANDOM .   (regla 51)
+
+    $default	reduce usando la regla 51 (Function)
+
+
+
+estado 16
+
+    IdRef  ->  PORTREF . '(' PORTNAME ')'   (regla 30)
+
+    '(' 	desplazar e ir al estado 38
+
+
+
+estado 17
+
+    IdRef  ->  SEND . '(' PORTNAME ',' RealExp ')'   (regla 31)
+    PortSend  ->  SEND . '(' PORTNAME ',' RealExp ')' ';'   (regla 41)
+
+    '(' 	desplazar e ir al estado 39
+
+
+
+estado 18
+
+    IdRef  ->  CELLPOS . '(' RealExp ')'   (regla 32)
+
+    '(' 	desplazar e ir al estado 40
+
+
+
+estado 19
+
+    Function  ->  BINARY_FUNC . '(' RealExp ',' RealExp ')'   (regla 49)
+
+    '(' 	desplazar e ir al estado 41
+
+
+
+estado 20
+
+    Function  ->  BINARY_FUNC_RANDOM . '(' RealExp ',' RealExp ')'   (regla 53)
+
+    '(' 	desplazar e ir al estado 42
+
+
+
+estado 21
+
+    Function  ->  COND3_FUNC . '(' BoolExp ',' RealExp ',' RealExp ')'   (regla 54)
+
+    '(' 	desplazar e ir al estado 43
+
+
+
+estado 22
+
+    Function  ->  COND4_FUNC . '(' BoolExp ',' RealExp ',' RealExp ',' RealExp ')'   (regla 55)
+
+    '(' 	desplazar e ir al estado 44
+
+
+
+estado 23
+
+    Function  ->  STATECOUNT . '(' RealExp OptParamPort ')'   (regla 47)
+
+    '(' 	desplazar e ir al estado 45
+
+
+
+estado 24
+
+    Function  ->  UNARY_FUNC . '(' RealExp ')'   (regla 48)
+
+    '(' 	desplazar e ir al estado 46
+
+
+
+estado 25
+
+    Function  ->  UNARY_FUNC_RANDOM . '(' RealExp ')'   (regla 52)
+
+    '(' 	desplazar e ir al estado 47
+
+
+
+estado 26
+
+    PortSend  ->  PORTNAME . OP_ASSIGN RealExp ';'   (regla 42)
+
+    OP_ASSIGN	desplazar e ir al estado 48
+
+
+
+estado 27
+
+    RealExp  ->  '(' . RealExp ')'   (regla 23)
+    CellRef  ->  '(' . Tupla   (regla 58)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 49
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 51
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+    Tupla	ir al estado 52
+
+
+
+estado 28
+
+    Resultado  ->  '{' RealExp . '}'   (regla 10)
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    '}' 	desplazar e ir al estado 55
+
+
+
+estado 29
+
+    RealExp  ->  IdRef .   (regla 22)
+
+    $default	reduce usando la regla 22 (RealExp)
+
+
+
+estado 30
+
+    AssignResult  ->  '{' PortSendSet . '}'   (regla 7)
+
+    '}' 	desplazar e ir al estado 56
+
+
+
+estado 31
+
+    PortSendSet  ->  PortSend . PortSendSet   (regla 40)
+
+    SEND	desplazar e ir al estado 57
+    PORTNAME	desplazar e ir al estado 26
+
+    $default	reduce usando la regla 39 (PortSendSet)
+
+    PortSendSet	ir al estado 58
+    PortSend	ir al estado 31
+
+
+
+estado 32
+
+    IdRef  ->  Constant .   (regla 27)
+
+    $default	reduce usando la regla 27 (IdRef)
+
+
+
+estado 33
+
+    IdRef  ->  Function .   (regla 28)
+
+    $default	reduce usando la regla 28 (IdRef)
+
+
+
+estado 34
+
+    IdRef  ->  CellRef . OptPortName   (regla 26)
+
+    PORTNAME	desplazar e ir al estado 59
+
+    $default	reduce usando la regla 34 (OptPortName)
+
+    OptPortName	ir al estado 60
+
+
+
+estado 35
+
+    RuleList  ->  Rule RuleList .   (regla 3)
+
+    $default	reduce usando la regla 3 (RuleList)
+
+
+
+estado 36
+
+    Rule  ->  AssignResult '{' . AssignSet '}' Resultado '{' BoolExp '}'   (regla 5)
+    Resultado  ->  '{' . RealExp '}'   (regla 10)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 61
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    $default	reduce usando la regla 36 (AssignSet)
+
+    RealExp	ir al estado 28
+    IdRef	ir al estado 29
+    AssignSet	ir al estado 62
+    Assign	ir al estado 63
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 37
+
+    Rule  ->  AssignResult Resultado . '{' BoolExp '}'   (regla 4)
+
+    '{' 	desplazar e ir al estado 64
+
+
+
+estado 38
+
+    IdRef  ->  PORTREF '(' . PORTNAME ')'   (regla 30)
+
+    PORTNAME	desplazar e ir al estado 65
+
+
+
+estado 39
+
+    IdRef  ->  SEND '(' . PORTNAME ',' RealExp ')'   (regla 31)
+    PortSend  ->  SEND '(' . PORTNAME ',' RealExp ')' ';'   (regla 41)
+
+    PORTNAME	desplazar e ir al estado 66
+
+
+
+estado 40
+
+    IdRef  ->  CELLPOS '(' . RealExp ')'   (regla 32)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 67
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 41
+
+    Function  ->  BINARY_FUNC '(' . RealExp ',' RealExp ')'   (regla 49)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 68
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 42
+
+    Function  ->  BINARY_FUNC_RANDOM '(' . RealExp ',' RealExp ')'   (regla 53)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 69
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 43
+
+    Function  ->  COND3_FUNC '(' . BoolExp ',' RealExp ',' RealExp ')'   (regla 54)
+
+    NOT 	desplazar e ir al estado 70
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    BOOL	desplazar e ir al estado 71
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    COND_REAL_FUNC	desplazar e ir al estado 72
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 73
+
+    BoolExp	ir al estado 74
+    RealRelExp	ir al estado 75
+    RealExp	ir al estado 76
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 44
+
+    Function  ->  COND4_FUNC '(' . BoolExp ',' RealExp ',' RealExp ',' RealExp ')'   (regla 55)
+
+    NOT 	desplazar e ir al estado 70
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    BOOL	desplazar e ir al estado 71
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    COND_REAL_FUNC	desplazar e ir al estado 72
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 73
+
+    BoolExp	ir al estado 77
+    RealRelExp	ir al estado 75
+    RealExp	ir al estado 76
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 45
+
+    Function  ->  STATECOUNT '(' . RealExp OptParamPort ')'   (regla 47)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 78
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 46
+
+    Function  ->  UNARY_FUNC '(' . RealExp ')'   (regla 48)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 79
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 47
+
+    Function  ->  UNARY_FUNC_RANDOM '(' . RealExp ')'   (regla 52)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 80
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 48
+
+    PortSend  ->  PORTNAME OP_ASSIGN . RealExp ';'   (regla 42)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 81
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 49
+
+    Constant  ->  INT .   (regla 43)
+    Tupla  ->  INT . ',' INT Resto_nTupla   (regla 59)
+
+    ',' 	desplazar e ir al estado 82
+
+    $default	reduce usando la regla 43 (Constant)
+
+
+
+estado 50
+
+    IdRef  ->  SEND . '(' PORTNAME ',' RealExp ')'   (regla 31)
+
+    '(' 	desplazar e ir al estado 83
+
+
+
+estado 51
+
+    RealExp  ->  '(' RealExp . ')'   (regla 23)
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ')' 	desplazar e ir al estado 84
+
+
+
+estado 52
+
+    CellRef  ->  '(' Tupla .   (regla 58)
+
+    $default	reduce usando la regla 58 (CellRef)
+
+
+
+estado 53
+
+    RealExp  ->  RealExp OP_ADD_SUB . RealExp   (regla 24)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 85
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 54
+
+    RealExp  ->  RealExp OP_MUL_DIV . RealExp   (regla 25)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 86
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 55
+
+    Resultado  ->  '{' RealExp '}' .   (regla 10)
+
+    $default	reduce usando la regla 10 (Resultado)
+
+
+
+estado 56
+
+    AssignResult  ->  '{' PortSendSet '}' .   (regla 7)
+
+    $default	reduce usando la regla 7 (AssignResult)
+
+
+
+estado 57
+
+    PortSend  ->  SEND . '(' PORTNAME ',' RealExp ')' ';'   (regla 41)
+
+    '(' 	desplazar e ir al estado 87
+
+
+
+estado 58
+
+    PortSendSet  ->  PortSend PortSendSet .   (regla 40)
+
+    $default	reduce usando la regla 40 (PortSendSet)
+
+
+
+estado 59
+
+    OptPortName  ->  PORTNAME .   (regla 35)
+
+    $default	reduce usando la regla 35 (OptPortName)
+
+
+
+estado 60
+
+    IdRef  ->  CellRef OptPortName .   (regla 26)
+
+    $default	reduce usando la regla 26 (IdRef)
+
+
+
+estado 61
+
+    IdRef  ->  STVAR_NAME .   (regla 33)
+    Assign  ->  STVAR_NAME . OP_ASSIGN RealExp ';'   (regla 38)
+
+    OP_ASSIGN	desplazar e ir al estado 88
+
+    $default	reduce usando la regla 33 (IdRef)
+
+
+
+estado 62
+
+    Rule  ->  AssignResult '{' AssignSet . '}' Resultado '{' BoolExp '}'   (regla 5)
+
+    '}' 	desplazar e ir al estado 89
+
+
+
+estado 63
+
+    AssignSet  ->  Assign . AssignSet   (regla 37)
+
+    STVAR_NAME	desplazar e ir al estado 90
+
+    $default	reduce usando la regla 36 (AssignSet)
+
+    AssignSet	ir al estado 91
+    Assign	ir al estado 63
+
+
+
+estado 64
+
+    Rule  ->  AssignResult Resultado '{' . BoolExp '}'   (regla 4)
+
+    NOT 	desplazar e ir al estado 70
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    BOOL	desplazar e ir al estado 71
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    COND_REAL_FUNC	desplazar e ir al estado 72
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 73
+
+    BoolExp	ir al estado 92
+    RealRelExp	ir al estado 75
+    RealExp	ir al estado 76
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 65
+
+    IdRef  ->  PORTREF '(' PORTNAME . ')'   (regla 30)
+
+    ')' 	desplazar e ir al estado 93
+
+
+
+estado 66
+
+    IdRef  ->  SEND '(' PORTNAME . ',' RealExp ')'   (regla 31)
+    PortSend  ->  SEND '(' PORTNAME . ',' RealExp ')' ';'   (regla 41)
+
+    ',' 	desplazar e ir al estado 94
+
+
+
+estado 67
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+    IdRef  ->  CELLPOS '(' RealExp . ')'   (regla 32)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ')' 	desplazar e ir al estado 95
+
+
+
+estado 68
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+    Function  ->  BINARY_FUNC '(' RealExp . ',' RealExp ')'   (regla 49)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ',' 	desplazar e ir al estado 96
+
+
+
+estado 69
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+    Function  ->  BINARY_FUNC_RANDOM '(' RealExp . ',' RealExp ')'   (regla 53)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ',' 	desplazar e ir al estado 97
+
+
+
+estado 70
+
+    BoolExp  ->  NOT . BoolExp   (regla 14)
+
+    NOT 	desplazar e ir al estado 70
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    BOOL	desplazar e ir al estado 71
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    COND_REAL_FUNC	desplazar e ir al estado 72
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 73
+
+    BoolExp	ir al estado 98
+    RealRelExp	ir al estado 75
+    RealExp	ir al estado 76
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 71
+
+    BoolExp  ->  BOOL .   (regla 11)
+
+    $default	reduce usando la regla 11 (BoolExp)
+
+
+
+estado 72
+
+    RealRelExp  ->  COND_REAL_FUNC . '(' RealExp ')'   (regla 21)
+
+    '(' 	desplazar e ir al estado 99
+
+
+
+estado 73
+
+    BoolExp  ->  '(' . BoolExp ')'   (regla 12)
+    RealExp  ->  '(' . RealExp ')'   (regla 23)
+    CellRef  ->  '(' . Tupla   (regla 58)
+
+    NOT 	desplazar e ir al estado 70
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 49
+    BOOL	desplazar e ir al estado 71
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    COND_REAL_FUNC	desplazar e ir al estado 72
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 73
+
+    BoolExp	ir al estado 100
+    RealRelExp	ir al estado 75
+    RealExp	ir al estado 101
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+    Tupla	ir al estado 52
+
+
+
+estado 74
+
+    BoolExp  ->  BoolExp . AND BoolExp   (regla 15)
+    BoolExp  ->  BoolExp . OR BoolExp   (regla 16)
+    BoolExp  ->  BoolExp . XOR BoolExp   (regla 17)
+    BoolExp  ->  BoolExp . IMP BoolExp   (regla 18)
+    BoolExp  ->  BoolExp . EQV BoolExp   (regla 19)
+    Function  ->  COND3_FUNC '(' BoolExp . ',' RealExp ',' RealExp ')'   (regla 54)
+
+    AND 	desplazar e ir al estado 102
+    OR  	desplazar e ir al estado 103
+    XOR 	desplazar e ir al estado 104
+    IMP 	desplazar e ir al estado 105
+    EQV 	desplazar e ir al estado 106
+    ',' 	desplazar e ir al estado 107
+
+
+
+estado 75
+
+    BoolExp  ->  RealRelExp .   (regla 13)
+
+    $default	reduce usando la regla 13 (BoolExp)
+
+
+
+estado 76
+
+    RealRelExp  ->  RealExp . OP_REL RealExp   (regla 20)
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+
+    OP_REL	desplazar e ir al estado 108
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+
+
+
+estado 77
+
+    BoolExp  ->  BoolExp . AND BoolExp   (regla 15)
+    BoolExp  ->  BoolExp . OR BoolExp   (regla 16)
+    BoolExp  ->  BoolExp . XOR BoolExp   (regla 17)
+    BoolExp  ->  BoolExp . IMP BoolExp   (regla 18)
+    BoolExp  ->  BoolExp . EQV BoolExp   (regla 19)
+    Function  ->  COND4_FUNC '(' BoolExp . ',' RealExp ',' RealExp ',' RealExp ')'   (regla 55)
+
+    AND 	desplazar e ir al estado 102
+    OR  	desplazar e ir al estado 103
+    XOR 	desplazar e ir al estado 104
+    IMP 	desplazar e ir al estado 105
+    EQV 	desplazar e ir al estado 106
+    ',' 	desplazar e ir al estado 109
+
+
+
+estado 78
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+    Function  ->  STATECOUNT '(' RealExp . OptParamPort ')'   (regla 47)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ',' 	desplazar e ir al estado 110
+
+    $default	reduce usando la regla 56 (OptParamPort)
+
+    OptParamPort	ir al estado 111
+
+
+
+estado 79
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+    Function  ->  UNARY_FUNC '(' RealExp . ')'   (regla 48)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ')' 	desplazar e ir al estado 112
+
+
+
+estado 80
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+    Function  ->  UNARY_FUNC_RANDOM '(' RealExp . ')'   (regla 52)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ')' 	desplazar e ir al estado 113
+
+
+
+estado 81
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+    PortSend  ->  PORTNAME OP_ASSIGN RealExp . ';'   (regla 42)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ';' 	desplazar e ir al estado 114
+
+
+
+estado 82
+
+    Tupla  ->  INT ',' . INT Resto_nTupla   (regla 59)
+
+    INT 	desplazar e ir al estado 115
+
+
+
+estado 83
+
+    IdRef  ->  SEND '(' . PORTNAME ',' RealExp ')'   (regla 31)
+
+    PORTNAME	desplazar e ir al estado 116
+
+
+
+estado 84
+
+    RealExp  ->  '(' RealExp ')' .   (regla 23)
+
+    $default	reduce usando la regla 23 (RealExp)
+
+
+
+estado 85
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp OP_ADD_SUB RealExp .   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+
+    OP_MUL_DIV	desplazar e ir al estado 54
+
+    $default	reduce usando la regla 24 (RealExp)
+
+
+
+estado 86
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+    RealExp  ->  RealExp OP_MUL_DIV RealExp .   (regla 25)
+
+
+    $default	reduce usando la regla 25 (RealExp)
+
+
+
+estado 87
+
+    PortSend  ->  SEND '(' . PORTNAME ',' RealExp ')' ';'   (regla 41)
+
+    PORTNAME	desplazar e ir al estado 117
+
+
+
+estado 88
+
+    Assign  ->  STVAR_NAME OP_ASSIGN . RealExp ';'   (regla 38)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 118
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 89
+
+    Rule  ->  AssignResult '{' AssignSet '}' . Resultado '{' BoolExp '}'   (regla 5)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    UNDEF	desplazar e ir al estado 3
+    CONSTFUNC	desplazar e ir al estado 4
+    '{' 	desplazar e ir al estado 119
+
+    Resultado	ir al estado 120
+    Constant	ir al estado 10
+
+
+
+estado 90
+
+    Assign  ->  STVAR_NAME . OP_ASSIGN RealExp ';'   (regla 38)
+
+    OP_ASSIGN	desplazar e ir al estado 88
+
+
+
+estado 91
+
+    AssignSet  ->  Assign AssignSet .   (regla 37)
+
+    $default	reduce usando la regla 37 (AssignSet)
+
+
+
+estado 92
+
+    Rule  ->  AssignResult Resultado '{' BoolExp . '}'   (regla 4)
+    BoolExp  ->  BoolExp . AND BoolExp   (regla 15)
+    BoolExp  ->  BoolExp . OR BoolExp   (regla 16)
+    BoolExp  ->  BoolExp . XOR BoolExp   (regla 17)
+    BoolExp  ->  BoolExp . IMP BoolExp   (regla 18)
+    BoolExp  ->  BoolExp . EQV BoolExp   (regla 19)
+
+    AND 	desplazar e ir al estado 102
+    OR  	desplazar e ir al estado 103
+    XOR 	desplazar e ir al estado 104
+    IMP 	desplazar e ir al estado 105
+    EQV 	desplazar e ir al estado 106
+    '}' 	desplazar e ir al estado 121
+
+
+
+estado 93
+
+    IdRef  ->  PORTREF '(' PORTNAME ')' .   (regla 30)
+
+    $default	reduce usando la regla 30 (IdRef)
+
+
+
+estado 94
+
+    IdRef  ->  SEND '(' PORTNAME ',' . RealExp ')'   (regla 31)
+    PortSend  ->  SEND '(' PORTNAME ',' . RealExp ')' ';'   (regla 41)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 122
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 95
+
+    IdRef  ->  CELLPOS '(' RealExp ')' .   (regla 32)
+
+    $default	reduce usando la regla 32 (IdRef)
+
+
+
+estado 96
+
+    Function  ->  BINARY_FUNC '(' RealExp ',' . RealExp ')'   (regla 49)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 123
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 97
+
+    Function  ->  BINARY_FUNC_RANDOM '(' RealExp ',' . RealExp ')'   (regla 53)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 124
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 98
+
+    BoolExp  ->  NOT BoolExp .   (regla 14)
+    BoolExp  ->  BoolExp . AND BoolExp   (regla 15)
+    BoolExp  ->  BoolExp . OR BoolExp   (regla 16)
+    BoolExp  ->  BoolExp . XOR BoolExp   (regla 17)
+    BoolExp  ->  BoolExp . IMP BoolExp   (regla 18)
+    BoolExp  ->  BoolExp . EQV BoolExp   (regla 19)
+
+
+    $default	reduce usando la regla 14 (BoolExp)
+
+
+
+estado 99
+
+    RealRelExp  ->  COND_REAL_FUNC '(' . RealExp ')'   (regla 21)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 125
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 100
+
+    BoolExp  ->  '(' BoolExp . ')'   (regla 12)
+    BoolExp  ->  BoolExp . AND BoolExp   (regla 15)
+    BoolExp  ->  BoolExp . OR BoolExp   (regla 16)
+    BoolExp  ->  BoolExp . XOR BoolExp   (regla 17)
+    BoolExp  ->  BoolExp . IMP BoolExp   (regla 18)
+    BoolExp  ->  BoolExp . EQV BoolExp   (regla 19)
+
+    AND 	desplazar e ir al estado 102
+    OR  	desplazar e ir al estado 103
+    XOR 	desplazar e ir al estado 104
+    IMP 	desplazar e ir al estado 105
+    EQV 	desplazar e ir al estado 106
+    ')' 	desplazar e ir al estado 126
+
+
+
+estado 101
+
+    RealRelExp  ->  RealExp . OP_REL RealExp   (regla 20)
+    RealExp  ->  '(' RealExp . ')'   (regla 23)
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+
+    OP_REL	desplazar e ir al estado 108
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ')' 	desplazar e ir al estado 84
+
+
+
+estado 102
+
+    BoolExp  ->  BoolExp AND . BoolExp   (regla 15)
+
+    NOT 	desplazar e ir al estado 70
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    BOOL	desplazar e ir al estado 71
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    COND_REAL_FUNC	desplazar e ir al estado 72
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 73
+
+    BoolExp	ir al estado 127
+    RealRelExp	ir al estado 75
+    RealExp	ir al estado 76
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 103
+
+    BoolExp  ->  BoolExp OR . BoolExp   (regla 16)
+
+    NOT 	desplazar e ir al estado 70
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    BOOL	desplazar e ir al estado 71
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    COND_REAL_FUNC	desplazar e ir al estado 72
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 73
+
+    BoolExp	ir al estado 128
+    RealRelExp	ir al estado 75
+    RealExp	ir al estado 76
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 104
+
+    BoolExp  ->  BoolExp XOR . BoolExp   (regla 17)
+
+    NOT 	desplazar e ir al estado 70
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    BOOL	desplazar e ir al estado 71
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    COND_REAL_FUNC	desplazar e ir al estado 72
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 73
+
+    BoolExp	ir al estado 129
+    RealRelExp	ir al estado 75
+    RealExp	ir al estado 76
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 105
+
+    BoolExp  ->  BoolExp IMP . BoolExp   (regla 18)
+
+    NOT 	desplazar e ir al estado 70
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    BOOL	desplazar e ir al estado 71
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    COND_REAL_FUNC	desplazar e ir al estado 72
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 73
+
+    BoolExp	ir al estado 130
+    RealRelExp	ir al estado 75
+    RealExp	ir al estado 76
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 106
+
+    BoolExp  ->  BoolExp EQV . BoolExp   (regla 19)
+
+    NOT 	desplazar e ir al estado 70
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    BOOL	desplazar e ir al estado 71
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    COND_REAL_FUNC	desplazar e ir al estado 72
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 73
+
+    BoolExp	ir al estado 131
+    RealRelExp	ir al estado 75
+    RealExp	ir al estado 76
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 107
+
+    Function  ->  COND3_FUNC '(' BoolExp ',' . RealExp ',' RealExp ')'   (regla 54)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 132
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 108
+
+    RealRelExp  ->  RealExp OP_REL . RealExp   (regla 20)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 133
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 109
+
+    Function  ->  COND4_FUNC '(' BoolExp ',' . RealExp ',' RealExp ',' RealExp ')'   (regla 55)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 134
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 110
+
+    OptParamPort  ->  ',' . PORTNAME   (regla 57)
+
+    PORTNAME	desplazar e ir al estado 135
+
+
+
+estado 111
+
+    Function  ->  STATECOUNT '(' RealExp OptParamPort . ')'   (regla 47)
+
+    ')' 	desplazar e ir al estado 136
+
+
+
+estado 112
+
+    Function  ->  UNARY_FUNC '(' RealExp ')' .   (regla 48)
+
+    $default	reduce usando la regla 48 (Function)
+
+
+
+estado 113
+
+    Function  ->  UNARY_FUNC_RANDOM '(' RealExp ')' .   (regla 52)
+
+    $default	reduce usando la regla 52 (Function)
+
+
+
+estado 114
+
+    PortSend  ->  PORTNAME OP_ASSIGN RealExp ';' .   (regla 42)
+
+    $default	reduce usando la regla 42 (PortSend)
+
+
+
+estado 115
+
+    Tupla  ->  INT ',' INT . Resto_nTupla   (regla 59)
+
+    ')' 	desplazar e ir al estado 137
+    ',' 	desplazar e ir al estado 138
+
+    Resto_nTupla	ir al estado 139
+
+
+
+estado 116
+
+    IdRef  ->  SEND '(' PORTNAME . ',' RealExp ')'   (regla 31)
+
+    ',' 	desplazar e ir al estado 140
+
+
+
+estado 117
+
+    PortSend  ->  SEND '(' PORTNAME . ',' RealExp ')' ';'   (regla 41)
+
+    ',' 	desplazar e ir al estado 141
+
+
+
+estado 118
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+    Assign  ->  STVAR_NAME OP_ASSIGN RealExp . ';'   (regla 38)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ';' 	desplazar e ir al estado 142
+
+
+
+estado 119
+
+    Resultado  ->  '{' . RealExp '}'   (regla 10)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 28
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 120
+
+    Rule  ->  AssignResult '{' AssignSet '}' Resultado . '{' BoolExp '}'   (regla 5)
+
+    '{' 	desplazar e ir al estado 143
+
+
+
+estado 121
+
+    Rule  ->  AssignResult Resultado '{' BoolExp '}' .   (regla 4)
+
+    $default	reduce usando la regla 4 (Rule)
+
+
+
+estado 122
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+    IdRef  ->  SEND '(' PORTNAME ',' RealExp . ')'   (regla 31)
+    PortSend  ->  SEND '(' PORTNAME ',' RealExp . ')' ';'   (regla 41)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ')' 	desplazar e ir al estado 144
+
+
+
+estado 123
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+    Function  ->  BINARY_FUNC '(' RealExp ',' RealExp . ')'   (regla 49)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ')' 	desplazar e ir al estado 145
+
+
+
+estado 124
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+    Function  ->  BINARY_FUNC_RANDOM '(' RealExp ',' RealExp . ')'   (regla 53)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ')' 	desplazar e ir al estado 146
+
+
+
+estado 125
+
+    RealRelExp  ->  COND_REAL_FUNC '(' RealExp . ')'   (regla 21)
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ')' 	desplazar e ir al estado 147
+
+
+
+estado 126
+
+    BoolExp  ->  '(' BoolExp ')' .   (regla 12)
+
+    $default	reduce usando la regla 12 (BoolExp)
+
+
+
+estado 127
+
+    BoolExp  ->  BoolExp . AND BoolExp   (regla 15)
+    BoolExp  ->  BoolExp AND BoolExp .   (regla 15)
+    BoolExp  ->  BoolExp . OR BoolExp   (regla 16)
+    BoolExp  ->  BoolExp . XOR BoolExp   (regla 17)
+    BoolExp  ->  BoolExp . IMP BoolExp   (regla 18)
+    BoolExp  ->  BoolExp . EQV BoolExp   (regla 19)
+
+
+    $default	reduce usando la regla 15 (BoolExp)
+
+
+
+estado 128
+
+    BoolExp  ->  BoolExp . AND BoolExp   (regla 15)
+    BoolExp  ->  BoolExp . OR BoolExp   (regla 16)
+    BoolExp  ->  BoolExp OR BoolExp .   (regla 16)
+    BoolExp  ->  BoolExp . XOR BoolExp   (regla 17)
+    BoolExp  ->  BoolExp . IMP BoolExp   (regla 18)
+    BoolExp  ->  BoolExp . EQV BoolExp   (regla 19)
+
+
+    $default	reduce usando la regla 16 (BoolExp)
+
+
+
+estado 129
+
+    BoolExp  ->  BoolExp . AND BoolExp   (regla 15)
+    BoolExp  ->  BoolExp . OR BoolExp   (regla 16)
+    BoolExp  ->  BoolExp . XOR BoolExp   (regla 17)
+    BoolExp  ->  BoolExp XOR BoolExp .   (regla 17)
+    BoolExp  ->  BoolExp . IMP BoolExp   (regla 18)
+    BoolExp  ->  BoolExp . EQV BoolExp   (regla 19)
+
+
+    $default	reduce usando la regla 17 (BoolExp)
+
+
+
+estado 130
+
+    BoolExp  ->  BoolExp . AND BoolExp   (regla 15)
+    BoolExp  ->  BoolExp . OR BoolExp   (regla 16)
+    BoolExp  ->  BoolExp . XOR BoolExp   (regla 17)
+    BoolExp  ->  BoolExp . IMP BoolExp   (regla 18)
+    BoolExp  ->  BoolExp IMP BoolExp .   (regla 18)
+    BoolExp  ->  BoolExp . EQV BoolExp   (regla 19)
+
+
+    $default	reduce usando la regla 18 (BoolExp)
+
+
+
+estado 131
+
+    BoolExp  ->  BoolExp . AND BoolExp   (regla 15)
+    BoolExp  ->  BoolExp . OR BoolExp   (regla 16)
+    BoolExp  ->  BoolExp . XOR BoolExp   (regla 17)
+    BoolExp  ->  BoolExp . IMP BoolExp   (regla 18)
+    BoolExp  ->  BoolExp . EQV BoolExp   (regla 19)
+    BoolExp  ->  BoolExp EQV BoolExp .   (regla 19)
+
+
+    $default	reduce usando la regla 19 (BoolExp)
+
+
+
+estado 132
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+    Function  ->  COND3_FUNC '(' BoolExp ',' RealExp . ',' RealExp ')'   (regla 54)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ',' 	desplazar e ir al estado 148
+
+
+
+estado 133
+
+    RealRelExp  ->  RealExp OP_REL RealExp .   (regla 20)
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+
+    $default	reduce usando la regla 20 (RealRelExp)
+
+
+
+estado 134
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+    Function  ->  COND4_FUNC '(' BoolExp ',' RealExp . ',' RealExp ',' RealExp ')'   (regla 55)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ',' 	desplazar e ir al estado 149
+
+
+
+estado 135
+
+    OptParamPort  ->  ',' PORTNAME .   (regla 57)
+
+    $default	reduce usando la regla 57 (OptParamPort)
+
+
+
+estado 136
+
+    Function  ->  STATECOUNT '(' RealExp OptParamPort ')' .   (regla 47)
+
+    $default	reduce usando la regla 47 (Function)
+
+
+
+estado 137
+
+    Resto_nTupla  ->  ')' .   (regla 61)
+
+    $default	reduce usando la regla 61 (Resto_nTupla)
+
+
+
+estado 138
+
+    Resto_nTupla  ->  ',' . INT Resto_nTupla   (regla 60)
+
+    INT 	desplazar e ir al estado 150
+
+
+
+estado 139
+
+    Tupla  ->  INT ',' INT Resto_nTupla .   (regla 59)
+
+    $default	reduce usando la regla 59 (Tupla)
+
+
+
+estado 140
+
+    IdRef  ->  SEND '(' PORTNAME ',' . RealExp ')'   (regla 31)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 151
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 141
+
+    PortSend  ->  SEND '(' PORTNAME ',' . RealExp ')' ';'   (regla 41)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 152
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 142
+
+    Assign  ->  STVAR_NAME OP_ASSIGN RealExp ';' .   (regla 38)
+
+    $default	reduce usando la regla 38 (Assign)
+
+
+
+estado 143
+
+    Rule  ->  AssignResult '{' AssignSet '}' Resultado '{' . BoolExp '}'   (regla 5)
+
+    NOT 	desplazar e ir al estado 70
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    BOOL	desplazar e ir al estado 71
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    COND_REAL_FUNC	desplazar e ir al estado 72
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 73
+
+    BoolExp	ir al estado 153
+    RealRelExp	ir al estado 75
+    RealExp	ir al estado 76
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 144
+
+    IdRef  ->  SEND '(' PORTNAME ',' RealExp ')' .   (regla 31)
+    PortSend  ->  SEND '(' PORTNAME ',' RealExp ')' . ';'   (regla 41)
+
+    ';' 	desplazar e ir al estado 154
+
+    $default	reduce usando la regla 31 (IdRef)
+
+
+
+estado 145
+
+    Function  ->  BINARY_FUNC '(' RealExp ',' RealExp ')' .   (regla 49)
+
+    $default	reduce usando la regla 49 (Function)
+
+
+
+estado 146
+
+    Function  ->  BINARY_FUNC_RANDOM '(' RealExp ',' RealExp ')' .   (regla 53)
+
+    $default	reduce usando la regla 53 (Function)
+
+
+
+estado 147
+
+    RealRelExp  ->  COND_REAL_FUNC '(' RealExp ')' .   (regla 21)
+
+    $default	reduce usando la regla 21 (RealRelExp)
+
+
+
+estado 148
+
+    Function  ->  COND3_FUNC '(' BoolExp ',' RealExp ',' . RealExp ')'   (regla 54)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 155
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 149
+
+    Function  ->  COND4_FUNC '(' BoolExp ',' RealExp ',' . RealExp ',' RealExp ')'   (regla 55)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 156
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 150
+
+    Resto_nTupla  ->  ',' INT . Resto_nTupla   (regla 60)
+
+    ')' 	desplazar e ir al estado 137
+    ',' 	desplazar e ir al estado 138
+
+    Resto_nTupla	ir al estado 157
+
+
+
+estado 151
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+    IdRef  ->  SEND '(' PORTNAME ',' RealExp . ')'   (regla 31)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ')' 	desplazar e ir al estado 158
+
+
+
+estado 152
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+    PortSend  ->  SEND '(' PORTNAME ',' RealExp . ')' ';'   (regla 41)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ')' 	desplazar e ir al estado 159
+
+
+
+estado 153
+
+    Rule  ->  AssignResult '{' AssignSet '}' Resultado '{' BoolExp . '}'   (regla 5)
+    BoolExp  ->  BoolExp . AND BoolExp   (regla 15)
+    BoolExp  ->  BoolExp . OR BoolExp   (regla 16)
+    BoolExp  ->  BoolExp . XOR BoolExp   (regla 17)
+    BoolExp  ->  BoolExp . IMP BoolExp   (regla 18)
+    BoolExp  ->  BoolExp . EQV BoolExp   (regla 19)
+
+    AND 	desplazar e ir al estado 102
+    OR  	desplazar e ir al estado 103
+    XOR 	desplazar e ir al estado 104
+    IMP 	desplazar e ir al estado 105
+    EQV 	desplazar e ir al estado 106
+    '}' 	desplazar e ir al estado 160
+
+
+
+estado 154
+
+    PortSend  ->  SEND '(' PORTNAME ',' RealExp ')' ';' .   (regla 41)
+
+    $default	reduce usando la regla 41 (PortSend)
+
+
+
+estado 155
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+    Function  ->  COND3_FUNC '(' BoolExp ',' RealExp ',' RealExp . ')'   (regla 54)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ')' 	desplazar e ir al estado 161
+
+
+
+estado 156
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+    Function  ->  COND4_FUNC '(' BoolExp ',' RealExp ',' RealExp . ',' RealExp ')'   (regla 55)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ',' 	desplazar e ir al estado 162
+
+
+
+estado 157
+
+    Resto_nTupla  ->  ',' INT Resto_nTupla .   (regla 60)
+
+    $default	reduce usando la regla 60 (Resto_nTupla)
+
+
+
+estado 158
+
+    IdRef  ->  SEND '(' PORTNAME ',' RealExp ')' .   (regla 31)
+
+    $default	reduce usando la regla 31 (IdRef)
+
+
+
+estado 159
+
+    PortSend  ->  SEND '(' PORTNAME ',' RealExp ')' . ';'   (regla 41)
+
+    ';' 	desplazar e ir al estado 154
+
+
+
+estado 160
+
+    Rule  ->  AssignResult '{' AssignSet '}' Resultado '{' BoolExp '}' .   (regla 5)
+
+    $default	reduce usando la regla 5 (Rule)
+
+
+
+estado 161
+
+    Function  ->  COND3_FUNC '(' BoolExp ',' RealExp ',' RealExp ')' .   (regla 54)
+
+    $default	reduce usando la regla 54 (Function)
+
+
+
+estado 162
+
+    Function  ->  COND4_FUNC '(' BoolExp ',' RealExp ',' RealExp ',' . RealExp ')'   (regla 55)
+
+    REAL	desplazar e ir al estado 1
+    INT 	desplazar e ir al estado 2
+    COUNT	desplazar e ir al estado 11
+    UNDEF	desplazar e ir al estado 12
+    CONSTFUNC	desplazar e ir al estado 4
+    WITHOUT_PARAM_FUNC_TIME	desplazar e ir al estado 13
+    STVAR_NAME	desplazar e ir al estado 14
+    WITHOUT_PARAM_FUNC_RANDOM	desplazar e ir al estado 15
+    PORTREF	desplazar e ir al estado 16
+    SEND	desplazar e ir al estado 50
+    CELLPOS	desplazar e ir al estado 18
+    BINARY_FUNC	desplazar e ir al estado 19
+    BINARY_FUNC_RANDOM	desplazar e ir al estado 20
+    COND3_FUNC	desplazar e ir al estado 21
+    COND4_FUNC	desplazar e ir al estado 22
+    STATECOUNT	desplazar e ir al estado 23
+    UNARY_FUNC	desplazar e ir al estado 24
+    UNARY_FUNC_RANDOM	desplazar e ir al estado 25
+    '(' 	desplazar e ir al estado 27
+
+    RealExp	ir al estado 163
+    IdRef	ir al estado 29
+    Constant	ir al estado 32
+    Function	ir al estado 33
+    CellRef	ir al estado 34
+
+
+
+estado 163
+
+    RealExp  ->  RealExp . OP_ADD_SUB RealExp   (regla 24)
+    RealExp  ->  RealExp . OP_MUL_DIV RealExp   (regla 25)
+    Function  ->  COND4_FUNC '(' BoolExp ',' RealExp ',' RealExp ',' RealExp . ')'   (regla 55)
+
+    OP_ADD_SUB	desplazar e ir al estado 53
+    OP_MUL_DIV	desplazar e ir al estado 54
+    ')' 	desplazar e ir al estado 164
+
+
+
+estado 164
+
+    Function  ->  COND4_FUNC '(' BoolExp ',' RealExp ',' RealExp ',' RealExp ')' .   (regla 55)
+
+    $default	reduce usando la regla 55 (Function)
+
+
+
+estado 165
+
+    $   	ir al estado 166
+
+
+
+estado 166
+
+    $   	ir al estado 167
+
+
+
+estado 167
+
+    $default	aceptar
+
+

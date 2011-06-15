@@ -1,0 +1,329 @@
+\documentclass[11pt]{report}
+
+\usepackage{alltt,color,fullpage,psfig-dvips}
+
+\newcommand{\version}{1.0}
+
+\begin{document}
+
+\title{
+\textbf{RAID}\\
+A {\sc warped} simulation kernel application\\
+(Documentation for version \version)}
+
+\author{
+\emph{Christopher H. Young}, \emph{Radharamanan Radhakrishnan} and \emph{Philip A.  Wilsey} \\
+Computer Architecture Design Laboratory \\
+Dept of ECECS, PO Box 210030 \\
+Cincinnati, OH  45221--0030 \\
+\texttt{warped@ececs.uc.edu}
+}
+
+\date{}
+
+\maketitle
+
+\vspace*{6in}
+
+\noindent
+Copyright $\copyright$ 1995--1999 The University of Cincinnati.  All
+rights reserved.  
+
+\bigskip
+
+\noindent
+Published by the University of Cincinnati \\
+Dept of ECECS, PO Box 210030 \\
+Cincinnati, OH  45221--0030 USA 
+
+\bigskip
+
+\noindent
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+\medskip
+\noindent
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+\medskip
+\noindent
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.
+
+\newpage
+
+\chapter{Introduction}
+
+This document describes the RAID-5 Disk Array application model that is
+distributed with the {\sc warped} project.  RAID Disk Arrays are a method
+that provides a vast array of storage by using a Redundant Array of
+Inexpensive Disks to provide storage with a higher I/O performance than
+several large expensive disks.  This application incorporates a flexible
+model of a RAID Disk Array using any one of three possible disk drives.
+This application can be configured in various sizes of disk arrays to be
+studied.  More precisely, a C program generates code to model various
+configurations of disk arrays and request generators. 
+
+The RAID simulation model models the interactions of several processes
+with a level 5 RAID Disk Array composed of one of 3 possible disks,
+namely:
+\begin{itemize}
+\item
+a Lighting Disk modeled after the IBM 0661 3.25 inch SCSI disk drive
+\item
+a Fujitsu disk M2652H/S 5.25 inch 1.8GB SCSI, and
+\item
+a future disk that is an extrapolation from the Fujitsu disk's
+parameters. 
+\end{itemize}
+Explanations of these disks and their parameters can be found in the
+SIGMETRICS '93 and ASPLOS '91 papers by Lee and Katz.
+
+The program provided in the {\sc warped} distribution creates a RAID
+simulation with the simulation objects distributed uniformly among the
+LPs. This program creates and partitions an arbitrarily sized simulation
+of processes, forks, and disks. A configuration file (described below)
+is used to control the generation of simulation objects and the number
+of requests issued by the source processes to the disks. After reading
+the configuration file, each LP will dynamically allocate each
+object. The number of each type of object allocated on an LP will be an
+integer division of the the total number and the number of LPs in the
+simulation. The last LP will contain more objects of that type if the
+numbers are not evenly divisible. Thus, if 5 source processes are to be
+simulated on 4 LPs then each LP will have 1 source process and the last
+LP will have 2 source processes.
+
+The {\sc warped} simulator uses the MPI message protocol.  Thus, in order
+to partition the simulation across several workstations, a file called
+"procgroup" is used to identify the machines that will be used in the
+simulation.  This file contains the addresses for each workstation, the
+full path to the executable file for the simulation, and the number of
+copies that each workstation will startup.  An example "procgroup" is
+given below.
+
+\begin{verbatim}
+procgroup :
+
+m1.ece.uc.edu 0 /home/username/warped/RAID/RAID_EXEC
+m2.ece.uc.edu 1 /home/username/warped/RAID/RAID_EXEC
+m3.ece.uc.edu 1 /home/username/warped/RAID/RAID_EXEC
+m4.ece.uc.edu 1 /home/username/warped/RAID/RAID_EXEC
+\end{verbatim}
+
+In this example a four process simulation is being run on four different
+workstations: m1, m2, m3, and m4 with each one executing one copy of the
+executable "RAID\_EXEC".  The 0 first line of the "procgroup" file
+specifies that machine m1 is starting the simulation.
+
+NOTE: specifying that multiple copies should be started on a particular
+machine does not work at this point in time, so all but one of the
+procgroup entries should have a 1 in the second field.
+
+\section{RAID Config}
+
+The RAID configuration file contains the parameters for the RAID
+simulation in the following order:
+
+\begin{itemize}
+\item
+the number of source processes to generate the requests,
+\item
+the number of fork processes to route the request, 
+\item
+the number of disks in the disk array,
+\item
+the number of tokens to be generated by each process, and
+\item
+the number of LPs.
+\end{itemize}
+
+The RAID configuration file should be named "RAID.config", and there
+should be a link, called RAID.config, to this file in the users top
+level directory.  Here is an example of a configuration file which will
+simulate 30 processes each sending 10 tokens, 4 fork objects routing the
+requests, which route the requests to 10 disks, and will simulate on
+4 LPs.
+
+\begin{verbatim}
+Example RAID.config:
+
+30
+4
+10
+10
+4
+\end{verbatim}
+
+Note: In order to partition the simulation across workstations, a file
+called "procgroup" must exist the same directory as the executable
+file.
+
+\chapter{RAID Processes}
+
+A process generates requests for the RAID Array.  Each request is for a
+stripe of random access type (r/w), length, and location.  After sending
+the message, the process is assumed to be suspended until all of the
+request messages (including parity requests) are received.  After all
+messages have been received then the process generates a new request
+after some random delay.
+
+The process requires the following information to be passed into its
+constructor:
+
+\begin{itemize}
+\item
+A unique identifier.
+
+\item
+A name string. 
+
+\item
+The id of a fork to process its requests.
+
+\item
+The number of disks in the simulation.
+
+\item
+The type of disks in the RAID array.
+
+\item
+The number of requests it should generate.
+
+\end{itemize}
+
+The process also has a function "setDistribution" which sets the
+distribution for the time delay between the completion of a request and
+the next request.
+
+\chapter{RAID Forks}
+
+A fork takes a request from a source process and breaks it up into
+individual requests for each disk of the array, calculates the number of
+parity requests that are needed, and forwards these requests to the
+disks.  A fork will first calculate the number of parity requests that
+are needed by calculating the parity destination for each request.
+Duplicate requests are found by comparing the parity request for the
+current message to the request for the last message.
+
+The current model is for a RAID Level 5 Disk Array with left--symmetric
+parity placement.  RAID Level 5 distributes the parity information
+across the disk array, so no disk contains the entire parity
+information.  The left--Symmetric parity placement policy places the
+parity information for the n parity stripes units in a round--robin
+fashion starting from the last disk.  An example for 4 disks is shown
+below.
+
+\begin{verbatim}
+| 0  | 1  | 2  | P  |
+| 3  | 4  | P  | 5  |
+| 6  | P  | 7  | 8  |
+| P  | 9  | 10 | 11 |
+| 12 | 13 | 14 | P  |
+\end{verbatim}
+
+Each number represents a stripe unit, and P represents parity
+information.  Each row represents a stripe of data along with the parity
+information.  Each column represents the data on a single disk.
+
+The fork requires the following information to be passed into its
+constructor:
+\begin{itemize}
+
+\item
+A unique identifier.
+
+\item
+A name string. 
+
+\item
+The number of disks in the simulation.
+
+\item
+The number processes in the simulation.
+
+\item
+The id of the first disk in the simulation.
+
+\end{itemize}
+
+NOTE: The last two items are used determine by the fork to determine
+disk identifiers for routing the requests. Figure~\ref{fig:raid_fig}
+illustrates a typical RAID example. The example has 16 sources routing
+requests through a single fork to 10 different disks.
+
+\begin{figure}
+\centerline{\psfig{figure=figures/RAID_fig.ps,width=6in,silent=}}
+\caption{An example RAID model}\label{fig:raid_fig}
+\end{figure}
+
+\chapter{RAID Disks}
+
+A Disk takes the request and seeks to the proper cylinder using a model
+of the seek time calculated found in the papers by Lee and Katz.  The
+current model ignores the sector information and assumes that half the
+time of a single rotation is needed to position for the sector to appear
+under the head.
+
+The disk requires the following information to be passed into its
+constructor:
+
+\begin{itemize}
+
+\item
+A unique identifier.
+
+\item
+A name string. 
+
+\item
+The type of disk to be simulated.
+
+\end{itemize}
+
+
+\chapter*{Acknowledgements}
+This research has been conducted with the participation of many
+investigators.  While not an complete list, the following individuals
+have made notable direct and/or indirect contributions to this effort
+(in alphabetical order):
+Perry Alexander,
+Scott Bilik,
+Harold Carter,
+Dale E. Martin,
+David A. Charley,
+Girindra D. Sharma,
+Praveen Chawla,
+Debra A. Hensgen
+John Hines,
+Balakrishnan Kannikeswaran,
+Venkatram Krishnaswamy,
+Lantz Moore,
+Avinash Palaniswamy,
+John Penix,
+Radharamanan Radhakrishnan,
+Dhananjai Madhava Rao, and
+Raghunandan Rajan.
+
+We wish to express our sincerest gratitude for the time that you spent
+reviewing and commenting on our designs.
+\\
+\\
+This research was supported in part by the Advanced Research Projects
+Agency, monitored by the Department of Justice under contract number
+J--FBI--93--116.  In addition, we benefited greatly from the technical
+support and guidance by the ARPA and DOJ program managers, notably: Bob
+Parker, John Hoyt, and Lt. Col. John Toole.  Without this support and
+interaction, the work documented in this report would not have been
+possible.  Thank you.
+
+\end{document}
+
+
+
+
+

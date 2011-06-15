@@ -1,0 +1,241 @@
+#-*-makefile-*-
+export
+
+CXX = g++
+
+TOP = ..
+TWDIR = $(TOP)/src
+TWOBJ = $(TWDIR)/obj
+RNDDIR = $(TOP)/rnd
+RNDOBJ = $(RNDDIR)/obj
+QDIR = $(TOP)/objectLib
+QOBJ = $(QDIR)/obj
+
+SIMOBJ = obj
+
+MPIDIR = /usr/local/mpich-1.2.0
+
+CPPFLAGS = + -I../src -I$(QDIR) -I$(MPIDIR)/include -I../../common/include -DUSE_KERNEL_VTIME -DMPI
+CXXFLAGS = -g -Wall
+LDFLAGS = -L$(MPIDIR)/lib/LINUX/ch_p4
+LOADLIBES = -lmpich -lnsl -lm
+DEPENDINC = -I/usr/include/g++
+
+SIMSRCS = main.cc\
+	PoliceSourceObject.cc\
+	PoliceForkObject.cc\
+	PoliceSinkObject.cc\
+	PoliceServerObject.cc\
+	PoliceSourceState.cc \
+	PoliceForkState.cc 
+
+SIMOBJS = $(SIMOBJ)/main.o\
+	$(SIMOBJ)/PoliceSourceObject.o\
+	$(SIMOBJ)/PoliceForkObject.o\
+	$(SIMOBJ)/PoliceSinkObject.o\
+	$(SIMOBJ)/PoliceServerObject.o \
+	$(SIMOBJ)/PoliceSourceState.o \
+	$(SIMOBJ)/PoliceForkState.o
+
+.PHONY: $(TWOBJ)/libTW.a
+.PHONY: $(QOBJ)/libQ.a
+
+all: $(SIMOBJ) police $(RNDOBJ)/libRnd.a
+
+#Just build a normal executable
+police: $(SIMOBJS) $(QOBJ)/libQ.a $(TWOBJ)/libTW.a $(RNDOBJ)/libRnd.a
+	$(CXX) $^\
+	$(LDFLAGS) $(LOADLIBES)\
+	-o $@
+
+police.pure: $(SIMOBJS) $(QOBJ)/libQ.a $(TWOBJ)/libTW.a $(RNDOBJ)/libRnd.a
+	/local/packages/pure/bin/purify -follow-child-processes=yes -view-file=../police/%v.%p.pv -g++ $(CXX) $^\
+	$(LDFLAGS) $(LOADLIBES)\
+	-o $@
+
+police.quant: $(SIMOBJS) $(QOBJ)/libQ.a $(TWOBJ)/libTW.a $(RNDOBJ)/libRnd.a
+	/local/packages/pure/bin/quantify\
+	$(CXX) $^\
+	$(LDFLAGS) $(LOADLIBES)\
+	-o $@
+
+$(TWOBJ)/libTW.a:
+	$(MAKE) -C $(TWDIR)
+
+$(RNDOBJ)/libRnd.a:
+	$(MAKE) -C $(RNDDIR)
+
+$(QOBJ)/libQ.a:
+	$(MAKE) -C $(QDIR)
+
+# rule to make all the process .o files
+$(SIMOBJ)/%.o : %.cc
+	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS)\
+		$< -o $@
+
+$(SIMOBJ):
+	mkdir $(SIMOBJ)
+
+depend:
+	makedepend -p$(SIMOBJ)/ -- $(CPPFLAGS) $(CXXFLAGS) -- $(DEPENDINC) $(SIMSRCS)
+	$(MAKE) -C $(TWDIR) depend
+	$(MAKE) -C $(QDIR) depend
+	$(MAKE) -C $(RNDDIR) depend
+
+cleandep:
+	$(TOP)/bin/cleandepend ./Makefile > ./Makefile.clean
+	mv ./Makefile.clean ./Makefile
+	$(MAKE) -C $(QDIR) cleandep
+	$(MAKE) -C $(RNDDIR) cleandep
+
+clean:	
+	rm -f *~ \#*\# police
+	rm -rf $(SIMOBJ)/
+	$(MAKE) -C $(QDIR) clean
+	$(MAKE) -C $(TWDIR) clean
+	$(MAKE) -C $(RNDDIR) clean
+
+it: clean depend dummy
+
+# DO NOT DELETE THIS LINE -- make depend depends on it.
+
+obj/main.o: /usr/include/g++/iostream.h /usr/include/g++/streambuf.h
+obj/main.o: /usr/include/libio.h /usr/include/features.h
+obj/main.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+obj/main.o: /usr/include/_G_config.h /usr/include/gnu/types.h
+obj/main.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+obj/main.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stdarg.h
+obj/main.o: ../objectLib/QueuingTypes.hh /usr/include/stdlib.h
+obj/main.o: /usr/include/sys/types.h /usr/include/time.h
+obj/main.o: /usr/include/endian.h /usr/include/bytesex.h
+obj/main.o: /usr/include/sys/select.h /usr/include/selectbits.h
+obj/main.o: /usr/include/alloca.h ../../common/include/BasicEvent.hh
+obj/main.o: PoliceSourceObject.hh ../rnd/MLCG.h ../rnd/RNG.h
+obj/main.o: /usr/include/assert.h /usr/include/math.h /usr/include/huge_val.h
+obj/main.o: /usr/include/mathcalls.h
+obj/main.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/float.h
+obj/main.o: ../rnd/Normal.h ../rnd/Random.h ../rnd/Poisson.h
+obj/main.o: ../rnd/Binomial.h ../rnd/Uniform.h ../rnd/NegExp.h
+obj/main.o: ../rnd/Random.h ../rnd/RndInt.h ../objectLib/SidTypes.hh
+obj/main.o: PoliceSourceState.hh ../rnd/ACG.h ../objectLib/SourceState.hh
+obj/main.o: ../../common/include/BasicState.hh
+obj/main.o: ../../common/include/SimulationObj.hh PoliceForkObject.hh
+obj/main.o: PoliceForkState.hh ../objectLib/ForkState.hh PoliceSinkObject.hh
+obj/main.o: ../objectLib/SinkState.hh PoliceServerObject.hh
+obj/main.o: PoliceServerState.hh ../objectLib/ServerState.hh
+obj/main.o: ../objectLib/SourceObject.hh ../objectLib/ForkObject.hh
+obj/main.o: ../objectLib/ServerObject.hh ../objectLib/DelayObject.hh
+obj/main.o: ../objectLib/SinkObject.hh /usr/local/mpich-1.2.0/include/mpi.h
+obj/main.o: /usr/local/mpich-1.2.0/include/mpidefs.h
+obj/main.o: /usr/local/mpich-1.2.0/include/mpio.h
+obj/main.o: /usr/local/mpich-1.2.0/include/mpi_errno.h
+obj/PoliceSourceObject.o: PoliceSourceObject.hh /usr/include/g++/iostream.h
+obj/PoliceSourceObject.o: /usr/include/g++/streambuf.h /usr/include/libio.h
+obj/PoliceSourceObject.o: /usr/include/features.h /usr/include/sys/cdefs.h
+obj/PoliceSourceObject.o: /usr/include/gnu/stubs.h /usr/include/_G_config.h
+obj/PoliceSourceObject.o: /usr/include/gnu/types.h
+obj/PoliceSourceObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+obj/PoliceSourceObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stdarg.h
+obj/PoliceSourceObject.o: ../rnd/MLCG.h ../rnd/RNG.h /usr/include/assert.h
+obj/PoliceSourceObject.o: /usr/include/math.h /usr/include/huge_val.h
+obj/PoliceSourceObject.o: /usr/include/mathcalls.h
+obj/PoliceSourceObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/float.h
+obj/PoliceSourceObject.o: ../rnd/Normal.h ../rnd/Random.h ../rnd/Poisson.h
+obj/PoliceSourceObject.o: ../rnd/Binomial.h ../rnd/Uniform.h ../rnd/NegExp.h
+obj/PoliceSourceObject.o: ../rnd/Random.h ../rnd/RndInt.h
+obj/PoliceSourceObject.o: ../objectLib/SidTypes.hh
+obj/PoliceSourceObject.o: ../objectLib/QueuingTypes.hh /usr/include/stdlib.h
+obj/PoliceSourceObject.o: /usr/include/sys/types.h /usr/include/time.h
+obj/PoliceSourceObject.o: /usr/include/endian.h /usr/include/bytesex.h
+obj/PoliceSourceObject.o: /usr/include/sys/select.h /usr/include/selectbits.h
+obj/PoliceSourceObject.o: /usr/include/alloca.h
+obj/PoliceSourceObject.o: ../../common/include/BasicEvent.hh
+obj/PoliceSourceObject.o: PoliceSourceState.hh ../rnd/ACG.h
+obj/PoliceSourceObject.o: ../objectLib/SourceState.hh
+obj/PoliceSourceObject.o: ../../common/include/BasicState.hh
+obj/PoliceSourceObject.o: ../../common/include/SimulationObj.hh
+obj/PoliceForkObject.o: PoliceForkObject.hh
+obj/PoliceForkObject.o: ../../common/include/SimulationObj.hh
+obj/PoliceForkObject.o: ../objectLib/QueuingTypes.hh /usr/include/stdlib.h
+obj/PoliceForkObject.o: /usr/include/features.h /usr/include/sys/cdefs.h
+obj/PoliceForkObject.o: /usr/include/gnu/stubs.h
+obj/PoliceForkObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+obj/PoliceForkObject.o: /usr/include/sys/types.h /usr/include/gnu/types.h
+obj/PoliceForkObject.o: /usr/include/time.h /usr/include/endian.h
+obj/PoliceForkObject.o: /usr/include/bytesex.h /usr/include/sys/select.h
+obj/PoliceForkObject.o: /usr/include/selectbits.h /usr/include/alloca.h
+obj/PoliceForkObject.o: ../../common/include/BasicEvent.hh PoliceForkState.hh
+obj/PoliceForkObject.o: ../objectLib/ForkState.hh ../rnd/MLCG.h ../rnd/RNG.h
+obj/PoliceForkObject.o: /usr/include/assert.h /usr/include/math.h
+obj/PoliceForkObject.o: /usr/include/huge_val.h /usr/include/mathcalls.h
+obj/PoliceForkObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/float.h
+obj/PoliceForkObject.o: /usr/include/_G_config.h
+obj/PoliceForkObject.o: ../../common/include/BasicState.hh
+obj/PoliceForkObject.o: ../objectLib/SidTypes.hh
+obj/PoliceSinkObject.o: PoliceSinkObject.hh
+obj/PoliceSinkObject.o: ../../common/include/SimulationObj.hh
+obj/PoliceSinkObject.o: ../objectLib/SinkState.hh
+obj/PoliceSinkObject.o: ../objectLib/QueuingTypes.hh /usr/include/stdlib.h
+obj/PoliceSinkObject.o: /usr/include/features.h /usr/include/sys/cdefs.h
+obj/PoliceSinkObject.o: /usr/include/gnu/stubs.h
+obj/PoliceSinkObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+obj/PoliceSinkObject.o: /usr/include/sys/types.h /usr/include/gnu/types.h
+obj/PoliceSinkObject.o: /usr/include/time.h /usr/include/endian.h
+obj/PoliceSinkObject.o: /usr/include/bytesex.h /usr/include/sys/select.h
+obj/PoliceSinkObject.o: /usr/include/selectbits.h /usr/include/alloca.h
+obj/PoliceSinkObject.o: ../../common/include/BasicEvent.hh
+obj/PoliceSinkObject.o: ../../common/include/BasicState.hh
+obj/PoliceServerObject.o: PoliceServerObject.hh /usr/include/g++/iostream.h
+obj/PoliceServerObject.o: /usr/include/g++/streambuf.h /usr/include/libio.h
+obj/PoliceServerObject.o: /usr/include/features.h /usr/include/sys/cdefs.h
+obj/PoliceServerObject.o: /usr/include/gnu/stubs.h /usr/include/_G_config.h
+obj/PoliceServerObject.o: /usr/include/gnu/types.h
+obj/PoliceServerObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+obj/PoliceServerObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stdarg.h
+obj/PoliceServerObject.o: ../objectLib/QueuingTypes.hh /usr/include/stdlib.h
+obj/PoliceServerObject.o: /usr/include/sys/types.h /usr/include/time.h
+obj/PoliceServerObject.o: /usr/include/endian.h /usr/include/bytesex.h
+obj/PoliceServerObject.o: /usr/include/sys/select.h /usr/include/selectbits.h
+obj/PoliceServerObject.o: /usr/include/alloca.h
+obj/PoliceServerObject.o: ../../common/include/BasicEvent.hh
+obj/PoliceServerObject.o: ../objectLib/SidTypes.hh
+obj/PoliceServerObject.o: ../../common/include/SimulationObj.hh
+obj/PoliceServerObject.o: PoliceServerState.hh ../objectLib/ServerState.hh
+obj/PoliceServerObject.o: ../rnd/MLCG.h ../rnd/RNG.h /usr/include/assert.h
+obj/PoliceServerObject.o: /usr/include/math.h /usr/include/huge_val.h
+obj/PoliceServerObject.o: /usr/include/mathcalls.h
+obj/PoliceServerObject.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/float.h
+obj/PoliceServerObject.o: ../../common/include/BasicState.hh ../rnd/Normal.h
+obj/PoliceServerObject.o: ../rnd/Random.h ../rnd/Poisson.h ../rnd/Binomial.h
+obj/PoliceServerObject.o: ../rnd/Uniform.h ../rnd/NegExp.h ../rnd/Random.h
+obj/PoliceSourceState.o: PoliceSourceState.hh ../rnd/ACG.h ../rnd/RNG.h
+obj/PoliceSourceState.o: /usr/include/assert.h /usr/include/features.h
+obj/PoliceSourceState.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+obj/PoliceSourceState.o: /usr/include/math.h /usr/include/huge_val.h
+obj/PoliceSourceState.o: /usr/include/mathcalls.h
+obj/PoliceSourceState.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/float.h
+obj/PoliceSourceState.o: /usr/include/_G_config.h /usr/include/gnu/types.h
+obj/PoliceSourceState.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+obj/PoliceSourceState.o: ../objectLib/QueuingTypes.hh /usr/include/stdlib.h
+obj/PoliceSourceState.o: /usr/include/sys/types.h /usr/include/time.h
+obj/PoliceSourceState.o: /usr/include/endian.h /usr/include/bytesex.h
+obj/PoliceSourceState.o: /usr/include/sys/select.h /usr/include/selectbits.h
+obj/PoliceSourceState.o: /usr/include/alloca.h
+obj/PoliceSourceState.o: ../../common/include/BasicEvent.hh
+obj/PoliceSourceState.o: ../objectLib/SourceState.hh ../rnd/MLCG.h
+obj/PoliceSourceState.o: ../../common/include/BasicState.hh
+obj/PoliceForkState.o: ../objectLib/ForkState.hh ../rnd/MLCG.h ../rnd/RNG.h
+obj/PoliceForkState.o: /usr/include/assert.h /usr/include/features.h
+obj/PoliceForkState.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+obj/PoliceForkState.o: /usr/include/math.h /usr/include/huge_val.h
+obj/PoliceForkState.o: /usr/include/mathcalls.h
+obj/PoliceForkState.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/float.h
+obj/PoliceForkState.o: /usr/include/_G_config.h /usr/include/gnu/types.h
+obj/PoliceForkState.o: /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include/stddef.h
+obj/PoliceForkState.o: ../objectLib/QueuingTypes.hh /usr/include/stdlib.h
+obj/PoliceForkState.o: /usr/include/sys/types.h /usr/include/time.h
+obj/PoliceForkState.o: /usr/include/endian.h /usr/include/bytesex.h
+obj/PoliceForkState.o: /usr/include/sys/select.h /usr/include/selectbits.h
+obj/PoliceForkState.o: /usr/include/alloca.h
+obj/PoliceForkState.o: ../../common/include/BasicEvent.hh
+obj/PoliceForkState.o: ../../common/include/BasicState.hh

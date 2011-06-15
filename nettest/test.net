@@ -1,0 +1,12 @@
+Starting ./nettest -m1 -o2 -n1000000
+Start Time: 990380812, Finish Time: 990380826, Elapsed time: 14 sec
+Starting ./nettest -m1 -o2 -n1000000
+Start Time: 990380826, Finish Time: 990380840, Elapsed time: 14 sec
+Starting ./nettest -m1 -o2 -n1000000
+Start Time: 990380840, Finish Time: 990380853, Elapsed time: 13 sec
+Starting ./nettest -m2 -o2 -n100000
+Start Time: 990380853, Finish Time: 990380928, Elapsed time: 75 sec
+Starting ./nettest -m2 -o2 -n100000
+Start Time: 990380928, Finish Time: 990381003, Elapsed time: 75 sec
+Starting ./nettest -m2 -o2 -n100000
+Start Time: 990381003, Finish Time: 990381078, Elapsed time: 75 sec

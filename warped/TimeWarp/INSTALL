@@ -1,0 +1,29 @@
+Requirements
+------------
+g++ 2.6.3 or newer, preferably the newest available.  At the time of
+release, it was 2.7.2.1.
+
+mpich (or possibly another implementation of MPI) - only if you want
+to run parallel or distributed on workstations.  Information on mpich
+can be found at:
+(http://www.mcs.anl.gov/home/lusk/mpich/index.html)
+
+In order to compile any of the examples included in this distribution,
+the Makefiles will need slight modifications.  (No configuration
+scripts yet!)  In the Makefile of the example you're building, you'll
+need to point MPIDIR at your installation of mpich.  Also, you'll need
+to point DEPENDINC at the g++ include directory of your installation of
+g++.
+
+At this point you need a "procgroup" file for mpich to figure out what
+machines to start the simulation on.  See the documentation in mpich
+for details.
+
+If you want to use the sequential kernel instead of the default parallel
+kernel, you have to modify config.hh in the src directory. You need to
+specify in the top level Makefile not to use MPI and specify the
+SEQUENTIAL flag in config.hh. 
+
+See the file src/README for all of the options available in config.hh.
+
+Send bug-reports and questions to Phil.Wilsey@uc.edu

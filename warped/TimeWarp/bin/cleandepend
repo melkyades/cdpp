@@ -1,0 +1,13 @@
+#!/local/bin/perl 
+# -*- perl -*-
+
+$i = 1;
+
+while( $_ = <> ) {
+    if( $i ) {
+	print $_;
+    }
+    if( /^# DO NOT DELETE.*/ ) {
+       $i = 0;
+   }
+}

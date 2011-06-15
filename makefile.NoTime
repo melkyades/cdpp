@@ -1,0 +1,576 @@
+.SUFFIXES : .cpp .o .c .y
+
+CPP=g++
+CC=gcc
+AR=ar
+YACPP=yacc
+
+DEFINES_CPP=
+
+#===========================================================================
+#MPI Directory Details
+MPIDIR=/home/atroccol/mpich-1.2.0
+LDFLAGS +=-L$(MPIDIR)/lib/
+INCLUDES_CPP += -I$(MPIDIR)/include
+#===========================================================================
+
+#===========================================================================
+#WARPED CONFIGURATION
+#===========================================================================
+#Warped Directory Details
+#For the TimeWarp kernel uncomment the following
+#DEFINES_CPP += -DKERNEL_TIMEWARP
+#TWDIR=/home/atroccol/warped/warped/TimeWarp/src
+#PLIBS = -lTW -lm -lnsl -lmpich 
+
+#For the NoTimeKernel, uncomment the following
+DEFINES_CPP += -DKERNEL_NOTIME
+TWDIR=/home/atroccol/warped/warped/NoTime/src
+PLIBS = -lNoTime -lm -lnsl -lmpich
+
+#Common defines
+TWOBJ=$(TWDIR)/obj
+COMMON=$(TWDIR)/../../common
+DEFINES_CPP += -DMPI -DUSE_USER_VTIME -DHAS_BOOLEAN
+INCLUDES_CPP += -I$(TWDIR) -I$(COMMON)/include
+LDFLAGS += -L$(TWOBJ)/
+#DEPENDINC = -I/usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include
+
+#===========================================================================
+
+#############################################################################################################
+#MODELS
+#Let's define here which models we would like to include in our distribution
+#Basic models
+EXAMPLESOBJS=queue.o main.o generat.o cpu.o transduc.o distri.o com.o linpack.o register.o
+
+#begin airport
+#Uncomment these lines to include the airport models
+#DEFINES_CPP += -DDEVS_AIRPORT
+#INCLUDES_CPP += -I./models/airport
+#LDFLAGS += -L./models/airport
+#LIBS += -lairport
+#end airport
+
+#begin airport
+#Uncomment these lines to include the net models
+#DEFINES_CPP += -DDEVS_NET
+#INCLUDES_CPP += -I./models/net
+#LDFLAGS += -L./models/net
+#LIBS += -lnet
+#end airport
+
+############################################################################################################
+
+#############################################################################################################
+#TESTING
+#DEFINES_CPP += -DDEVS_DELAY_INTERNAL
+#DEFINES_CPP += -DDEVS_DELAY_EXTERNAL
+DEFINES_CPP += -DDEVS_NOTRANDOM
+#DEFINES_CPP += -DDEVS_LOGSENT
+#############################################################################################################
+
+
+#============================================================================
+# Optimized Code - Requires more virtual memory.
+#OPTCPPFLAGS=-O3
+#----------------------
+# Not optimized
+OPTCPPFLAGS=
+#============================================================================
+
+# gcc < 2.8.x 
+#DEFINES_CPP +=-D_G_NO_EXTERN_TEMPLATES
+#CPPFLAGS += -fhandle-exceptions 
+
+
+#============================================================================
+# gcc 2.8.x (y superiores):
+# -------------------------
+# Ver warnings:
+CPPFLAGS += -Wall
+# Ignorar warnings:
+#CPPFLAGS += -w
+
+# Include information for GDB:
+CPPFLAGS += -g
+LDFLAGS += -g
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# The next flag must be actived ONLY if we are compiling under Windows 95 !!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#CPPFLAGS += -D__WINDOWS__
+#============================================================================
+
+
+
+DEFINES_C=
+
+
+# If we are compiling for Unix
+INCLUDES_CPP += -I/usr/include -I. 
+# or if we are compiling for Windows 95
+#INCLUDES_CPP= -I.
+
+
+INCLUDES_C=
+CFLAGS=
+DEBUGFLAGS=
+LDFLAGS+=-L. -g 
+
+SIMOBJS=neighval.o	\
+macroexp.o		\
+evaldeb.o		\
+zone.o			\
+message.o		\
+partitionzone.o		\
+cellpartition.o		\
+except.o		\
+strutil.o		\
+randlib.o		\
+ntupla.o		\
+gram.o			\
+undefd.o		\
+atomicstate.o		\
+atomic.o		\
+coupled.o		\
+msgbag.o		\
+model.o			\
+pmodeladm.o		\
+real.o			\
+realfunc.o		\
+realprec.o		\
+impresion.o		\
+port.o			\
+proot.o			\
+pRootState.o		\
+ini.o			\
+stdaload.o		\
+pmessage.o		\
+pprocess.o		\
+pProcessorState.o	\
+pprocadm.o		\
+psimulat.o		\
+pSimulatorState.o	\
+pcoordin.o		\
+pmcoordin.o		\
+pscoordin.o		\
+pCoordinatorState.o	\
+pMCoordinatorState.o	\
+portlist.o		\
+atomcell.o		\
+tdcell.o		\
+idcell.o		\
+ltranadm.o		\
+coupcell.o		\
+synnode.o		\
+tbool.o			\
+parser.o		\
+parsimu.o		\
+pini.o			\
+pprocadm.o		\
+netload.o		\
+bsdchann.o
+
+# if we are compiling for Windows 95, comment the last two lines
+
+
+LIBNAME=simu
+LIBS += -lsimu
+ALLOBJS=${EXAMPLESOBJS} ${SIMOBJS} 
+INIOBJS=initest.o ini.o strutil.o
+PINIOBJS=pinitest.o pini.o strutil.o
+ALLSRCS=${ALLOBJS:.o=.cpp} gram.y 
+
+all: libs simu drawlog makerand toMap toCDPP
+
+libs: libsimu.a
+
+psimu: ${ALLOBJS} libsimu.a $(TWOBJ)/libTW.a
+	${CPP} ${LDFLAGS} -o $@  ${EXAMPLESOBJS} ${LIBS} ${PLIBS}
+
+$(TWOBJ)/libTW.a:
+	$(MAKE) -j6 -l5 -C $(TWDIR)
+
+simu: ${ALLOBJS}  libsimu.a
+	g++ ${LDFLAGS} -o $@ ${EXAMPLESOBJS} ${LIBS}
+
+initest: ${INIOBJS}  
+	${CPP} ${LDFLAGS} -o $@ ${INIOBJS}
+
+pinitest: ${PINIOBJS}
+	${CPP} ${LDFLAGS} -o $@ ${PINIOBJS}
+drawlog: drawlog.o libsimu.a
+	g++ ${LDFLAGS} -o $@ drawlog.o ${LIBS}
+
+makerand: makerand.o libsimu.a
+	g++ ${LDFLAGS} -o $@ makerand.o ${LIBS}
+
+toMap: toMap.o libsimu.a
+	g++ ${LDFLAGS} -o $@ toMap.o ${LIBS}
+
+toCDPP: toCDPP.o libsimu.a
+	g++ ${LDFLAGS} -o $@ toCDPP.o ${LIBS}
+
+randEvent: randEvent.o libsimu.a
+	g++ ${LDFLAGS} -o $@ randEvent.o ${EXAMPLESOBJS} ${LIBS}
+
+exptest: synnode.o
+	g++ ${LDFLAGS} -o $@ synnode.o
+	
+parser: parser.o gram.o
+	g++ ${LDFLAGS} -o $@ parser.o gram.o
+
+libsimu.a: ${SIMOBJS}
+	${AR} crs lib${LIBNAME}.a ${SIMOBJS}
+
+clean:
+	- rm -f *.o *.a simu core drawlog initest exptest parser makerand toMap
+
+depend:
+	makedepend -Y ${ALLSRCS}
+
+backup:
+	tar -cvzf simu.tar.gz *.cpp *.h *.c *.y makefile* *.ma *.ev *.vpj *.bat *.txt *.val *.inc *.map 
+
+########################
+# Without Optimization
+generat.o: generat.cpp
+	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} $<
+
+queue.o: queue.cpp
+	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} $<
+
+cpu.o: cpu.cpp
+	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} $<
+
+transduc.o: transduc.cpp
+	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} $<
+
+trafico.o: trafico.cpp
+	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} $<
+
+register.o: register.cpp
+	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} $<
+
+msgadm.o: msgadm.cpp
+	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} $<
+
+root.o: root.cpp
+	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} $<
+
+parser.o: parser.cpp
+	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} $<
+
+main.o: main.cpp
+	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} $<
+
+drawlog.o: drawlog.cpp
+	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} $<
+
+toMap.o: toMap.cpp
+	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} $<
+
+toCDPP.o: toCDPP.cpp
+	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} $<
+
+makerand.o: makerand.cpp
+	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} $<
+
+mainsimu.o: mainsimu.cpp
+	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} $<
+
+stdasimu.o: stdasimu.cpp
+	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} $<
+
+parsimu.o: parsimu.cpp
+	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} $<
+
+
+# Uncomment these lines only for Windows
+#macroexp.o: macroexp.cpp
+#	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} $<
+#
+#flatcoup.o: flatcoup.cpp
+#	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} $<
+########################
+
+.cpp.o:
+	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} ${OPTCPPFLAGS} $<
+
+.c.o:
+	${CC} -c ${INCLUDES_C} ${DEFINES_C}  ${DEBUGFLAGS} ${CFLAGS} ${OPTCPPFLAGS} $<
+
+.y.o:
+	bison -d -v -o gram.c gram.y
+	${CPP} -c ${INCLUDES_CPP} ${DEFINES_CPP} ${DEBUGFLAGS} ${CPPFLAGS} ${OPTCPPFLAGS} ${@:.o=.c} 
+	rm $*.c
+	
+# DO NOT DELETE
+
+queue.o: queue.h atomic.h model.h machineid.h port.h modelid.h pmodeladm.h
+queue.o: cellpos.h ntupla.h except.h stringp.h portlist.h real.h undefd.h
+queue.o: impresion.h tbool.h value.h evaldeb.h pprocadm.h pprocess.h
+queue.o: pProcessorState.h msgbag.h modelstate.h atomicstate.h
+queue.o: pSimulatorState.h message.h process.h strutil.h parsimu.h proot.h
+queue.o: event.h eventlist.h prootmodel.h pRootState.h ini.h pini.h loader.h
+queue.o: ltranadm.h
+main.o: strutil.h real.h undefd.h impresion.h tbool.h except.h stringp.h
+main.o: value.h evaldeb.h stdaload.h loader.h macroexp.h netload.h parsimu.h
+main.o: proot.h event.h port.h modelid.h pmodeladm.h cellpos.h ntupla.h
+main.o: eventlist.h prootmodel.h model.h machineid.h portlist.h pprocadm.h
+main.o: pprocess.h pProcessorState.h msgbag.h modelstate.h pRootState.h ini.h
+main.o: pini.h ltranadm.h
+generat.o: generat.h atomic.h model.h machineid.h port.h modelid.h
+generat.o: pmodeladm.h cellpos.h ntupla.h except.h stringp.h portlist.h
+generat.o: real.h undefd.h impresion.h tbool.h value.h evaldeb.h pprocadm.h
+generat.o: pprocess.h pProcessorState.h msgbag.h modelstate.h atomicstate.h
+generat.o: pSimulatorState.h message.h process.h strutil.h parsimu.h proot.h
+generat.o: event.h eventlist.h prootmodel.h pRootState.h ini.h pini.h
+generat.o: loader.h ltranadm.h distri.h
+cpu.o: cpu.h atomic.h model.h machineid.h port.h modelid.h pmodeladm.h
+cpu.o: cellpos.h ntupla.h except.h stringp.h portlist.h real.h undefd.h
+cpu.o: impresion.h tbool.h value.h evaldeb.h pprocadm.h pprocess.h
+cpu.o: pProcessorState.h msgbag.h modelstate.h atomicstate.h
+cpu.o: pSimulatorState.h message.h process.h strutil.h distri.h parsimu.h
+cpu.o: proot.h event.h eventlist.h prootmodel.h pRootState.h ini.h pini.h
+cpu.o: loader.h ltranadm.h
+transduc.o: transduc.h atomic.h model.h machineid.h port.h modelid.h
+transduc.o: pmodeladm.h cellpos.h ntupla.h except.h stringp.h portlist.h
+transduc.o: real.h undefd.h impresion.h tbool.h value.h evaldeb.h pprocadm.h
+transduc.o: pprocess.h pProcessorState.h msgbag.h modelstate.h atomicstate.h
+transduc.o: pSimulatorState.h message.h process.h strutil.h parsimu.h proot.h
+transduc.o: event.h eventlist.h prootmodel.h pRootState.h ini.h pini.h
+transduc.o: loader.h ltranadm.h
+distri.o: distri.h except.h stringp.h strutil.h real.h undefd.h impresion.h
+distri.o: tbool.h value.h evaldeb.h randlib.h
+register.o: pmodeladm.h modelid.h cellpos.h ntupla.h except.h stringp.h
+register.o: parsimu.h proot.h event.h real.h undefd.h impresion.h tbool.h
+register.o: value.h evaldeb.h port.h eventlist.h prootmodel.h model.h
+register.o: machineid.h portlist.h pprocadm.h pprocess.h pProcessorState.h
+register.o: msgbag.h modelstate.h pRootState.h ini.h pini.h loader.h
+register.o: ltranadm.h queue.h atomic.h atomicstate.h pSimulatorState.h
+register.o: message.h process.h strutil.h generat.h cpu.h transduc.h
+neighval.o: neighval.h except.h stringp.h real.h undefd.h impresion.h tbool.h
+neighval.o: value.h evaldeb.h cellpos.h ntupla.h coupcell.h coupled.h model.h
+neighval.o: machineid.h port.h modelid.h pmodeladm.h portlist.h pprocadm.h
+neighval.o: pprocess.h pProcessorState.h msgbag.h modelstate.h ltranadm.h
+neighval.o: pCellCoordinatorState.h pCoordinatorState.h cellpartition.h
+neighval.o: partitionzone.h zone.h parsimu.h proot.h event.h eventlist.h
+neighval.o: prootmodel.h pRootState.h ini.h pini.h loader.h cellstate.h
+macroexp.o: macroexp.h except.h stringp.h strutil.h real.h undefd.h
+macroexp.o: impresion.h tbool.h value.h evaldeb.h
+evaldeb.o: evaldeb.h
+zone.o: zone.h cellpos.h ntupla.h except.h stringp.h
+message.o: message.h model.h machineid.h port.h modelid.h pmodeladm.h
+message.o: cellpos.h ntupla.h except.h stringp.h portlist.h real.h undefd.h
+message.o: impresion.h tbool.h value.h evaldeb.h pprocadm.h pprocess.h
+message.o: pProcessorState.h msgbag.h modelstate.h process.h strutil.h
+partitionzone.o: partitionzone.h zone.h cellpos.h ntupla.h except.h stringp.h
+cellpartition.o: cellpartition.h partitionzone.h zone.h cellpos.h ntupla.h
+cellpartition.o: except.h stringp.h
+except.o: except.h stringp.h macroexp.h
+strutil.o: strutil.h real.h undefd.h impresion.h tbool.h except.h stringp.h
+strutil.o: value.h evaldeb.h
+ntupla.o: ntupla.h except.h stringp.h strutil.h real.h undefd.h impresion.h
+ntupla.o: tbool.h value.h evaldeb.h
+gram.o: synnode.h tbool.h except.h stringp.h real.h undefd.h impresion.h
+gram.o: value.h evaldeb.h realfunc.h ltranadm.h cellpos.h ntupla.h portlist.h
+gram.o: port.h modelid.h pmodeladm.h model.h machineid.h pprocadm.h
+gram.o: pprocess.h pProcessorState.h msgbag.h modelstate.h parser.h
+undefd.o: undefd.h
+atomicstate.o: atomicstate.h modelstate.h
+atomic.o: atomic.h model.h machineid.h port.h modelid.h pmodeladm.h cellpos.h
+atomic.o: ntupla.h except.h stringp.h portlist.h real.h undefd.h impresion.h
+atomic.o: tbool.h value.h evaldeb.h pprocadm.h pprocess.h pProcessorState.h
+atomic.o: msgbag.h modelstate.h atomicstate.h pSimulatorState.h message.h
+atomic.o: process.h strutil.h
+coupled.o: coupled.h model.h machineid.h port.h modelid.h pmodeladm.h
+coupled.o: cellpos.h ntupla.h except.h stringp.h portlist.h real.h undefd.h
+coupled.o: impresion.h tbool.h value.h evaldeb.h pprocadm.h pprocess.h
+coupled.o: pProcessorState.h msgbag.h modelstate.h
+msgbag.o: msgbag.h message.h model.h machineid.h port.h modelid.h pmodeladm.h
+msgbag.o: cellpos.h ntupla.h except.h stringp.h portlist.h real.h undefd.h
+msgbag.o: impresion.h tbool.h value.h evaldeb.h pprocadm.h pprocess.h
+msgbag.o: pProcessorState.h modelstate.h process.h strutil.h
+model.o: parsimu.h proot.h event.h real.h undefd.h impresion.h tbool.h
+model.o: except.h stringp.h value.h evaldeb.h port.h modelid.h pmodeladm.h
+model.o: cellpos.h ntupla.h eventlist.h prootmodel.h model.h machineid.h
+model.o: portlist.h pprocadm.h pprocess.h pProcessorState.h msgbag.h
+model.o: modelstate.h pRootState.h ini.h pini.h loader.h ltranadm.h strutil.h
+pmodeladm.o: pmodeladm.h modelid.h cellpos.h ntupla.h except.h stringp.h
+pmodeladm.o: parsimu.h proot.h event.h real.h undefd.h impresion.h tbool.h
+pmodeladm.o: value.h evaldeb.h port.h eventlist.h prootmodel.h model.h
+pmodeladm.o: machineid.h portlist.h pprocadm.h pprocess.h pProcessorState.h
+pmodeladm.o: msgbag.h modelstate.h pRootState.h ini.h pini.h loader.h
+pmodeladm.o: ltranadm.h strutil.h idcell.h atomcell.h atomic.h atomicstate.h
+pmodeladm.o: pSimulatorState.h message.h process.h neighval.h coupcell.h
+pmodeladm.o: coupled.h pCellCoordinatorState.h pCoordinatorState.h
+pmodeladm.o: cellpartition.h partitionzone.h zone.h tdcell.h flatcoup.h
+real.o: real.h undefd.h impresion.h tbool.h except.h stringp.h value.h
+real.o: evaldeb.h realprec.h mathincl.h
+realfunc.o: realfunc.h real.h undefd.h impresion.h tbool.h except.h stringp.h
+realfunc.o: value.h evaldeb.h mathincl.h
+realprec.o: realprec.h value.h
+impresion.o: impresion.h
+port.o: port.h modelid.h pmodeladm.h cellpos.h ntupla.h except.h stringp.h
+proot.o: proot.h event.h real.h undefd.h impresion.h tbool.h except.h
+proot.o: stringp.h value.h evaldeb.h port.h modelid.h pmodeladm.h cellpos.h
+proot.o: ntupla.h eventlist.h prootmodel.h model.h machineid.h portlist.h
+proot.o: pprocadm.h pprocess.h pProcessorState.h msgbag.h modelstate.h
+proot.o: pRootState.h message.h process.h strutil.h coupled.h parsimu.h ini.h
+proot.o: pini.h loader.h ltranadm.h
+pRootState.o: pRootState.h pProcessorState.h eventlist.h event.h real.h
+pRootState.o: undefd.h impresion.h tbool.h except.h stringp.h value.h
+pRootState.o: evaldeb.h port.h modelid.h pmodeladm.h cellpos.h ntupla.h
+ini.o: ini.h except.h stringp.h strutil.h real.h undefd.h impresion.h tbool.h
+ini.o: value.h evaldeb.h prnutil.h
+stdaload.o: stdaload.h loader.h evaldeb.h macroexp.h except.h stringp.h
+stdaload.o: realprec.h value.h impresion.h randlib.h
+pmessage.o: pmessage.h message.h model.h machineid.h port.h modelid.h
+pmessage.o: pmodeladm.h cellpos.h ntupla.h except.h stringp.h portlist.h
+pmessage.o: real.h undefd.h impresion.h tbool.h value.h evaldeb.h pprocadm.h
+pmessage.o: pprocess.h pProcessorState.h msgbag.h modelstate.h process.h
+pmessage.o: strutil.h
+pprocess.o: pprocess.h pProcessorState.h modelid.h except.h stringp.h value.h
+pprocess.o: msgbag.h pmessage.h message.h model.h machineid.h port.h
+pprocess.o: pmodeladm.h cellpos.h ntupla.h portlist.h real.h undefd.h
+pprocess.o: impresion.h tbool.h evaldeb.h pprocadm.h modelstate.h process.h
+pprocess.o: strutil.h parsimu.h proot.h event.h eventlist.h prootmodel.h
+pprocess.o: pRootState.h ini.h pini.h loader.h ltranadm.h
+pProcessorState.o: pProcessorState.h
+pprocadm.o: pprocadm.h pprocess.h pProcessorState.h modelid.h except.h
+pprocadm.o: stringp.h value.h msgbag.h model.h machineid.h port.h pmodeladm.h
+pprocadm.o: cellpos.h ntupla.h portlist.h real.h undefd.h impresion.h tbool.h
+pprocadm.o: evaldeb.h modelstate.h atomic.h atomicstate.h pSimulatorState.h
+pprocadm.o: message.h process.h strutil.h flatcoup.h coupcell.h coupled.h
+pprocadm.o: ltranadm.h pCellCoordinatorState.h pCoordinatorState.h
+pprocadm.o: cellpartition.h partitionzone.h zone.h parsimu.h proot.h event.h
+pprocadm.o: eventlist.h prootmodel.h pRootState.h ini.h pini.h loader.h
+pprocadm.o: psimulat.h pcoordin.h pmcoordin.h pMCoordinatorState.h
+pprocadm.o: pscoordin.h
+psimulat.o: psimulat.h pprocess.h pProcessorState.h modelid.h except.h
+psimulat.o: stringp.h value.h msgbag.h pSimulatorState.h atomicstate.h
+psimulat.o: modelstate.h atomic.h model.h machineid.h port.h pmodeladm.h
+psimulat.o: cellpos.h ntupla.h portlist.h real.h undefd.h impresion.h tbool.h
+psimulat.o: evaldeb.h pprocadm.h message.h process.h strutil.h pmessage.h
+psimulat.o: parsimu.h proot.h event.h eventlist.h prootmodel.h pRootState.h
+psimulat.o: ini.h pini.h loader.h ltranadm.h
+pSimulatorState.o: pSimulatorState.h pProcessorState.h atomicstate.h
+pSimulatorState.o: modelstate.h
+pcoordin.o: pcoordin.h pprocess.h pProcessorState.h modelid.h except.h
+pcoordin.o: stringp.h value.h msgbag.h pCoordinatorState.h pprocadm.h
+pcoordin.o: coupled.h model.h machineid.h port.h pmodeladm.h cellpos.h
+pcoordin.o: ntupla.h portlist.h real.h undefd.h impresion.h tbool.h evaldeb.h
+pcoordin.o: modelstate.h pmessage.h message.h process.h strutil.h parsimu.h
+pcoordin.o: proot.h event.h eventlist.h prootmodel.h pRootState.h ini.h
+pcoordin.o: pini.h loader.h ltranadm.h
+pmcoordin.o: pmcoordin.h pcoordin.h pprocess.h pProcessorState.h modelid.h
+pmcoordin.o: except.h stringp.h value.h msgbag.h pCoordinatorState.h
+pmcoordin.o: pprocadm.h pMCoordinatorState.h coupled.h model.h machineid.h
+pmcoordin.o: port.h pmodeladm.h cellpos.h ntupla.h portlist.h real.h undefd.h
+pmcoordin.o: impresion.h tbool.h evaldeb.h modelstate.h pmessage.h message.h
+pmcoordin.o: process.h strutil.h parsimu.h proot.h event.h eventlist.h
+pmcoordin.o: prootmodel.h pRootState.h ini.h pini.h loader.h ltranadm.h
+pscoordin.o: pscoordin.h pcoordin.h pprocess.h pProcessorState.h modelid.h
+pscoordin.o: except.h stringp.h value.h msgbag.h pCoordinatorState.h
+pscoordin.o: pprocadm.h coupled.h model.h machineid.h port.h pmodeladm.h
+pscoordin.o: cellpos.h ntupla.h portlist.h real.h undefd.h impresion.h
+pscoordin.o: tbool.h evaldeb.h modelstate.h pmessage.h message.h process.h
+pscoordin.o: strutil.h parsimu.h proot.h event.h eventlist.h prootmodel.h
+pscoordin.o: pRootState.h ini.h pini.h loader.h ltranadm.h
+pCoordinatorState.o: pCoordinatorState.h pProcessorState.h pprocadm.h
+pCoordinatorState.o: pprocess.h modelid.h except.h stringp.h value.h msgbag.h
+pMCoordinatorState.o: pMCoordinatorState.h pCoordinatorState.h
+pMCoordinatorState.o: pProcessorState.h pprocadm.h pprocess.h modelid.h
+pMCoordinatorState.o: except.h stringp.h value.h msgbag.h
+portlist.o: portlist.h real.h undefd.h impresion.h tbool.h except.h stringp.h
+portlist.o: value.h evaldeb.h port.h modelid.h pmodeladm.h cellpos.h ntupla.h
+atomcell.o: atomcell.h portlist.h real.h undefd.h impresion.h tbool.h
+atomcell.o: except.h stringp.h value.h evaldeb.h port.h modelid.h pmodeladm.h
+atomcell.o: cellpos.h ntupla.h atomic.h model.h machineid.h pprocadm.h
+atomcell.o: pprocess.h pProcessorState.h msgbag.h modelstate.h atomicstate.h
+atomcell.o: pSimulatorState.h message.h process.h strutil.h neighval.h
+atomcell.o: coupcell.h coupled.h ltranadm.h pCellCoordinatorState.h
+atomcell.o: pCoordinatorState.h cellpartition.h partitionzone.h zone.h
+atomcell.o: parsimu.h proot.h event.h eventlist.h prootmodel.h pRootState.h
+atomcell.o: ini.h pini.h loader.h
+tdcell.o: tdcell.h atomcell.h portlist.h real.h undefd.h impresion.h tbool.h
+tdcell.o: except.h stringp.h value.h evaldeb.h port.h modelid.h pmodeladm.h
+tdcell.o: cellpos.h ntupla.h atomic.h model.h machineid.h pprocadm.h
+tdcell.o: pprocess.h pProcessorState.h msgbag.h modelstate.h atomicstate.h
+tdcell.o: pSimulatorState.h message.h process.h strutil.h neighval.h
+tdcell.o: coupcell.h coupled.h ltranadm.h pCellCoordinatorState.h
+tdcell.o: pCoordinatorState.h cellpartition.h partitionzone.h zone.h
+tdcell.o: parsimu.h proot.h event.h eventlist.h prootmodel.h pRootState.h
+tdcell.o: ini.h pini.h loader.h realfunc.h
+idcell.o: idcell.h atomcell.h portlist.h real.h undefd.h impresion.h tbool.h
+idcell.o: except.h stringp.h value.h evaldeb.h port.h modelid.h pmodeladm.h
+idcell.o: cellpos.h ntupla.h atomic.h model.h machineid.h pprocadm.h
+idcell.o: pprocess.h pProcessorState.h msgbag.h modelstate.h atomicstate.h
+idcell.o: pSimulatorState.h message.h process.h strutil.h neighval.h
+idcell.o: coupcell.h coupled.h ltranadm.h pCellCoordinatorState.h
+idcell.o: pCoordinatorState.h cellpartition.h partitionzone.h zone.h
+idcell.o: parsimu.h proot.h event.h eventlist.h prootmodel.h pRootState.h
+idcell.o: ini.h pini.h loader.h realfunc.h
+ltranadm.o: ltranadm.h cellpos.h ntupla.h except.h stringp.h portlist.h
+ltranadm.o: real.h undefd.h impresion.h tbool.h value.h evaldeb.h port.h
+ltranadm.o: modelid.h pmodeladm.h model.h machineid.h pprocadm.h pprocess.h
+ltranadm.o: pProcessorState.h msgbag.h modelstate.h parser.h neighval.h
+ltranadm.o: coupcell.h coupled.h pCellCoordinatorState.h pCoordinatorState.h
+ltranadm.o: cellpartition.h partitionzone.h zone.h parsimu.h proot.h event.h
+ltranadm.o: eventlist.h prootmodel.h pRootState.h ini.h pini.h loader.h
+ltranadm.o: strutil.h synnode.h realfunc.h
+coupcell.o: coupcell.h coupled.h model.h machineid.h port.h modelid.h
+coupcell.o: pmodeladm.h cellpos.h ntupla.h except.h stringp.h portlist.h
+coupcell.o: real.h undefd.h impresion.h tbool.h value.h evaldeb.h pprocadm.h
+coupcell.o: pprocess.h pProcessorState.h msgbag.h modelstate.h ltranadm.h
+coupcell.o: pCellCoordinatorState.h pCoordinatorState.h cellpartition.h
+coupcell.o: partitionzone.h zone.h parsimu.h proot.h event.h eventlist.h
+coupcell.o: prootmodel.h pRootState.h ini.h pini.h loader.h strutil.h
+coupcell.o: atomcell.h atomic.h atomicstate.h pSimulatorState.h message.h
+coupcell.o: process.h neighval.h idcell.h tdcell.h
+synnode.o: synnode.h tbool.h except.h stringp.h real.h undefd.h impresion.h
+synnode.o: value.h evaldeb.h realfunc.h ltranadm.h cellpos.h ntupla.h
+synnode.o: portlist.h port.h modelid.h pmodeladm.h model.h machineid.h
+synnode.o: pprocadm.h pprocess.h pProcessorState.h msgbag.h modelstate.h
+synnode.o: neighval.h coupcell.h coupled.h pCellCoordinatorState.h
+synnode.o: pCoordinatorState.h cellpartition.h partitionzone.h zone.h
+synnode.o: parsimu.h proot.h event.h eventlist.h prootmodel.h pRootState.h
+synnode.o: ini.h pini.h loader.h atomcell.h atomic.h atomicstate.h
+synnode.o: pSimulatorState.h message.h process.h strutil.h
+tbool.o: tbool.h except.h stringp.h real.h undefd.h impresion.h value.h
+tbool.o: evaldeb.h
+parser.o: parser.h except.h stringp.h synnode.h tbool.h real.h undefd.h
+parser.o: impresion.h value.h evaldeb.h realfunc.h ltranadm.h cellpos.h
+parser.o: ntupla.h portlist.h port.h modelid.h pmodeladm.h model.h
+parser.o: machineid.h pprocadm.h pprocess.h pProcessorState.h msgbag.h
+parser.o: modelstate.h gram.h strutil.h mathincl.h
+parsimu.o: parsimu.h proot.h event.h real.h undefd.h impresion.h tbool.h
+parsimu.o: except.h stringp.h value.h evaldeb.h port.h modelid.h pmodeladm.h
+parsimu.o: cellpos.h ntupla.h eventlist.h prootmodel.h model.h machineid.h
+parsimu.o: portlist.h pprocadm.h pprocess.h pProcessorState.h msgbag.h
+parsimu.o: modelstate.h pRootState.h ini.h pini.h loader.h ltranadm.h
+parsimu.o: stdaload.h macroexp.h strutil.h coupled.h zone.h cellpartition.h
+parsimu.o: partitionzone.h flatcoup.h coupcell.h pCellCoordinatorState.h
+parsimu.o: pCoordinatorState.h tdcell.h atomcell.h atomic.h atomicstate.h
+parsimu.o: pSimulatorState.h message.h process.h neighval.h idcell.h
+pini.o: pini.h machineid.h except.h stringp.h strutil.h real.h undefd.h
+pini.o: impresion.h tbool.h value.h evaldeb.h prnutil.h
+pprocadm.o: pprocadm.h pprocess.h pProcessorState.h modelid.h except.h
+pprocadm.o: stringp.h value.h msgbag.h model.h machineid.h port.h pmodeladm.h
+pprocadm.o: cellpos.h ntupla.h portlist.h real.h undefd.h impresion.h tbool.h
+pprocadm.o: evaldeb.h modelstate.h atomic.h atomicstate.h pSimulatorState.h
+pprocadm.o: message.h process.h strutil.h flatcoup.h coupcell.h coupled.h
+pprocadm.o: ltranadm.h pCellCoordinatorState.h pCoordinatorState.h
+pprocadm.o: cellpartition.h partitionzone.h zone.h parsimu.h proot.h event.h
+pprocadm.o: eventlist.h prootmodel.h pRootState.h ini.h pini.h loader.h
+pprocadm.o: psimulat.h pcoordin.h pmcoordin.h pMCoordinatorState.h
+pprocadm.o: pscoordin.h
+netload.o: netload.h loader.h evaldeb.h bsdchann.h commchan.h except.h
+netload.o: stringp.h
+bsdchann.o: bsdchann.h commchan.h except.h stringp.h
+gram.o: synnode.h tbool.h except.h stringp.h real.h undefd.h impresion.h
+gram.o: value.h evaldeb.h realfunc.h ltranadm.h cellpos.h ntupla.h portlist.h
+gram.o: port.h modelid.h pmodeladm.h model.h machineid.h pprocadm.h
+gram.o: pprocess.h pProcessorState.h msgbag.h modelstate.h parser.h

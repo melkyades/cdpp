@@ -1,0 +1,117 @@
+This is the README file for the Ping Model
+
+The files which constitute this apllication are :
+
+main.cc PingObject.cc PingObject.hh PingObjectState.hh
+ping.config
+
+The application can be run as a :
+[a] Sequential simulation
+[b] Parallel simulation with worst case partioning of simulation objects.
+[c] Parallel simulation with best case partioning of simulation objects.
+
+
+
+Description of the application
+
+There are a number simulation objects (say n).The simulation object with
+id 0 sends a "ball" to simulation object with id 1 who "forwards" it to
+simulation object with id 2 and so on. When the ball reaches simulation
+object with id n-1 it is sent back to simulation object with id 0.
+Only after object 0 gets the ball will it send a new one to object 1.
+This goes on untill the source simulation object ie the one with id 0 has 
+finished sending the specified number of balls.
+
+
+
+How many processors are used for the simulation ?
+
+To make this illustrative application simple we have hardcoded the number
+of processors to two for the parallel runs.
+The number of processors used for the sequential run is one.
+
+
+How are input parameters read by the application ?
+
+The number of objects and the number of balls to sent by the object 0
+are specified by the user through a file. This file is the ping.config
+file.The first entry in the ping.config file is for number of simulation 
+objects and second one is for the number of requests to be sent.
+The application does not have any constraint on the number of objects
+or messages except that posed by the data types which implement both
+variables.
+
+
+
+What is best and worst case partioning of simulation objects ?
+
+By best case partitioning we mean that the interprocessor communication is
+minimized . This is done by scheduling objects with IDs 0 through n/2 on 
+one LP and and the rest on the other LP. So for each round of "ball"
+passing only two messages cross the network.
+
+By worst case partiti oning we mean that the interprocessor communication is
+maximized. This is done by scheduling objects with even number IDs on one
+LP and the rest on the other. So when the "ball" goes form object n to n+1
+it crosses the network.
+
+Note : Partioning is only when running the parallel simulation run.
+
+
+
+How to run the simulation ?
+
+[a] Sequential
+The simulation can be run as a sequential simulation as follows :
+define SEQUENTIAL in config.hh and specify the number of objects and
+requests in the ping.config file. Also create a link to this ping.config
+file in your root directory or alternatively specify the absolute path of
+ping.config in main.cc where the file is opened. Note that no partioning is
+done in this run and so BEST_PARTITION flag should not be defined while
+compilation. 
+
+[b] Parallel simulation with worst case partioning of simulation objects
+Do not define SEQUENTIAL in config.hh file. Comment or uncomment various
+define flags in the config.hh according to the optimizations you want for
+this run. You can look at the optimizations for the run while simulating
+if you define the DISPLAY_SIM_CONFIG in config.hh.
+Do not define BEST_PARTITION as a compile time flag. 
+The ping.config procedure is the same as in sequential.
+If you are using MPI create a procgroup file for the two processors to be
+used in the simulation.
+example of a procgroup file is :
+
+m1.ece.uc.edu 0 /home/username/warped/examples/PING
+m2.ece.uc.edu 1 /home/username/warped/examples/PING
+
+
+
+[c]Parallel simulation with best case partioning of simulation objects
+Everything same as in parallel simulation with worst case partioning
+except you will have to define BEST_PARTITION as a compile time flag.
+
+
+More Information
+
+You can read the README file in the warped directory and also the one in
+the warped/src directory to use various flags available and run different
+optimizations and algorithms. Also all other applications ( RAID,SMMP etc)
+have README files of their own. Though the  procedure for setting up the
+configuration for any application simulation is pretty much the same as
+described above, the application specific README files should be read
+before running the application.
+
+
+---------------------------------------------------------------------------
+************ COMPILER FLAGS USED IN THIS EXAMPLE **************************
+---------------------------------------------------------------------------
+
+[a] Debugging Flags:
+
+APPL_DEBUG - used for printing out application information to the screen.
+
+[b] Partitioning Flags:
+
+BEST_PARTITION - used to ensure the best possible partitioning of the
+                 objects in the simulation.
+		 (Default strategy is worst case partitioning)

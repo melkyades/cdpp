@@ -1,0 +1,206 @@
+\documentstyle[12pt]{report}
+
+\newcommand{\version}{0.9}
+
+\begin{document}
+
+\title{
+Sharks World\\
+A {\sc warped} simulation kernel application\\
+(Documentation for version \version)}
+
+\author{
+\emph{Karthik Swaminathan}, \emph{Radharamananan Radhakrishnan}\\
+and \emph{Philip A. Wilsey}\\
+Computer Architecture Design Laboratory \\
+Dept of ECECS, PO Box 210030 \\
+Cincinnati, OH  45221--0030 \\
+\tt{\{skarthik,ramanan,paw\}@ececs.uc.edu}
+}
+ 
+\date{}
+
+
+\maketitle
+
+\vspace*{4in}
+
+\noindent
+Copyright $\copyright$ 1997 The University of Cincinnati.  All
+rights reserved.
+
+\bigskip
+
+\noindent
+Published by the University of Cincinnati \\
+Dept of ECECS, PO Box 210030 \\
+Cincinnati, OH  45221--0030 USA
+
+\bigskip
+
+\noindent
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+\medskip
+\noindent
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+\medskip
+\noindent
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.
+
+\newpage
+
+\section*{Introduction}
+
+This document describes the the Sharks world application that is
+distributed with the {\sc warped} project. The Sharks World model has been
+implemented as described by Conklin {\it et al} in their paper in the SCS
+Multiconference on Distributed Simulation 1990. The model is a highly
+simplified version of the real world and as such is more synthetic than
+real. The fishes and sharks move in straight line on a torus - corners and
+edges fold over to meet each other which represents the sea. The sea is
+populated with sharks and fishes.The sharks eat all fishes which are
+within its attack range.The attack range is specified by the user. The user
+specifies the various details needed for the simulation in a configuration
+file (described below). The toroidal sea is split into sectors. The number
+of sectors being specified by the user. The movements of the sharks and
+fishes are modeled as messages while the sectors form the Simulation
+objects. The sector is the only object in this model that is active during
+the Simulation. The other object is a that initializes the sector and sets
+up the initial state of the fishes and sharks.
+
+The program provided in the {\sc warped} distribution creates a SHARK
+simulation with the simulation objects (sectors) distributed among the
+LPs. The number of simulation objects involved in the simulation is
+specified by the user through the configuration file. The number of
+objects allocated on each LP is an integer division of the total number of
+objects and the number of LPs. The last LP will have more objects if the
+numbers are not evenly divisible. Thus if we have 5 simulation objects (4
+sectors and 1 Init object) simulating on 4 LPs, then the first 3 LPs will
+each have 1 object each while the last LP will have 2 objects.
+
+The {\sc warped} simulator uses the MPI message protocol.  Thus, in order
+to partition the simulation across several workstations, a file called
+"procgroup" is used to identify the machines that will be used in the
+simulation.  This file contains the addresses for each workstation, the
+full path to the executable file for the simulation, and the number of
+copies that each workstation will startup.  An example "procgroup" is
+given below.
+
+\begin{verbatim}
+procgroup :
+
+m1.ece.uc.edu 0 /home/username/warped/sharksWorld/SHARK
+m2.ece.uc.edu 1 /home/username/warped/sharksWorld/SHARK
+m3.ece.uc.edu 1 /home/username/warped/sharksWorld/SHARK
+m4.ece.uc.edu 1 /home/username/warped/sharksWorld/SHARK
+\end{verbatim}
+
+In this example a four process simulation is being run on four different
+workstations: m1, m2, m3, and m4 with each one executing one copy of the
+executable ``SHARK''.  The 0 first line of the "procgroup" file specifies
+that machine m1 is starting the simulation.
+
+NOTE: specifying that multiple copies should be started on a particular
+machine does not work at this point in time, so all but one of the
+procgroup entries should have a 1 in the second field.
+
+\section*{Sharks World Config}
+
+The Sharks World configuration file contains the simulation parameters in
+the following order:
+\begin{itemize}
+\item Number of sectors per row $M$ - the sea is a $M * M$ plane
+\item Width of each sector in grid units
+\item Sharks' attack range in grid units
+\item Number of fishes
+\item Number of sharks
+\item Number of LPs.
+
+\end{itemize}
+
+The configuration file should be named ``sharksWorld.config'' and must be
+in the same directory as the executable. Here is an example of a
+configuration file which will simulate with 16 sectors each of width 100
+grid units, containing 20 sharks each with an attack range of 10 and 100
+fishes on 4 LPs.
+
+\begin{verbatim}
+
+Example sharksWorld.config:
+
+4
+100
+10
+100
+10
+4
+
+\end{verbatim}
+
+Note: In order to partition the simulation across workstations, a file
+called ``procgroup'' must exist in the same directory as the executable.
+
+In addition to these parameters one additional parameter that is required
+by the simulation is the simulation time till which to simulate. This can
+be modified by the user by changing the value of the ``SIMUNTIL'' variable
+in ``main.cc''. For example to run the simulation with the above
+configuration for a simulation time of 50, the user must have in his
+main.cc the following:
+\begin{verbatim}
+
+LogicalProcess::SIMUNTIL = 50;
+ 
+\end{verbatim}
+
+The executable can be obtained using the Makefile provided with this
+application. Certain changes might need to be made to the makefile for it
+to work properly with your configurations and directory structure. Please
+note that the application is HIGHLY MEMORY INTENSIVE and so it would be
+advisable to only run short simulations of this application\footnote{Even
+a small simulation needs approximately 100Mb(upper bound) of memory per
+executable.}.
+
+\newpage
+
+\section*{Acknowledgments}
+This research has been conducted with the participation of many
+investigators.  While not an complete list, the following individuals
+have made notable direct and/or indirect contributions to this effort
+(in alphabetical order):
+Perry Alexander,
+Scott Bilik,
+Harold Carter,
+Dale E. Martin,
+David A. Charley,
+Girindra D. Sharma,
+Praveen Chawla,
+Debra A. Hensgen
+John Hines,
+Balakrishnan Kannikeswaran,
+Venkatram Krishnaswamy,
+Lantz Moore,
+Avinash Palaniswamy,
+John Penix,
+Raghunandan Rajan.
+
+We wish to express our sincerest gratitude for the time that you spent
+reviewing and commenting on our designs.
+\\
+\\
+This research was supported in part by the Advanced Research Projects
+Agency, monitored by the Department of Justice under contract number
+J--FBI--93--116.  In addition, we benefited greatly from the technical
+support and guidance by the ARPA and DOJ program managers, notably: Bob
+Parker, John Hoyt, and Lt. Col. John Toole.  Without this support and
+interaction, the work documented in this report would not have been
+possible.  Thank you.
+
+\end{document}

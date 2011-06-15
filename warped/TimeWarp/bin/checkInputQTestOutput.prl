@@ -1,0 +1,172 @@
+#!/local/packages/gnu/bin/perl5 -w
+#-*-perl-*-
+
+@commandLine = split(/[ \n]+/,$ARGV[0]);
+$commandLineLength = @commandLine;
+if ($commandLineLength >= 1) {
+    $file = $commandLine[0];
+    print "Opening File $file\n";
+
+#open files
+    open(FILE,$file) || die "could not open $file\n";
+
+    if (-r FILE) {
+	while (<FILE>) {
+# 	    if (/^SendTime/ && /EventId/) {
+# 		@line = split(/[ :\n]+/);
+# 		$recv = $line[3];
+# 		if ($inputQ[$recv][0] == 0) {
+# 		    $number = 1;
+# 		    $inputQ[$recv][0] = 2;
+# 		}
+# 		else {
+# 		    $number = $inputQ[$recv][0]++;
+# 		}
+# 		$inputQ[$recv][$number] = $_;
+# 		print "$number elements in the queue\n";
+# 		for ($i = 1; $i <= $number; $i++) {
+# 		    print "$inputQ[$recv][$i]";
+# 		}
+# 	    }
+	    if (/^List/) {
+		for ($i = 0; $i < $MAXINPUTS; $i++) {
+		    $myCurrObj[$i] = "NULL";
+		}
+		@List = split(/[: \n]+/);
+		$leastUnprocessedTime = "NONE";
+		while (/^List/) {
+#		    print "$_\n";
+		    if (/Processed: 0/) {
+			if ($myCurrObj[$List[10]] eq "NULL") {
+			    $myCurrObj[$List[10]] = $List[2];
+			}
+			if ($leastUnprocessedTime eq "NONE") {
+			    $leastUnprocessedTime = $List[6];
+			    $leastUnprocessedDest = $List[10];
+			    $leastUnprocessedPtr = $List[2];
+			    $unprocessedElement = $_;
+#			    @leastList = @List;
+			}
+		    }
+		    else {
+			if (/Processed: 1/) {
+			    $mylVT[$List[10]] = $List[6];
+			}
+		    }
+		    $_ = <FILE>;
+		    @List = split(/[: \n]+/);
+		}
+#		print "$_";
+		if (/^currentPos/) {
+		    @Line = split(/[ :\n]+/);
+#		    print "leastUnprocessedPtr = $leastUnprocessedPtr ";
+#		    print "currentPosPtr = $Line[1]\n";
+		    if ($leastUnprocessedPtr ne $Line[1] &&
+			$Line[15] == 0) {
+			print "ERROR at line $.\n";
+#			print "$leastUnprocessedTime $leastUnprocessedDest";
+#			print " $leastUnprocessedEid\n";
+			print "currentPos is\n$_";
+			print "\nwith unprocessed element\n";
+			print "$unprocessedElement\n";
+#			print "List\n @leastList\n";
+		    }
+		}
+		else {		# currentPos == NULL
+		    if ($leastUnprocessedTime ne "NONE") {
+			print "ERROR at line $.\n";
+			print "currentPos == NULL ";
+			print "with an unprocessed element\n";
+			print "$unprocessedElement\n";
+
+		    }
+		}
+#		for ($i =0; $i < $MAXINPUTS; $i++) {
+#		    print "($i)$myCurrObj[$i]\n";
+#		}
+ 		while (!/^CurrentObj/) {
+ 		    $_ = <FILE>;
+ 		}
+ 		if (/^CurrentObj/) {
+		    $_ = <FILE>;
+		    $object = 0;
+ 		    while (!/^lVTArray/) {
+ 			@currentObj = split(/[\s()\[\]]+/);
+ 			$currentObjLen = @currentObj;
+# 			print "[$currentObjLen](@currentObj)[$currentObj[0]]\n";
+			if ($currentObj[0] ne "") {
+			    $place = 0;
+			}
+			else {
+			    $place = 1;	# #Kludge because some lines have a
+				# empty string in the first position.
+			}
+  			while ($place < $currentObjLen) {
+  			    $printIt = "FALSE";
+			    $incForObj = "FALSE";
+  			    if ($currentObj[$place] eq "NULL") {
+  				if ($myCurrObj[$object] ne "NULL") {	# 
+  				    $printIt = "TRUE";
+  				}
+  			    }
+  			    else {
+				$place++;
+   				if ($currentObj[$place] ne
+				    $myCurrObj[$object]) {
+  				    $printIt = "TRUE";
+  				}
+				$incForObj = "TRUE";
+  			    }
+  			    if ($printIt eq "TRUE") { # 
+  				print "ERROR:\ncurrentObj[$object] =";
+  				print " [$currentObj[$place]]";
+  				print " myCurrObj[$object] = [$myCurrObj[$object]]\n";
+				print "@currentObj\n";
+				print "$_\n";
+  				print " at line number $. of $file\n";
+  			    }
+			    if ($incForObj eq "TRUE") {
+				$place = $place + 2;
+			    }
+			    else {
+				$place++;
+			    }
+			    $object++
+  			}
+ 			$_ = <FILE>;
+ 		    }
+ 		}
+	    }
+ 	    if (/^lVTArray/) {
+ 		$_ = <FILE>;	# read the next line
+ 		@lVTArray = split(/[ \n]+/);
+		$lVTArrayLen = @lVTArray;
+ 		for ($i = 0; $i < $lVTArrayLen; $i++) {
+		    if ($mylVT[$i] ne $lVTArray[$i]) {
+			print "ERROR:\nlVTArray[$i] = $lVTArray[$i]";
+			print " mylVT[$i] = $mylVT[$i]\n";
+			print " at line number $. of $file\n";
+		    }
+ 		}
+ 	    }
+	    if (/^rollback/) {
+		@rollLine = split(/[ :\n]+/);
+		$mylVT[$rollLine[1]] = $rollLine[3];
+	    }
+	    if (/input processes/) {
+		@inputProc = split(/[ \n]+/);
+		$MAXINPUTS = $inputProc[0];
+		print "MAXINPUTS = $MAXINPUTS\n";
+		for ($i = 0; $i < $MAXINPUTS; $i++) {
+		    $mylVT[$i] = 0;
+		}
+	    }
+	}
+	close(FILE);
+    }
+} else {
+    print "\nThis program checks the output of the input queue test program\n";
+    print "for correctness (or some form of sanity).\n";
+    print "\n\nusage: checkInputQTestOutput.prl <filename>\n";
+}
+

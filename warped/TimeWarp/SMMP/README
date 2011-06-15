@@ -1,0 +1,40 @@
+The SMMP Model:
+---------------
+
+The symmetric multiprocessor model works off the objectLib
+directory. There are a few specialised objects which are used to model
+this application. The special objects are:
+
+	MemEvents.hh	
+	MemRouterObject.hh	MemRouterObject.cc   
+	MemSourceObject.hh	MemSourceObject.cc
+	MemSourceState.hh	MemSourceState.cc
+
+There is a special file provided for generating the main.cc file. This
+file is MemGen.cc. The makefile will first run MemGen to create the
+main.cc before compiling the rest of the files. MemGen creates the main.cc
+file for you. It will ask you to enter a set of parameters and it will use
+these parameters to create and partition the main.cc file for you.
+
+The set of parameters are as follows:
+[a] Number of SMMP processors
+[b] Sequential or Parallel Simulation
+[c] Number of physical processors (or LPs)
+[d] Speed of cache (integer value)
+[e] Cache hit ratio (fraction e.g. 0.85)
+[f] Speed of main memory (integer value, typically slower than the cache
+                          speed)
+[g] Number of requests per processor
+[h] Name of file to generate
+
+
+Note that MPI calls are included in the main.cc file even if you wanted
+only a one processor simulation. So the procgroup file must always contain
+the correct number of processors being used in the simulation.
+
+The rest of the objects refered to in the main.cc file are present in the
+objectLib directory.
+
+---------------------------------------------------------------------------
+****** More detailed documentation is available in the doc directory ******	
+--------------------------------------------------------------------------- 

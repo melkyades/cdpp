@@ -1,0 +1,8 @@
+# Generated automatically from Makefile.common.in by configure.
+export LIBS = -lm -lmpich -lnsl 
+export CFLAGS= -O2
+export CPPFLAGS+=-I.  -DUSE_USER_VTIME -DHAS_BOOLEAN -DMPI -I/home/atroccol/mpich-1.2.0/include
+export LDFLAGS=
+export INSTALL = /usr/bin/install -c
+export INSTALL_PROGRAM = ${INSTALL}
+export MKINSTALLDIRS= ./mkinstalldirs

@@ -1,0 +1,64 @@
+#!/local/packages/gnu/bin/perl
+
+$processed = 0;
+$value = 0 ;
+$committed = 0 ;
+$counter1 = $counter2 = 0 ;
+
+while(<>){ # for reading in more than one file
+    
+    $a = $ARGV ;
+    
+    open(IN, $a) || die "File Creation Error";
+    
+    while(<IN>){
+	if (m/events processed:/){
+        ($junk,$value) = split(/ processed:/,$_);
+       # print "processed -- > $value \n" ;
+        $processed = $processed + $value ;
+        $counter1 = $counter1 + 1 ;
+    }
+        if (m/not counted/){
+        ($junk,$value) = split(/ counted /,$_);
+        $committed = $committed + $value ;
+    }
+        if (m/Events committed:/){
+        ($junk,$value) = split(/ committed:/,$_);
+       #  print "committed -- > $value \n" ;
+        $committed = $committed + $value ;
+        $counter2 = $counter2 + 1 ;
+    }
+        if(m/Source/){
+        ($junk,$value) = split(/ produced /,$_);
+        $source = $source + $value ;
+    }
+        if (m/simulation time/){
+        ($junk,$value) = split(/ :/,$_);
+        $value =~ s/secs//g ;
+        print "Execution Time =  $value" ;
+        $time = $value ;
+	print "$time -- ";
+    }
+    }
+    
+    $processed = $source + $processed ;
+    $committed = $source + $committed ;
+    print "Total events processed = $processed \n";
+    $processed = $processed/$time  ;
+    print "Events processed per second = $processed \n";
+
+    print "Total events committed = $committed \n";
+    $committed = $committed/$time ;
+    print "Events committed per second = $committed \n";
+    print "(processed,committed) = ($counter1, $counter2) \n\n";
+    close(IN);  #closing input file
+
+exit 0 if(@ARGV eq 0); #exit if only one file was
+                       #entered at command line
+
+}
+
+
+
+
+

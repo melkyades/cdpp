@@ -1,0 +1,456 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:530: checking for gcc
+configure:643: checking whether the C compiler (gcc  ) works
+configure:659: gcc -o conftest    conftest.c  1>&5
+configure:685: checking whether the C compiler (gcc  ) is a cross-compiler
+configure:690: checking whether we are using GNU C
+configure:699: gcc -E conftest.c
+configure:718: checking whether gcc accepts -g
+configure:780: checking for a BSD compatible install
+configure:833: checking whether make sets ${MAKE}
+configure:864: checking for c++
+configure:896: checking whether the C++ compiler (c++  ) works
+configure:912: c++ -o conftest    conftest.C  1>&5
+configure:938: checking whether the C++ compiler (c++  ) is a cross-compiler
+configure:943: checking whether we are using GNU C++
+configure:952: c++ -E conftest.C
+configure:971: checking whether c++ accepts -g
+configure:1004: checking for gnu make
+GNU Make version 3.78.1, by Richard Stallman and Roland McGrath.
+Built for i386-redhat-linux-gnu
+Report bugs to <bug-make@gnu.org>.
+configure:1030: checking for sqrt in -lm
+configure:1049: gcc -o conftest -g -O2   conftest.c -lm   1>&5
+configure:1042: warning: conflicting types for built-in function `sqrt'
+configure:1077: checking for MPI_Send in -lmpi
+configure:1096: gcc -o conftest -g -O2   conftest.c -lmpi  -lm  1>&5
+/usr/bin/../lib/libmpi.a(send.o): In function `MPI_Send':
+send.o(.text+0x6c): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(lamsend.o): In function `lam_send':
+lamsend.o(.text+0x47): undefined reference to `_kio'
+lamsend.o(.text+0x76): undefined reference to `_kio'
+lamsend.o(.text+0x80): undefined reference to `_kio'
+lamsend.o(.text+0x208): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(lamsend.o)(.text+0x240): more undefined references to `_kio' follow
+/usr/bin/../lib/libmpi.a(lamtrace.o): In function `lam_tr_comm':
+lamtrace.o(.text+0x75): undefined reference to `getnodeid'
+lamtrace.o(.text+0x141): undefined reference to `mrev4'
+lamtrace.o(.text+0x15b): undefined reference to `lam_rtrstore'
+/usr/bin/../lib/libmpi.a(lamtrace.o): In function `lam_tr_dtype':
+lamtrace.o(.text+0x189): undefined reference to `_kio'
+lamtrace.o(.text+0x1bc): undefined reference to `mrev4'
+lamtrace.o(.text+0x1d6): undefined reference to `lam_rtrstore'
+/usr/bin/../lib/libmpi.a(lamtrace.o): In function `lam_tr_timer':
+lamtrace.o(.text+0x214): undefined reference to `_kio'
+lamtrace.o(.text+0x229): undefined reference to `ttime'
+/usr/bin/../lib/libmpi.a(lamtrace.o): In function `lam_tr_off':
+lamtrace.o(.text+0x23b): undefined reference to `_kio'
+lamtrace.o(.text+0x247): undefined reference to `_kio'
+lamtrace.o(.text+0x25e): undefined reference to `lam_trpoint'
+lamtrace.o(.text+0x265): undefined reference to `getnodeid'
+lamtrace.o(.text+0x26b): undefined reference to `rw'
+lamtrace.o(.text+0x278): undefined reference to `rw'
+lamtrace.o(.text+0x282): undefined reference to `rw'
+lamtrace.o(.text+0x28f): undefined reference to `rw'
+lamtrace.o(.text+0x2a4): undefined reference to `rev8'
+lamtrace.o(.text+0x2af): undefined reference to `rw'
+lamtrace.o(.text+0x2d2): undefined reference to `lam_rtrstore'
+lamtrace.o(.text+0x2e7): undefined reference to `rw'
+/usr/bin/../lib/libmpi.a(lamtrace.o): In function `lam_tr_on':
+lamtrace.o(.text+0x303): undefined reference to `_kio'
+lamtrace.o(.text+0x30f): undefined reference to `_kio'
+lamtrace.o(.text+0x32e): undefined reference to `lam_trpoint'
+lamtrace.o(.text+0x335): undefined reference to `getnodeid'
+lamtrace.o(.text+0x33b): undefined reference to `rw'
+lamtrace.o(.text+0x348): undefined reference to `rw'
+lamtrace.o(.text+0x352): undefined reference to `rw'
+lamtrace.o(.text+0x35f): undefined reference to `rw'
+lamtrace.o(.text+0x374): undefined reference to `rev8'
+lamtrace.o(.text+0x37f): undefined reference to `rw'
+lamtrace.o(.text+0x39c): undefined reference to `lam_rtrstore'
+lamtrace.o(.text+0x3b3): undefined reference to `rw'
+/usr/bin/../lib/libmpi.a(lamtrace.o): In function `lam_tr_init':
+lamtrace.o(.text+0x3d2): undefined reference to `_kio'
+lamtrace.o(.text+0x3f9): undefined reference to `getnodeid'
+lamtrace.o(.text+0x3ff): undefined reference to `rw'
+lamtrace.o(.text+0x40c): undefined reference to `rw'
+lamtrace.o(.text+0x416): undefined reference to `rw'
+lamtrace.o(.text+0x423): undefined reference to `rw'
+lamtrace.o(.text+0x438): undefined reference to `rev8'
+lamtrace.o(.text+0x476): undefined reference to `rev8'
+lamtrace.o(.text+0x48d): undefined reference to `lam_rtrstore'
+/usr/bin/../lib/libmpi.a(lamtrace.o): In function `lam_tr_msg':
+lamtrace.o(.text+0x4c4): undefined reference to `lam_trpoint'
+lamtrace.o(.text+0x4cb): undefined reference to `getnodeid'
+lamtrace.o(.text+0x4d1): undefined reference to `rw'
+lamtrace.o(.text+0x4de): undefined reference to `rw'
+lamtrace.o(.text+0x4e8): undefined reference to `rw'
+lamtrace.o(.text+0x4f6): undefined reference to `rw'
+lamtrace.o(.text+0x503): undefined reference to `rev8'
+lamtrace.o(.text+0x583): undefined reference to `mrev4'
+/usr/bin/../lib/libmpi.a(lamtrace.o): In function `lam_tr_sub':
+lamtrace.o(.text+0x59c): undefined reference to `lam_trpoint'
+lamtrace.o(.text+0x5a3): undefined reference to `getnodeid'
+lamtrace.o(.text+0x5a9): undefined reference to `rw'
+lamtrace.o(.text+0x5b6): undefined reference to `rw'
+lamtrace.o(.text+0x5c0): undefined reference to `rw'
+lamtrace.o(.text+0x5cd): undefined reference to `rw'
+lamtrace.o(.text+0x5da): undefined reference to `rev8'
+lamtrace.o(.text+0x5ee): undefined reference to `mrev4'
+/usr/bin/../lib/libmpi.a(lamtrace.o): In function `lam_tr_cffstart':
+lamtrace.o(.text+0x799): undefined reference to `_kio'
+lamtrace.o(.text+0x7a3): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(lamtrace.o): In function `lam_tr_cffend':
+lamtrace.o(.text+0x808): undefined reference to `_kio'
+lamtrace.o(.text+0x82b): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(lamtrace.o): In function `mkflatdtype':
+lamtrace.o(.text+0x8f5): undefined reference to `getnodeid'
+/usr/bin/../lib/libmpi.a(lamupdown.o): In function `lam_resetfunc':
+lamupdown.o(.text+0x28): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(lamupdown.o): In function `lam_errfunc':
+lamupdown.o(.text+0x13b): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(wtime.o): In function `MPI_Wtime':
+wtime.o(.text+0x4): undefined reference to `ttime'
+/usr/bin/../lib/libmpi.a(laminit.o): In function `lam_linit':
+laminit.o(.text+0x19): undefined reference to `kenter'
+laminit.o(.text+0x2a): undefined reference to `_kio'
+laminit.o(.text+0x34): undefined reference to `lpattach'
+laminit.o(.text+0x4f): undefined reference to `_kio'
+laminit.o(.text+0x58): undefined reference to `_kio'
+laminit.o(.text+0x60): undefined reference to `_kio'
+laminit.o(.text+0x82): undefined reference to `getntype'
+laminit.o(.text+0x9d): undefined reference to `_kio'
+laminit.o(.text+0xc5): undefined reference to `_kio'
+laminit.o(.text+0xd7): undefined reference to `_kio'
+laminit.o(.text+0xe6): undefined reference to `_kio'
+laminit.o(.text+0xf8): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(laminit.o)(.text+0x15e): more undefined references to `_kio' follow
+/usr/bin/../lib/libmpi.a(laminit.o): In function `lam_linit':
+laminit.o(.text+0x1b6): undefined reference to `nrecv'
+laminit.o(.text+0x1ce): undefined reference to `_kio'
+laminit.o(.text+0x202): undefined reference to `getnodeid'
+laminit.o(.text+0x26a): undefined reference to `_kio'
+laminit.o(.text+0x2a7): undefined reference to `getnodeid'
+laminit.o(.text+0x2c1): undefined reference to `_kio'
+laminit.o(.text+0x2db): undefined reference to `_kio'
+laminit.o(.text+0x301): undefined reference to `_kio'
+laminit.o(.text+0x327): undefined reference to `_kio'
+laminit.o(.text+0x355): undefined reference to `_kio'
+laminit.o(.text+0x3c1): undefined reference to `mrev4'
+laminit.o(.text+0x3d7): undefined reference to `lam_rtrstore'
+laminit.o(.text+0x3ff): undefined reference to `_lam_atexit'
+laminit.o(.text+0x404): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(laminit.o): In function `get_singleton_idx':
+laminit.o(.text+0x445): undefined reference to `rpstate'
+/usr/bin/../lib/libmpi.a(laminit.o): In function `finalize':
+laminit.o(.text+0x46d): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(lamprocs.o): In function `lam_procadd':
+lamprocs.o(.text+0x69): undefined reference to `al_init'
+lamprocs.o(.text+0xb1): undefined reference to `al_find'
+lamprocs.o(.text+0xd9): undefined reference to `al_insert'
+/usr/bin/../lib/libmpi.a(lamprocs.o): In function `lam_procfind':
+lamprocs.o(.text+0x170): undefined reference to `al_find'
+/usr/bin/../lib/libmpi.a(lamprocs.o): In function `lam_procrm':
+lamprocs.o(.text+0x18e): undefined reference to `al_delete'
+/usr/bin/../lib/libmpi.a(lamprocs.o): In function `lam_nextproc':
+lamprocs.o(.text+0x1e9): undefined reference to `al_next'
+/usr/bin/../lib/libmpi.a(lamprocs.o): In function `lam_nukeprocs':
+lamprocs.o(.text+0x226): undefined reference to `al_free'
+/usr/bin/../lib/libmpi.a(lamunpack.o): In function `unpack_int':
+lamunpack.o(.text+0x4f3): undefined reference to `mrev4'
+/usr/bin/../lib/libmpi.a(lamunpack.o): In function `unpack_long':
+lamunpack.o(.text+0x54b): undefined reference to `mrev4'
+/usr/bin/../lib/libmpi.a(lamunpack.o): In function `unpack_short':
+lamunpack.o(.text+0x5a1): undefined reference to `mrevn'
+/usr/bin/../lib/libmpi.a(lamunpack.o): In function `unpack_float':
+lamunpack.o(.text+0x5f7): undefined reference to `mrev4'
+/usr/bin/../lib/libmpi.a(lamunpack.o): In function `unpack_double':
+lamunpack.o(.text+0x64f): undefined reference to `mrev8'
+/usr/bin/../lib/libmpi.a(lamunpack.o): In function `unpack_complex':
+lamunpack.o(.text+0x6a9): undefined reference to `mrev4'
+/usr/bin/../lib/libmpi.a(lamunpack.o): In function `unpack_double_complex':
+lamunpack.o(.text+0x701): undefined reference to `mrev8'
+/usr/bin/../lib/libmpi.a(lamunpack.o): In function `unpack_long_double':
+lamunpack.o(.text+0x764): undefined reference to `mrevn'
+/usr/bin/../lib/libmpi.a(rpi.lamd.o): In function `_rpi_lamd_init':
+rpi.lamd.o(.text+0x1d): undefined reference to `getnodeid'
+rpi.lamd.o(.text+0x5a): undefined reference to `lam_ksignal'
+/usr/bin/../lib/libmpi.a(rpi.lamd.o): In function `_rpi_lamd_start':
+rpi.lamd.o(.text+0xad): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(rpi.lamd.o): In function `_rpi_lamd_advance':
+rpi.lamd.o(.text+0x2bb): undefined reference to `_kio'
+rpi.lamd.o(.text+0x402): undefined reference to `microsleep'
+rpi.lamd.o(.text+0x446): undefined reference to `_kio'
+rpi.lamd.o(.text+0x44c): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(rpi.lamd.o): In function `lamd_testany':
+rpi.lamd.o(.text+0x57d): undefined reference to `getnodeid'
+rpi.lamd.o(.text+0x634): undefined reference to `bfiselect'
+/usr/bin/../lib/libmpi.a(rpi.lamd.o): In function `lamd_waitany':
+rpi.lamd.o(.text+0x6e2): undefined reference to `bfselect'
+/usr/bin/../lib/libmpi.a(rpi.lamd.o): In function `lamd_fillfyi':
+rpi.lamd.o(.text+0x801): undefined reference to `_kio'
+rpi.lamd.o(.text+0x806): undefined reference to `_kio'
+rpi.lamd.o(.text+0x80b): undefined reference to `_kio'
+rpi.lamd.o(.text+0x81a): undefined reference to `_kio'
+rpi.lamd.o(.text+0x837): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(rpi.lamd.o)(.text+0x849): more undefined references to `_kio' follow
+/usr/bin/../lib/libmpi.a(rpi.lamd.o): In function `lamd_probe':
+rpi.lamd.o(.text+0x929): undefined reference to `bfselect'
+rpi.lamd.o(.text+0x936): undefined reference to `bfiprobe'
+/usr/bin/../lib/libmpi.a(rpi.lamd.o): In function `lamd_bfrecv':
+rpi.lamd.o(.text+0xe40): undefined reference to `bfiprobe'
+rpi.lamd.o(.text+0xe64): undefined reference to `bfrecv'
+/usr/bin/../lib/libmpi.a(rpi.lamd.o): In function `lamd_dsend':
+rpi.lamd.o(.text+0xece): undefined reference to `dsend'
+/usr/bin/../lib/libmpi.a(rpi.lamd.o): In function `lamd_noretry':
+rpi.lamd.o(.text+0xefe): undefined reference to `lam_ksigretry'
+rpi.lamd.o(.text+0xf11): undefined reference to `lam_ksigsetretry'
+/usr/bin/../lib/libmpi.a(rpi.lamd.o): In function `lamd_retry':
+rpi.lamd.o(.text+0xf25): undefined reference to `lam_ksigretry'
+/usr/bin/../lib/libmpi.a(rpi.lamd.o): In function `lamd_shrink':
+rpi.lamd.o(.text+0xfce): undefined reference to `getrent'
+/usr/bin/../lib/libmpi.a(rpi.lamd.o): In function `lamd_route':
+rpi.lamd.o(.text+0x1019): undefined reference to `getnodeid'
+rpi.lamd.o(.text+0x102e): undefined reference to `getroute'
+/usr/bin/../lib/libmpi.a(rpi.lamd.o): In function `lamd_finalize1':
+rpi.lamd.o(.text+0x108b): undefined reference to `_kio'
+rpi.lamd.o(.text+0x10c1): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(rpi.shm.o): In function `_rpi_c2c_init':
+rpi.shm.o(.text+0x19): undefined reference to `stoi'
+rpi.shm.o(.text+0x3a): undefined reference to `stoi'
+rpi.shm.o(.text+0x5b): undefined reference to `stoi'
+/usr/bin/../lib/libmpi.a(rpi.shm.o): In function `_rpi_c2c_start':
+rpi.shm.o(.text+0x2db): undefined reference to `mrev4'
+/usr/bin/../lib/libmpi.a(rpi.shm.o): In function `connect_all':
+rpi.shm.o(.text+0x9a3): undefined reference to `ldogetlinks'
+rpi.shm.o(.text+0x9ba): undefined reference to `sfh_sock_open_srv_inet_stm'
+rpi.shm.o(.text+0xa6e): undefined reference to `nrecv'
+rpi.shm.o(.text+0xac4): undefined reference to `sfh_sock_open_clt_inet_stm'
+rpi.shm.o(.text+0xb1d): undefined reference to `nsend'
+rpi.shm.o(.text+0xb3d): undefined reference to `sfh_sock_accept_tmout'
+/usr/bin/../lib/libmpi.a(tcp.low.o): In function `_tcp_proc_read_env':
+tcp.low.o(.text+0x2cd): undefined reference to `mrev4'
+/usr/bin/../lib/libmpi.a(tcp.low.o): In function `tcp_req_rcvd_body_synch':
+tcp.low.o(.text+0x71e): undefined reference to `mrev4'
+/usr/bin/../lib/libmpi.a(tcp.low.o): In function `tcp_req_rcvd_ack_long':
+tcp.low.o(.text+0x813): undefined reference to `mrev4'
+/usr/bin/../lib/libmpi.a(tcp.low.o): In function `_tcp_req_recv':
+tcp.low.o(.text+0x952): undefined reference to `mrev4'
+/usr/bin/../lib/libmpi.a(tcp.low.o): In function `_tcp_buffered_adv':
+tcp.low.o(.text+0xbaa): undefined reference to `mrev4'
+/usr/bin/../lib/libmpi.a(tcp.low.o): In function `sread':
+tcp.low.o(.text+0xf66): undefined reference to `_kio'
+tcp.low.o(.text+0xf91): undefined reference to `ttime'
+tcp.low.o(.text+0xff8): undefined reference to `_kio'
+tcp.low.o(.text+0x1023): undefined reference to `ttime'
+tcp.low.o(.text+0x102c): undefined reference to `_kio'
+tcp.low.o(.text+0x1032): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(tcp.low.o): In function `sselect':
+tcp.low.o(.text+0x1194): undefined reference to `_kio'
+tcp.low.o(.text+0x11a9): undefined reference to `ttime'
+tcp.low.o(.text+0x11e1): undefined reference to `_kio'
+tcp.low.o(.text+0x11f6): undefined reference to `ttime'
+tcp.low.o(.text+0x11ff): undefined reference to `_kio'
+tcp.low.o(.text+0x1205): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(shm.low.o): In function `_shm_advance':
+shm.low.o(.text+0x3a): undefined reference to `_kio'
+shm.low.o(.text+0x53): undefined reference to `ttime'
+shm.low.o(.text+0x125): undefined reference to `microsleep'
+shm.low.o(.text+0x12d): undefined reference to `_kio'
+shm.low.o(.text+0x13e): undefined reference to `ttime'
+shm.low.o(.text+0x157): undefined reference to `_kio'
+shm.low.o(.text+0x17c): undefined reference to `_kio'
+shm.low.o(.text+0x182): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(shm.low.o): In function `_shm_proc_read_env':
+shm.low.o(.text+0x1ac): undefined reference to `_kio'
+shm.low.o(.text+0x1bd): undefined reference to `ttime'
+shm.low.o(.text+0x1d9): undefined reference to `_kio'
+shm.low.o(.text+0x1ea): undefined reference to `ttime'
+shm.low.o(.text+0x1f3): undefined reference to `_kio'
+shm.low.o(.text+0x1f9): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(shm.low.o): In function `shm_push_body':
+shm.low.o(.text+0xa6f): undefined reference to `_kio'
+shm.low.o(.text+0xa80): undefined reference to `ttime'
+shm.low.o(.text+0xaa7): undefined reference to `_kio'
+shm.low.o(.text+0xab8): undefined reference to `ttime'
+shm.low.o(.text+0xac1): undefined reference to `_kio'
+shm.low.o(.text+0xac7): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(shm.low.o): In function `shm_push_env':
+shm.low.o(.text+0xd85): undefined reference to `_kio'
+shm.low.o(.text+0xd96): undefined reference to `ttime'
+shm.low.o(.text+0xdba): undefined reference to `_kio'
+shm.low.o(.text+0xdcb): undefined reference to `ttime'
+shm.low.o(.text+0xdd4): undefined reference to `_kio'
+shm.low.o(.text+0xdda): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(sysvslop.o): In function `sysv_slop_filename':
+sysvslop.o(.text+0x505): undefined reference to `killname'
+/usr/bin/../lib/libmpi.a(c2cbuf.o): In function `_cbuf_init':
+c2cbuf.o(.text+0x14): undefined reference to `ah_init'
+/usr/bin/../lib/libmpi.a(c2cbuf.o): In function `_cbuf_end':
+c2cbuf.o(.text+0x4e): undefined reference to `al_free'
+c2cbuf.o(.text+0x5d): undefined reference to `ah_next'
+c2cbuf.o(.text+0x71): undefined reference to `ah_free'
+/usr/bin/../lib/libmpi.a(c2cbuf.o): In function `_cbuf_find':
+c2cbuf.o(.text+0x9a): undefined reference to `ah_find'
+c2cbuf.o(.text+0xe6): undefined reference to `al_next'
+/usr/bin/../lib/libmpi.a(c2cbuf.o): In function `_cbuf_delete':
+c2cbuf.o(.text+0x112): undefined reference to `ah_find'
+c2cbuf.o(.text+0x154): undefined reference to `al_delete'
+/usr/bin/../lib/libmpi.a(c2cbuf.o): In function `_cbuf_append':
+c2cbuf.o(.text+0x175): undefined reference to `ah_find'
+c2cbuf.o(.text+0x197): undefined reference to `next_prime'
+c2cbuf.o(.text+0x1a5): undefined reference to `ah_expand'
+c2cbuf.o(.text+0x1dd): undefined reference to `ah_insert'
+c2cbuf.o(.text+0x1f2): undefined reference to `ah_find'
+c2cbuf.o(.text+0x21f): undefined reference to `al_init'
+c2cbuf.o(.text+0x24b): undefined reference to `al_append'
+/usr/bin/../lib/libmpi.a(c2cbuf.o): In function `cid_2_comm':
+c2cbuf.o(.text+0x281): undefined reference to `al_find'
+/usr/bin/../lib/libmpi.a(finalize.o): In function `MPI_Finalize':
+finalize.o(.text+0x10): undefined reference to `_kio'
+finalize.o(.text+0x95): undefined reference to `lam_rtrnamesweep'
+finalize.o(.text+0xb8): undefined reference to `_kio'
+finalize.o(.text+0x103): undefined reference to `lam_kexit'
+/usr/bin/../lib/libmpi.a(lamattr.o): In function `lam_putkey':
+lamattr.o(.text+0x1a1): undefined reference to `ah_init'
+lamattr.o(.text+0x1c7): undefined reference to `next_prime'
+lamattr.o(.text+0x1d0): undefined reference to `ah_expand'
+lamattr.o(.text+0x1ed): undefined reference to `ah_insert'
+/usr/bin/../lib/libmpi.a(lamattr.o): In function `lam_getkey':
+lamattr.o(.text+0x21b): undefined reference to `ah_find'
+/usr/bin/../lib/libmpi.a(lamattr.o): In function `lam_delkey':
+lamattr.o(.text+0x235): undefined reference to `ah_delete'
+/usr/bin/../lib/libmpi.a(lambuf.o): In function `lam_bufinit':
+lambuf.o(.text+0xbb): undefined reference to `rev8'
+/usr/bin/../lib/libmpi.a(lamclocks.o): In function `lam_clocksync':
+lamclocks.o(.text+0x8f): undefined reference to `getnodeid'
+lamclocks.o(.text+0x12e): undefined reference to `nsend'
+lamclocks.o(.text+0x156): undefined reference to `nrecv'
+/usr/bin/../lib/libmpi.a(lamclocks.o): In function `sync_master':
+lamclocks.o(.text+0x253): undefined reference to `nsend'
+lamclocks.o(.text+0x267): undefined reference to `nrecv'
+lamclocks.o(.text+0x295): undefined reference to `ttime'
+lamclocks.o(.text+0x2a4): undefined reference to `nsend'
+lamclocks.o(.text+0x2b8): undefined reference to `nrecv'
+lamclocks.o(.text+0x2c4): undefined reference to `ttime'
+lamclocks.o(.text+0x32a): undefined reference to `nsend'
+/usr/bin/../lib/libmpi.a(lamclocks.o): In function `sync_slave':
+lamclocks.o(.text+0x39b): undefined reference to `nrecv'
+lamclocks.o(.text+0x3af): undefined reference to `nsend'
+lamclocks.o(.text+0x3c9): undefined reference to `nrecv'
+lamclocks.o(.text+0x3d5): undefined reference to `ttime'
+lamclocks.o(.text+0x3f5): undefined reference to `nsend'
+lamclocks.o(.text+0x40b): undefined reference to `nrecv'
+/usr/bin/../lib/libmpi.a(lamcomm.o): In function `lam_comm_free':
+lamcomm.o(.text+0x7d): undefined reference to `ah_next'
+lamcomm.o(.text+0x91): undefined reference to `ah_free'
+lamcomm.o(.text+0xe6): undefined reference to `al_find'
+lamcomm.o(.text+0xf2): undefined reference to `al_delete'
+/usr/bin/../lib/libmpi.a(lamfault.o): In function `lam_commfault':
+lamfault.o(.text+0x94): undefined reference to `al_next'
+/usr/bin/../lib/libmpi.a(lampack.o): In function `pack_int':
+lampack.o(.text+0x463): undefined reference to `mrev4'
+lampack.o(.text+0x477): undefined reference to `mrev4'
+/usr/bin/../lib/libmpi.a(lampack.o): In function `pack_long':
+lampack.o(.text+0x4c3): undefined reference to `mrev4'
+lampack.o(.text+0x4d7): undefined reference to `mrev4'
+/usr/bin/../lib/libmpi.a(lampack.o): In function `pack_short':
+lampack.o(.text+0x521): undefined reference to `mrevn'
+lampack.o(.text+0x537): undefined reference to `mrevn'
+/usr/bin/../lib/libmpi.a(lampack.o): In function `pack_float':
+lampack.o(.text+0x583): undefined reference to `mrev4'
+lampack.o(.text+0x597): undefined reference to `mrev4'
+/usr/bin/../lib/libmpi.a(lampack.o): In function `pack_double':
+lampack.o(.text+0x5e3): undefined reference to `mrev8'
+lampack.o(.text+0x5f7): undefined reference to `mrev8'
+/usr/bin/../lib/libmpi.a(lampack.o): In function `pack_long_double':
+lampack.o(.text+0x649): undefined reference to `mrevn'
+lampack.o(.text+0x65f): undefined reference to `mrevn'
+/usr/bin/../lib/libmpi.a(sendrecv.o): In function `MPI_Sendrecv':
+sendrecv.o(.text+0x6e): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(wait.o): In function `MPI_Wait':
+wait.o(.text+0x70): undefined reference to `_kio'
+wait.o(.text+0xa0): undefined reference to `_kio'
+wait.o(.text+0xaa): undefined reference to `_kio'
+wait.o(.text+0x145): undefined reference to `_kio'
+/usr/bin/../lib/libmpi.a(wait.o)(.text+0x16b): more undefined references to `_kio' follow
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 1085 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char MPI_Send();
+
+int main() {
+MPI_Send()
+; return 0; }
+configure:1117: checking for expect in -lnsl
+configure:1136: gcc -o conftest -g -O2   conftest.c -lnsl  -lm  1>&5
+/tmp/ccKqaAYq.o: In function `main':
+/home/atroccol/warped/warped/configure:1132: undefined reference to `expect'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 1125 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char expect();
+
+int main() {
+expect()
+; return 0; }
+configure:1164: checking for accept in -lsocket
+configure:1183: gcc -o conftest -g -O2   conftest.c -lsocket  -lm  1>&5
+/usr/bin/ld: cannot find -lsocket
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 1172 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char accept();
+
+int main() {
+accept()
+; return 0; }
+configure:1212: checking how to run the C preprocessor
+configure:1233: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1292: checking for ANSI C header files
+configure:1305: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1372: gcc -o conftest -g -O2   conftest.c -lm  1>&5
+configure:1399: checking for limits.h
+configure:1409: gcc -E  conftest.c >/dev/null 2>conftest.out
+In file included from /usr/include/bits/posix1_lim.h:126,
+                 from /usr/include/limits.h:30,
+                 from /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/limits.h:117,
+                 from /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/syslimits.h:7,
+                 from /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/limits.h:11,
+                 from configure:1405:
+/usr/include/bits/local_lim.h:27: linux/limits.h: No such file or directory
+configure: failed program was:
+#line 1404 "configure"
+#include "confdefs.h"
+#include <limits.h>
+configure:1399: checking for malloc.h
+configure:1409: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1399: checking for sys/time.h
+configure:1409: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1437: checking for working const
+configure:1491: gcc -c -g -O2  conftest.c 1>&5
+configure:1512: checking for inline
+configure:1526: gcc -c -g -O2  conftest.c 1>&5
+configure:1552: checking for size_t
+configure:1585: checking whether time.h and sys/time.h may both be included
+configure:1599: gcc -c -g -O2  conftest.c 1>&5
+configure:1623: checking for mpi.h
+configure:1633: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1661: checking for 8-bit clean memcmp
+configure:1679: gcc -o conftest -g -O2  -DMPI  conftest.c -lm  1>&5
+configure:1699: checking for gettimeofday
+configure:1727: gcc -o conftest -g -O2  -DMPI  conftest.c -lm  1>&5

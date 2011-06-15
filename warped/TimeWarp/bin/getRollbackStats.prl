@@ -1,0 +1,111 @@
+#!/local/packages/gnu/bin/perl5 -w
+#-*-perl-*-
+
+sub by_number {
+    if ($a < $b) {
+	-1;
+    } elsif ($a == $b) {
+	0;
+    } elsif ($a > $b) {
+	1;
+    }
+}
+
+@commandLine = split(/[ \n]+/,$ARGV[0]);
+$commandLineLength = @commandLine;
+if ($commandLineLength >= 1) {
+    $file = $commandLine[0];
+    print "Opening File $file\n";
+
+#open files
+    open(FILE,$file) || die "could not open $file\n";
+
+    if (-r FILE) {
+	while (<FILE>) {
+	    if (/Rollback distances in time/) {
+		@line = split(/[ :]+/);
+		open(OUTFILE,">$line[0]") || die "could not open $line[0]";
+		open(OUTFILE2,">$line[0].hist") || 
+		    die "could not open $line[0].hist";
+		print OUTFILE "#$_";
+		print OUTFILE2 "#$_";
+		$_ = <FILE>;
+		$count = 0;
+		$mean = 0;
+		while (/^\d+[ ]*\d+/ && !eof(FILE)) {
+		    print OUTFILE "$_";
+		    @Line = split(/[\s]+/);
+		    $count += $Line[1];
+		    $mean += $Line[0]*$Line[1];
+		    $histData{$Line[0]} = $Line[1];
+		    $_ = <FILE>;
+		    if (eof(FILE)) {
+			print OUTFILE "$_";
+			@Line = split(/[\s]+/);
+			$count += $Line[1]; # 
+			$mean += $Line[0]*$Line[1];
+		    }
+		}
+		if ($count > 0) {
+		    foreach $key (keys %histData) {
+			$probability = $histData{$key}/$count;
+			print OUTFILE2 "$key $probability\n";
+			delete $histData{$key};
+		    }
+		    $mean = $mean/$count;
+		}
+		print OUTFILE "# mean = $mean count = $count\n";
+		print OUTFILE2 "# mean = $mean count = $count\n";
+		close(OUTFILE);
+		close(OUTFILE2);
+	    }
+	    if (/Rollback distances in states/) {
+		@line = split(/[ :]+/);
+		open(OUTFILE3,">$line[0].state") || 
+		    die "could not open $line[0]";
+		open(OUTFILE4,">$line[0].state.hist") || 
+		    die "could not open $line[0].hist";
+		print OUTFILE3 "#$_";
+		print OUTFILE4 "#$_";
+		$_ = <FILE>;
+		$count = 0;
+		$mean = 0;
+		while (/^\d+[ ]*\d+/ && !eof(FILE)) {
+		    print OUTFILE3 "$_";
+		    @Line = split(/[\s]+/);
+		    $count += $Line[1];
+		    $mean += $Line[0]*$Line[1];
+		    $histData{$Line[0]} = $Line[1];
+		    $_ = <FILE>;
+		    if (eof(FILE)) {
+			print OUTFILE3 "$_";
+			@Line = split(/[\s]+/);
+			$count += $Line[1]; # 
+			$mean += $Line[0]*$Line[1];
+			$histData{$Line[0]} = $Line[1];
+		    }
+		}
+		if ($count > 0) {
+		    foreach $key (keys %histData) {
+			$probability = $histData{$key}/$count;
+			print OUTFILE4 "$key $probability\n";
+			delete $histData{$key};
+		    }
+		    $mean = $mean/$count;
+		}
+		print OUTFILE3 "# mean = $mean count = $count\n";
+		print OUTFILE4 "# mean = $mean count = $count\n";
+		close(OUTFILE3);
+		close(OUTFILE4);
+	    }
+	}
+    }
+} 
+else {
+
+    print "\nProgram to strip out the rollback data (states rolledback and\n";
+    print " time rolledback) from the COMMITSTATS file.\n";
+
+    print "\n\nuseage: getRollbackStats.prl <filename>.\n";
+
+}

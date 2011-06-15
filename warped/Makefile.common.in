@@ -1,0 +1,7 @@
+export LIBS = @LIBS@
+export CFLAGS=@CFLAGS@
+export CPPFLAGS+=-I. @CPPFLAGS@
+export LDFLAGS=@LDFLAGS@
+export INSTALL = @INSTALL@
+export INSTALL_PROGRAM = @INSTALL_PROGRAM@
+export MKINSTALLDIRS= @srcdir@/mkinstalldirs

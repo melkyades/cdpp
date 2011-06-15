@@ -1,0 +1,101 @@
+#!/local/packages/gnu/bin/perl
+# -*- perl -*-
+
+sub by_number {
+    if ($a < $b) {
+	-1;
+    } elsif ($a == $b) {
+	0;
+    } elsif ($a > $b) {
+	1;
+    }
+}
+
+#make filenames
+@commandLine = split(/ \n/,$ARGV[0]);
+$commandLength = @commandLine;
+if ($commandLength >= 1) {
+    $file = $commandLine[0]; 
+
+#open files
+    open(FILE,$file)   || die "could not open $file\n";
+
+    if (-r FILE) {
+
+	print "n\n";
+	while (<FILE>){
+	    
+	    if (/received/&&/rTime/) {
+		@sendLine = split(/[ :]+/);
+		$sent = $sendLine[3];
+		$recv = $sendLine[5];
+		$send = $sendLine[7];
+		$dest = $sendLine[9];
+		$eid  = $sendLine[13];
+		$sign = $sendLine[11];
+		if ($sign eq "+") {
+		    print "1 $sent $recv $send $dest $eid\n";
+		}
+		else {
+		    print "3 $sent $recv $send $dest $eid\n";
+		}
+	    }
+	    if (/Finished running/) {
+		print "2\n";
+	    }
+	    if (/gcollecting for gVT/) {
+		@gcollectLine = split(/[ :\n]+/);
+		print "4 $gcollectLine[4]\n";
+	    }
+	    if (/rollback/) {
+		@rollLine = split(/[ :\n]+/);
+		$rollBackTime = $rollLine[1];
+		$rollBackFrom = $rollLine[3];
+#	    print "Rollback From $rollBackFrom to $rollBackTime\n";
+	    }
+	    if (/^received/&&/POSITIVE/) {
+		@recvLine = split(/[ :]+/);
+		$sent = $recvLine[2];
+		$recv = $recvLine[4];
+		$eid  = $recvLine[12];
+		$tmpSplit = $_;
+		$tmpSplit =~  s/POSITIVE/+/;
+		$tmpSplit =~  s/^received/R/;
+#		$inputQ{$recv} .= $tmpSplit;
+	    }
+	    if (/^received/&&/NEGATIVE/) {
+		@recvLine = split(/[ :]+/);
+		$sent = $recvLine[2];
+		$recv = $recvLine[4];
+		$eid  = $recvLine[12];
+		$tmpSplit = $_;
+		$tmpSplit =~  s/NEGATIVE/-/;
+		$tmpSplit =~  s/^received/R/;
+#		$inputQ{$recv} .= $tmpSplit;
+	    }
+
+	}
+
+# 	print "INPUT QUEUE:\n";
+# 	@sortedkeys = sort by_number keys(%inputQ);
+
+# 	foreach $key (@sortedkeys) {
+# 	    $messages = $inputQ{$key};
+# 	    @list = split(/\n/,$messages);
+# 	    print join("\n",@list),"\n";
+# 	    print "\n";
+# 	}
+	
+	print "5\n";
+	close(FILE);
+    }else{				# 
+	print "Couldn't open all files:\n";
+    }
+}
+else {
+    print "\nThis program creates an input file for the input Queue test\n"; 
+    print "program from a simulations's debug output. This allows the state\n";
+    print "of the LP's input queue to be discerned.\n";
+    print "\n\nusage: LPDebug2inputQTest.prl <filename>\n";
+}
+

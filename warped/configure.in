@@ -1,0 +1,42 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(NoTime/Test/main.cc)
+AC_CONFIG_HEADER(warped_global_config.h)
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_PROG_MAKE_SET
+AC_PROG_CXX
+AC_GNU_MAKE
+
+dnl Checks for libraries.
+dnl Replace `main' with a function in -lm:
+AC_CHECK_LIB(m, sqrt)
+dnl Replace `main' with a function in -lmpi:
+AC_CHECK_LIB(mpi, MPI_Send, LIBS="$LIBS -lmpi")
+dnl Replace `main' with a function in -lnsl:
+AC_CHECK_LIB(nsl, expect)
+dnl Replace `main' with a function in -lsocket:
+AC_CHECK_LIB(socket, accept)
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(limits.h malloc.h sys/time.h)
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_C_INLINE
+AC_TYPE_SIZE_T
+AC_HEADER_TIME
+AC_CHECK_HEADERS(mpi.h, CPPFLAGS="$CPPFLAGS -DMPI" )
+
+dnl Checks for library functions.
+AC_FUNC_MEMCMP
+AC_CHECK_FUNCS(gettimeofday)
+
+dnl Checks for compiler characteristics
+AC_CXX_HAS_BOOL
+AC_CXX_OLD_FRIENDS
+
+
+AC_OUTPUT(Makefile.common)

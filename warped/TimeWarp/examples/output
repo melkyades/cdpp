@@ -1,0 +1,203 @@
+From ping.config: numPlayers is 25 and numBalls is 50
+
+Simulating with best case partioning .
+
+Starting MPI
+From ping.config: numPlayers is 25 and numBalls is 50
+
+Simulating with best case partioning .
+
+Starting MPI
+MPI ID: 0
+MPI ID: 1
+Using a period of 200 to calculate GVT
+LP 0: initializing simulation objects
+LP 0: starting simulation.
+Using a period of 200 to calculate GVT
+LP 1: initializing simulation objects
+LP 1: starting simulation.
+object0 received 50 balls and sent out 50
+object1 received 50 balls and sent out 50
+object2 received 50 balls and sent out 50
+object3 received 50 balls and sent out 50
+object4 received 50 balls and sent out 50
+object5 received 50 balls and sent out 50
+object6 received 50 balls and sent out 50
+object7 received 50 balls and sent out 50
+object8 received 50 balls and sent out 50
+object9 received 50 balls and sent out 50
+object10 received 50 balls and sent out 50
+object11 received 50 balls and sent out 50
+Simulation complete!
+**** Time Warp Simulation Object Statistics *****
+--------------------------------------------------------------------------------
+            Events
+LP#  Obj#   Undone    Sent+ve   Sent-ve   Recv+ve   Recv-ve   Strag+ve   ProcMsg
+--------------------------------------------------------------------------------
+[ 0] [  0] [      0] [     51] [      0] [     51] [      0] [      0] [     51] 
+[ 0] [  1] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 0] [  2] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 0] [  3] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 0] [  4] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 0] [  5] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 0] [  6] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 0] [  7] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 0] [  8] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 0] [  9] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 0] [ 10] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 0] [ 11] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+--------------------------------------------------------------------------------
+[ 0] [###] [      0] [    601] [      0] [    601] [      0] [      0] [    601] 
+--------------------------------------------------------------------------------
+                  Avg_RBD Avg_RBD  MaxRBD  MaxRBD  Max Sz Avg Sz  StateQ  
+LP # Obj# Rollbks (Time)  (State)  (Time)  (State) StateQ StateQ  Sampls
+--------------------------------------------------------------------------------
+[ 0] [ 0] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [  102] 
+[ 0] [ 1] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [  102] 
+[ 0] [ 2] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [  102] 
+[ 0] [ 3] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [  102] 
+[ 0] [ 4] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [  102] 
+[ 0] [ 5] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [  102] 
+[ 0] [ 6] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [  102] 
+[ 0] [ 7] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [  102] 
+[ 0] [ 8] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [  102] 
+[ 0] [ 9] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [  102] 
+[ 0] [10] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [  102] 
+[ 0] [11] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [  102] 
+------------------------------------------------------------------------------
+[ 0] [##] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [ 1224] 
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+           Min Sz  Avg Sz  Max Sz   Min Sz  Avg Sz  Max Sz  StateQ  
+LP # Obj#  StateQ  StateQ  StateQ   StateQ  StateQ  StateQ  Sampls                                                  
+           State   State   State    Time    Time    Time 
+------------------------------------------------------------------------------
+[ 0] [ 0] [    2] [    2] [    4]  [    1] [   36] [   75] [  102] 
+[ 0] [ 1] [    2] [    2] [    4]  [    2] [   36] [   75] [  102] 
+[ 0] [ 2] [    2] [    2] [    4]  [    3] [   36] [   75] [  102] 
+[ 0] [ 3] [    2] [    2] [    4]  [    4] [   36] [   75] [  102] 
+[ 0] [ 4] [    2] [    2] [    4]  [    5] [   36] [   75] [  102] 
+[ 0] [ 5] [    2] [    2] [    4]  [    6] [   36] [   75] [  102] 
+[ 0] [ 6] [    2] [    2] [    4]  [    7] [   36] [   75] [  102] 
+[ 0] [ 7] [    2] [    2] [    4]  [    8] [   36] [   75] [  102] 
+[ 0] [ 8] [    2] [    2] [    4]  [    9] [   36] [   75] [  102] 
+[ 0] [ 9] [    2] [    2] [    4]  [   10] [   36] [   75] [  102] 
+[ 0] [10] [    2] [    2] [    4]  [   11] [   36] [   75] [  102] 
+[ 0] [11] [    2] [    2] [    4]  [   12] [   36] [   75] [  102] 
+-----------------------------------------------
+**** Time Warp Logical Process Statistics *****
+-----------------------------------------------
+Total Execution time                          : 3.77699 seconds
+Total number of processed Messages            : 601
+Total number of committed Messages            : 601
+Total number of Messages Undone               : 0
+Period used to calculate GVT    : 200
+Number of simulation cycles     : 23065
+-----------------------------------------------
+      Message Aggregation Statistics           
+-----------------------------------------------
+Total Number of Application Messages Sent     : 230
+Total Number of Physical Messages Sent        : 230
+Total Number of Application Messages Received : 165
+Total Number of Physical Messages Received    : 165
+-----------------------------------------------------------------------
+ *** Kernel Messages Sent/Received through MPI ***
+-----------------------------------------------------------------------
+TERMN EVENTMSGS LGVTMSG LLGVTMG NEWGVT GVTACK LPACK  RCHKPT
+-----------------------------------------------------------------------
+[  0] [     50] [   51] [    1] [   0] [   0] [   1] [   0]
+-----------------------------------------------------------------------
+object12 received 50 balls and sent out 50
+object13 received 50 balls and sent out 50
+object14 received 50 balls and sent out 50
+object15 received 50 balls and sent out 50
+object16 received 50 balls and sent out 50
+object17 received 50 balls and sent out 50
+object18 received 50 balls and sent out 50
+object19 received 50 balls and sent out 50
+object20 received 50 balls and sent out 50
+object21 received 50 balls and sent out 50
+object22 received 50 balls and sent out 50
+object23 received 50 balls and sent out 50
+object24 received 50 balls and sent out 50
+**** Time Warp Simulation Object Statistics *****
+--------------------------------------------------------------------------------
+            Events
+LP#  Obj#   Undone    Sent+ve   Sent-ve   Recv+ve   Recv-ve   Strag+ve   ProcMsg
+--------------------------------------------------------------------------------
+[ 1] [ 12] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 1] [ 13] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 1] [ 14] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 1] [ 15] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 1] [ 16] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 1] [ 17] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 1] [ 18] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 1] [ 19] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 1] [ 20] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 1] [ 21] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 1] [ 22] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 1] [ 23] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+[ 1] [ 24] [      0] [     50] [      0] [     50] [      0] [      0] [     50] 
+--------------------------------------------------------------------------------
+[ 1] [###] [      0] [    650] [      0] [    650] [      0] [      0] [    650] 
+--------------------------------------------------------------------------------
+                  Avg_RBD Avg_RBD  MaxRBD  MaxRBD  Max Sz Avg Sz  StateQ  
+LP # Obj# Rollbks (Time)  (State)  (Time)  (State) StateQ StateQ  Sampls
+--------------------------------------------------------------------------------
+[ 1] [12] [    0] [    0] [    0] [    0] [    0] [    3] [    2] [  102] 
+[ 1] [13] [    0] [    0] [    0] [    0] [    0] [    3] [    2] [  102] 
+[ 1] [14] [    0] [    0] [    0] [    0] [    0] [    3] [    2] [  102] 
+[ 1] [15] [    0] [    0] [    0] [    0] [    0] [    3] [    2] [  102] 
+[ 1] [16] [    0] [    0] [    0] [    0] [    0] [    3] [    2] [  102] 
+[ 1] [17] [    0] [    0] [    0] [    0] [    0] [    3] [    2] [  102] 
+[ 1] [18] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [  102] 
+[ 1] [19] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [  102] 
+[ 1] [20] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [  102] 
+[ 1] [21] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [  102] 
+[ 1] [22] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [  102] 
+[ 1] [23] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [  102] 
+[ 1] [24] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [  102] 
+------------------------------------------------------------------------------
+[ 1] [##] [    0] [    0] [    0] [    0] [    0] [    4] [    2] [ 1326] 
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+           Min Sz  Avg Sz  Max Sz   Min Sz  Avg Sz  Max Sz  StateQ  
+LP # Obj#  StateQ  StateQ  StateQ   StateQ  StateQ  StateQ  Sampls                                                  
+           State   State   State    Time    Time    Time 
+------------------------------------------------------------------------------
+[ 1] [12] [    1] [    2] [    3]  [    0] [   36] [   50] [  102] 
+[ 1] [13] [    1] [    2] [    3]  [    0] [   36] [   50] [  102] 
+[ 1] [14] [    1] [    2] [    3]  [    0] [   36] [   50] [  102] 
+[ 1] [15] [    1] [    2] [    3]  [    0] [   36] [   50] [  102] 
+[ 1] [16] [    1] [    2] [    3]  [    0] [   36] [   50] [  102] 
+[ 1] [17] [    1] [    2] [    3]  [    0] [   36] [   50] [  102] 
+[ 1] [18] [    1] [    2] [    4]  [    0] [   36] [   75] [  102] 
+[ 1] [19] [    1] [    2] [    4]  [    0] [   36] [   75] [  102] 
+[ 1] [20] [    1] [    2] [    4]  [    0] [   36] [   75] [  102] 
+[ 1] [21] [    1] [    2] [    4]  [    0] [   36] [   75] [  102] 
+[ 1] [22] [    1] [    2] [    4]  [    0] [   36] [   75] [  102] 
+[ 1] [23] [    1] [    2] [    4]  [    0] [   37] [   75] [  102] 
+[ 1] [24] [    1] [    2] [    4]  [    0] [   37] [   75] [  102] 
+-----------------------------------------------
+**** Time Warp Logical Process Statistics *****
+-----------------------------------------------
+Total Execution time                          : 3.77824 seconds
+Total number of processed Messages            : 650
+Total number of committed Messages            : 650
+Total number of Messages Undone               : 0
+Period used to calculate GVT    : 200
+Number of simulation cycles     : 22649
+-----------------------------------------------
+      Message Aggregation Statistics           
+-----------------------------------------------
+Total Number of Application Messages Sent     : 165
+Total Number of Physical Messages Sent        : 165
+Total Number of Application Messages Received : 230
+Total Number of Physical Messages Received    : 230
+-----------------------------------------------------------------------
+ *** Kernel Messages Sent/Received through MPI ***
+-----------------------------------------------------------------------
+TERMN EVENTMSGS LGVTMSG LLGVTMG NEWGVT GVTACK LPACK  RCHKPT
+-----------------------------------------------------------------------
+[  0] [     50] [    0] [    0] [ 103] [   1] [   1] [   0]
+-----------------------------------------------------------------------

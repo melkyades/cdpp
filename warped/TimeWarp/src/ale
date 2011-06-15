@@ -1,0 +1,86 @@
+AdaptStateManager.cc:    rollbackTime = 0;
+AdaptStateManager.cc:  rollbackStopWatch.start();
+AdaptStateManager.cc:  rollbackStopWatch.stop();
+AdaptStateManager.cc:  rollbackTime += rollbackStopWatch.elapsed();
+AdaptStateManager.cc:    *lpFile << nameOfObject << " Rollback Time : " << rollbackTime
+AdaptStateManager.cc:    // add the time required for any rollbacks to the time to execute 
+AdaptStateManager.cc:    sumEventTime = execTime + rollbackTime;
+AdaptStateManager.cc:    rollbackTime = 0;
+BasicTimeWarp.cc:BasicTimeWarp::rollbackFileQueues(VTime) {
+BasicTimeWarp.cc:       << ": Error! BasicTimeWarp::rollbackFileQueues called" 
+CostFuncStateManager.cc:				      int rollbackCount) {
+CostFuncStateManager.cc:  lastRollbackCount = rollbackCount;
+DynamicCancellation.cc:    // rollback - otherwise we are just wasting time calling it.
+DynamicCancellation.cc:    // another rollback
+DynamicCancellation.cc:LazyAggrTimeWarp::cancelMessages(const VTime rollbackTime) {
+DynamicCancellation.cc:    // with rollbackTime as search parameter.
+DynamicCancellation.cc:	cancelEvent = outputQ.find(rollbackTime, GREATEREQUAL);
+DynamicCancellation.cc:    if((cancelEvent) && (cancelEvent->sendTime < rollbackTime)){
+DynamicCancellation.cc:              << "rollbackTime : " << rollbackTime << endl;
+DynamicCancellation.cc:    TimeWarp::moveMessagesToLazyQueue(rollbackTime);
+GVTManager.cc:      DEBUGSTREAM << "rollbackTime must be the reason : newLGVT : " << newLGVT
+LTSFInputQueue.cc:  // rollback. So go ahead and delete all the messages corresponding to
+LTSFInputQueue.cc:  // be used to determine rollbacks. There are some cases where this time
+LTSFInputQueue.cc:  // will be taken as the last time executed. This can cause another rollback
+LTSFInputQueue.cc:    // a rollback except if it's before this time.
+LTSFInputQueue.cc:	// This is the time we are going to rollback to even if this is
+LTSFInputQueue.cc:	  // imploded in order to decide whether to rollback or not.
+LTSFInputQueue.cc:  // rollback one queue and the first unprocessed message in that queue
+LinStateManager.cc:					      int rollbackCount) {
+LinStateManager.cc:      calculatePeriod(rollbackCount);
+LinStateManager.cc:    if ((rollbackCount == 0) && ( forwardExecutionLength >= eventToRecalc )) {
+LinStateManager.cc:      // no rollbacks at all so set checkpoint interval for maximum
+LinStateManager.cc:LinStateManager::calculatePeriod(int rollbackCount) {
+LinStateManager.cc:    numberOfRollbacks = rollbackCount - lastRollbackCount;
+LinStateManager.cc:    lastRollbackCount = rollbackCount;
+LogicalProcess.cc:  *statsFile << "# of Triggers due to rollback                    :" << logicalProcessStats::got_roll_back << endl;
+NashStateManager.cc:  rollbackLengthWeighted.set_weights(0.6, 0.4);
+NashStateManager.cc:	     << "\nAverage rollback length = "
+NashStateManager.cc:	     << rollbackLength.getAvg()
+NashStateManager.cc:					      int rollbackCount) {
+NashStateManager.cc:    calculatePeriod(rollbackCount);
+NashStateManager.cc:  if ((rollbackCount == 0) && ( forwardExecutionLength >= eventToRecalc )) {
+NashStateManager.cc:    // no rollbacks at all so set checkpoint interval for maximum
+NashStateManager.cc:NashStateManager::calculatePeriod(int rollbackCount) {
+NashStateManager.cc:    numberOfRollbacks = rollbackCount - lastRollbackCount;
+NashStateManager.cc:    rollbackLengthWeighted.update(rollbackLength.getAvg()*
+NashStateManager.cc:               << "\n rollbackLength = "
+NashStateManager.cc:               << rollbackLength.getAvg()
+NashStateManager.cc:      squarePeriod = (2.0*alpha*(beta +rollbackLengthWeighted.getAvg() - 1.0));
+NashStateManager.cc:      lastRollbackCount = rollbackCount;
+NashStateManager.cc:  rollbackLength.update(statesRolledBack);
+NashStateManager.cc://       << rollbackLength.getAvg()
+TimeWarp.cc:  rollbackCount  = 0;
+TimeWarp.cc:  // if a rollback needs to be performed, it should have happened before now
+TimeWarp.cc:    // for real, and put it on the outputQ in case of rollback
+TimeWarp.cc:    // time required to rollback a process on the same LP. (This is due
+TimeWarp.cc:    // time required to rollback a process on the same LP. (This is due
+TimeWarp.cc:    if((cancelEvent) && (cancelEvent->sendTime < rollbackTime)){
+TimeWarp.cc:	      << name << ":rollbackTime : " << rollbackTime << endl;
+TimeWarp.cc:  state->committedEvents(collected, rollbackCount);
+TimeWarp.cc:// Function: void rollback(VTime rollbackTime)
+TimeWarp.cc:TimeWarp::rollback(VTime rollbackTime) {
+TimeWarp.cc:  lpHandle->simObjArray[localId].setRollbackDistanceTime((state->current->lVT - rollbackTime)); 
+TimeWarp.cc:  *lpFile << name  << ":rollback : " << rollbackTime << " from  " 
+TimeWarp.cc:  VTime timeRestored = state->restoreState(rollbackTime);
+TimeWarp.cc:    cerr << "ERROR: " << name << " can't restore state during rollback to " 
+TimeWarp.cc:	 << rollbackTime << " from LVT " << state->current->lVT << endl;
+TimeWarp.cc:  rollbackFileQueues(rollbackTime);
+TimeWarp.cc:  CANCEL_MESSAGES(rollbackTime);
+TimeWarp.cc:} // end of rollback()
+TimeWarp.cc:// Function: void cancelMessagesAggressively(const VTime rollbackTime)
+TimeWarp.cc:TimeWarp::cancelMessagesAggressively(const VTime rollbackTime)  {
+TimeWarp.cc:  // with rollbackTime as search parameter.
+TimeWarp.cc:  cancelEvent = outputQ.find(rollbackTime, GREATEREQUAL);
+TimeWarp.cc:  if((cancelEvent)&&(cancelEvent->sendTime < rollbackTime)){
+TimeWarp.cc:	    << name << ":rollbackTime : " << rollbackTime << endl;
+TimeWarp.cc:TimeWarp::moveMessagesToLazyQueue(const VTime rollbackTime)  {
+TimeWarp.cc:    cancelEvent = outputQ.find(rollbackTime, GREATEREQUAL);
+TimeWarp.cc:  if((cancelEvent)&&(cancelEvent->sendTime < rollbackTime)){
+TimeWarp.cc:	   << "rollbackTime : " << rollbackTime << endl;
+TimeWarp.cc:    // rollback now ...
+TimeWarp.cc:    rollback(newEventTime);
+TimeWarp.cc:  // Peek at next message to execute after rollback is completed for this 
+TimeWarp.cc:TimeWarp::rollbackFileQueues(VTime time) {
+TimeWarp.cc:    inFileQ[i].rollbackTo(time);
+TimeWarp.cc:    outFileQ[i].rollbackTo(time);

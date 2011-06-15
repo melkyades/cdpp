@@ -1,0 +1,60 @@
+------------------------------------------------------------------------
+Date: Jan 28
+Submitted by: malolan
+Priority: LOW
+Short Description of the problem: runtime problems with Memory managers
+Module: Memory Management module
+------------------------------------------------------------------------
+
+Type of exit when exhibiting bug: ABORT
+
+Reference to test case that has this problem: RAID model
+
+Detailed description of the problem or reference to it:
+	 When running a 2 LP parallel simulation  of RAID model on viking
+	 and viking machines(linux platform) the system Aborts.
+	 RAID configuration is (10 4 4 100 2 ).
+
+The following memory managers have the following problems:
+ 
+1)   BrentMemAlloc  memory manager does not get included in the system,
+         even after enabling the BRENTMEMALLOC macro
+2)   SegregatedMemAlloc memory Manager aborts when enabled
+3)   BuddyMemoryManager memory Manager aborts when enabled
+4)   GlobalMemoryManager memory Manager aborts when enabled
+
+Bug fixed by: 
+
+Date fixed: 
+
+Files Modified for fixing the bug: 
+
+Tests Done to Verify the fix:
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+Date: Jan 28
+Submitted by: malolan
+Priority: LOW
+Short Description of the problem: runtime problems with STATEMANAGERS
+Module: Nash State Manager and LIN State Manager
+------------------------------------------------------------------------
+
+Type of exit when exhibiting bug: ABORT
+
+Reference to test case that has this problem: RAID model
+
+Detailed description of the problem or reference to it:
+	 When running a 2 LP parallel simulation  of RAID model on viking
+	 and viking machines (linux platform)the system Aborts.
+	 RAID configuration is (10 4 4 100 2 ).
+
+The system aborts when Nash State Manager and Lin State Manager are enabled.
+
+Bug fixed by: 
+
+Date fixed: 
+
+Files Modified for fixing the bug: 
+
+Tests Done to Verify the fix:
+------------------------------------------------------------------------

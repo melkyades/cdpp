@@ -1,0 +1,54 @@
+				Warped
+				   |
+   ________________________________|______________________________
+  |           |                    |          |                   |
+INSTALL   APPLICATIONS           SOURCE    SYNTHETIC MODELS      MISC  
+README    ------------           ------    ----------------      ----
+          1. RAID                 src         tools              bin
+          2. SMMP                                                doc
+          3. collidingPucks                                      examples
+	  4. police                                              objectLib
+          5. sharksWorld                                         rnd
+
+Applications:
+-------------
+In addition to the examples directory, there are five applications that
+are provided with the warped simulation kernel. They are RAID, SMMP,
+collidingPucks, police and sharksWorld. Refer to the README directory of
+each application directory for a more detailed explanation.
+
+Source:
+-------
+The src directory contains all the source code of the warped parallel
+simulation kernel. Refer to src/README for a detailed listing of the files
+in this directory.
+
+Synthetic Models:
+-----------------
+The tools directory contains a synthethic work load generator and models
+created using this generator. A synthethic work load defintion language
+called WSL is also provided. Using the translateWSL parser, several WSL
+description can be generated which in turn can be converted into models
+that can be simulated on warped. Refer to the paper titled "A Framework
+for Performance Analysis of Parallel Discrete Event Simulators" published
+in the Proceedings of the 1997 Winter Simulation Conference for more
+details.
+
+Misc:
+-----
+The bin directory contains several perl scripts. Refer to the README file
+in the bin directory for a detailed explanation of each script.
+
+The doc directory contains documentation on the warped simulation kernel.
+
+The examples directory contains a simple ping-pong example that is used to
+illustrate the functioning of the warped simulation kernel.
+
+The objectLib directory is a library of queuing objects that can be used
+to construct queuing model simulations much like RAID and SMMP
+models. Detailed documentation regarding the objectLib directory is
+available in the objectLib/doc directory.
+
+The rnd directory is a library of random number generators and their
+associated distributions. These random number generators and distributions
+are used by the warped applications.
