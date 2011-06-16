@@ -19,13 +19,13 @@ libdir = $(DESTDIR)/lib
 includedir = $(DESTDIR)/include/warped
 
 OBJ      = obj
-SEQSRCS  = BaseSequential.cc SequentialBasicEvent.cc SequentialBasicState.cc\
-	SequentialInputQueue.cc	NewMemAlloc.cc SequentialLP.cc SequentialObj.cc\
+SEQSRCS  = BaseSequential.cc SequentialBasicEvent.cc SequentialBasicState.cc \
+	SequentialInputQueue.cc	NewMemAlloc.cc SequentialLP.cc SequentialObj.cc \
 	SequentialEventQueue.cc SplayTree.cc ConfigurationManager.cc 
 
 
-SEQOBJS = $(OBJ)/BaseSequential.o $(OBJ)/SequentialBasicEvent.o $(OBJ)/SequentialBasicState.o\
-	$(OBJ)/SequentialInputQueue.o $(OBJ)/NewMemAlloc.o $(OBJ)/SequentialLP.o\
+SEQOBJS = $(OBJ)/BaseSequential.o $(OBJ)/SequentialBasicEvent.o $(OBJ)/SequentialBasicState.o \
+	$(OBJ)/SequentialInputQueue.o $(OBJ)/NewMemAlloc.o $(OBJ)/SequentialLP.o \
 	$(OBJ)/SequentialObj.o	$(OBJ)/SequentialEventQueue.o \
 	$(OBJ)/SplayTree.o $(OBJ)/ConfigurationManager.o
 
@@ -59,13 +59,13 @@ $(OBJ)/libWarpedSeq1.so: $(SEQOBJS) $(LIBCOMMON)
 	$(CXX) $(CXXFLAGS) -shared $^ $(LDFLAGS) -o $@
 
 $(OBJ)/%.o : %.cc
-	$(CXX) -c\
-	$(CPPFLAGS) $(CXXFLAGS)\
+	$(CXX) -c \
+	$(CPPFLAGS) $(CXXFLAGS) \
 	$< -o $@
 
 $(OBJ)/%.o : util/%.cc
-	$(CXX) -c\
-	$(CPPFLAGS) $(CXXFLAGS)\
+	$(CXX) -c \
+	$(CPPFLAGS) $(CXXFLAGS) \
 	$< -o $@
 
 depend: cleandep

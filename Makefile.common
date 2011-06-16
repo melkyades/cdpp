@@ -10,7 +10,9 @@ export YACPP=yacc
 #export DEFINES_CPP += -DNEWCOORDIN
 #===========================================================================
 #PCD++ Directory Details
-export MAINDIR=$(HOME)/cd++/dev
+#export MAINDIR=$(HOME)/cd++/dev
+#export MAINDIR=$(dir $(lastword $(MAKEFILE_LIST)))
+export MAINDIR=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 export INCLUDES_CPP +=-I$(MAINDIR)/include
 
 #If running parallel simulation, uncomment the following lines
