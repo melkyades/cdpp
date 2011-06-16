@@ -16,7 +16,10 @@
 /** include files **/
 #include "VTime.hh"         // base class
 #include "stringp.h"      // operator + int
+#include <limits>
+#include <algorithm>
 #include <cstdlib>
+#include <cmath>
 
 using namespace std;
 
@@ -34,6 +37,7 @@ VTime::VTime( const VTime &t )
 	, min( t.minutes() )
 	, sec( t.seconds() )
 	, msec( t.mseconds() )
+	, rem( t.remaining() )
 {}
 
 /*******************************************************************
@@ -50,7 +54,8 @@ VTime VTime::operator +( const VTime &t ) const
 	VTime st( hours() + t.hours(),
 		minutes() + t.minutes(),
 		seconds() + t.seconds(),
-		mseconds() + t.mseconds() );
+		mseconds() + t.mseconds(),
+		remaining() + t.remaining());
 	
 	//st.normalize();	// It's called by constructor and is not needed
 	return st;
@@ -70,7 +75,8 @@ VTime VTime::operator -( const VTime &t ) const
 	VTime st( hours() - t.hours(),
 		minutes() - t.minutes(),
 		seconds() - t.seconds(),
-		mseconds() - t.mseconds() );
+		mseconds() - t.mseconds(),
+		remaining() - t.remaining());
 	
 	//st.normalize();	// It's called by constructor and is not needed
 	return st; 
@@ -91,7 +97,8 @@ VTime VTime::operator * (const int &mult) const
 	VTime st( hours() * mult, 
 		minutes() * mult,
 		seconds() * mult,
-		mseconds() * mult);
+		mseconds() * mult,
+		remaining() * mult);
 	
 	return st;
 	
@@ -103,24 +110,26 @@ VTime VTime::operator * (const int &mult) const
 VTime VTime::operator / (const int &div) const
 {
 	
-	Hours h;
-	Minutes m;
-	Seconds s;
-	MSeconds ms;
-	
+//	Hours h;
+//	Minutes m;
+//	Seconds s;
+//	MSeconds ms;
+//
 	if (*this == VTime::Inf)
 		return VTime::Inf;
 	
 	if (div == 0)
 		return VTime::Inf;
 	
-	
-	h = hours() / div;
+	float total = mseconds() + 1000 * (seconds() + 60 * (minutes() + 60 * hours())) + remaining();
+	/*h = hours() / div;
 	m = (minutes() + hours()%div * 60 )/ div;
 	s = (seconds() + ( minutes() + hours() % div * 60 ) % div * 60 ) / div;
 	ms = ( mseconds() + (seconds() + ( minutes() + hours() % div * 60 ) % div ) % div * 1000 ) / div;
-	
-	VTime st( h,m,s, ms);
+	*/
+	float totalDivided = total / div;
+	int ms = static_cast<int>(totalDivided);
+	VTime st( 0,0,0, ms, totalDivided - ms);
 	
 	return st;
 	
@@ -133,7 +142,8 @@ bool VTime::operator ==( const VTime &t ) const
 	return ( hours()    == t.hours()    &&
 		minutes()  == t.minutes()  &&
 		seconds()  == t.seconds()  &&
-		mseconds() == t.mseconds() );
+		mseconds() == t.mseconds() &&
+		std::fabs(remaining() - t.remaining()) < std::numeric_limits<double>::epsilon());
 }
 
 /*******************************************************************
@@ -145,6 +155,7 @@ VTime &VTime::operator =( const VTime &t )
 	sec = t.seconds();
 	min = t.minutes();
 	msec = t.mseconds();
+	rem  = t.remaining();
 	return *this;
 }
 
@@ -159,19 +170,22 @@ bool VTime::operator <( const VTime &t ) const
 				( minutes() == t.minutes()  &&
 					( seconds() < t.seconds() ||
 						( seconds() == t.seconds() &&
-							mseconds() < t.mseconds() ) ) ) ) ) ) ;
+							(mseconds() < t.mseconds() ||
+								(mseconds() == t.mseconds() &&
+									remaining() < t.remaining() ) ) ) ) ) ) ) ) ;
 }
 
 
 bool VTime::operator <=( const VTime &t ) const
 {
-	return( hours() < t.hours()    ||
+	return *this < t || *this == t;
+	/*return( hours() < t.hours()    ||
 		( hours() == t.hours() &&
 			( minutes() < t.minutes()  ||
 				( minutes() == t.minutes()  &&
 					( seconds() < t.seconds() ||
 						( seconds() == t.seconds() &&
-							mseconds() <= t.mseconds() ) ) ) ) ) ) ;
+							mseconds() <= t.mseconds() ) ) ) ) ) ) ;*/
 }
 
 bool VTime::operator >=( const VTime &t ) const
@@ -189,7 +203,7 @@ string VTime::asString() const
 	if (*this == VTime::Inf)
 		sprintf( buf, "..." );
 	else
-		sprintf( buf, "%02d:%02d:%02d:%03d", hours(), minutes(), seconds(), mseconds() );
+		sprintf( buf, "%02d:%02d:%02d:%03d:%f", hours(), minutes(), seconds(), mseconds(), remaining() );
 	
 	return string( buf );
 }
@@ -200,7 +214,10 @@ string VTime::asString() const
 ********************************************************************/
 VTime &VTime::makeFrom( const string &str )
 {
-	sscanf( str.c_str(), "%d:%d:%d:%d", &hour, &min, &sec, &msec );
+	if (std::count(str.begin(), str.end(), ':') > 3)
+		sscanf( str.c_str(), "%d:%d:%d:%d:%lf", &hour, &min, &sec, &msec, &rem );
+	else
+		sscanf( str.c_str(), "%d:%d:%d:%d", &hour, &min, &sec, &msec );
 	normalize();
 	return *this;
 }
@@ -209,20 +226,27 @@ VTime &VTime::makeFrom( const string &str )
 * Function Name: makeFrom
 * Description: make from miliseconds
 ********************************************************************/
-VTime &VTime::makeFrom( float milsec )
+/*VTime &VTime::makeFrom( float milsec )
 {
 	seconds( static_cast< int >( milsec ) ) ;
 	milsec -= seconds() ;
 	mseconds( static_cast< int >( milsec * 1000 ) ) ;
+	milsec -= miliseconds();
+	remaining(milsec);
 	normalize() ;
 	return *this ;
-}
+}*/
 
 /*******************************************************************
 * Function Name: normalize
 ********************************************************************/
 VTime &VTime::normalize()
 {
+	int integerMillisecs = static_cast<int>(rem);
+	rem = max(rem - integerMillisecs, 0.0); // por las dudas chequeamos que no sea negativo
+
+	msec += integerMillisecs;
+
 	// 0..999 Miliseconds
 	adjust( msec, sec , 1000 );
 	

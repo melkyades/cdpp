@@ -37,17 +37,19 @@ public:
 		, min( m )
 		, sec( s )
 		, msec( ms )
+		, rem(remaining)
 		{ normalize(); }
 
 	VTime( const std::string &t )
 		{ makeFrom(t); }
 		
-	VTime( float mseconds )
+	/* VTime( float mseconds )
 		: hour( 0 )
 		, min( 0 )
 		, sec( 0 )
 		, msec( 0 )
-		{ makeFrom( mseconds ); }
+		, rem( 0.0 )
+		{ makeFrom( mseconds ); } */
 	
 	VTime( const VTime & ) ; // copy constructor
 
@@ -56,12 +58,14 @@ public:
 	VTime &minutes( const Minutes & ) ;
 	VTime &seconds( const Seconds & ) ;
 	VTime &mseconds( const MSeconds & ) ;
+	VTime &remaining( const double & );
 
 	// ** Queries ** // 
 	const Hours    &hours() const ;
 	const Minutes  &minutes() const ;
 	const Seconds  &seconds() const ;
 	const MSeconds &mseconds() const ;
+	const double   &remaining() const;
 
 	VTime operator +( const VTime & ) const ;	// addition operator
 	VTime operator -( const VTime & ) const ;	// substraction operator
@@ -106,7 +110,7 @@ private:
 	Minutes min ;
 	Seconds sec ;
 	MSeconds msec ;
-	double remaining;
+	double rem;
 
 	VTime &makeFrom( const std::string & ) ;
 
@@ -141,6 +145,12 @@ const MSeconds &VTime::mseconds() const
 }
 
 inline
+const double &VTime::remaining() const
+{
+	return rem;
+}
+
+inline
 VTime &VTime::hours( const Hours &h )
 {
 	hour = h ;
@@ -167,6 +177,14 @@ inline
 VTime &VTime::mseconds( const MSeconds &ms )
 {
 	msec = ms ;
+	normalize() ;
+	return *this ;
+}
+
+inline
+VTime &VTime::remaining( const double &rema )
+{
+	rem = rema ;
 	normalize() ;
 	return *this ;
 }
