@@ -41,12 +41,12 @@ public:
 	virtual Processor &generateRoot() ;
 	
 	virtual Processor &processor( const ProcId & ) ;
-	virtual Processor &processor( const string & ) ;
+	virtual Processor &processor( const std::string & ) ;
 	
 	static const ProcId rootId ;
 	
 private:
-	typedef map< ProcId, Processor *, less< ProcId > > ProcessorDB ; 
+	typedef std::map< ProcId, Processor *, std::less< ProcId > > ProcessorDB ; 
 	
 	ProcessorDB procDB ;
 	ProcId procIdCount ;

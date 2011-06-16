@@ -28,7 +28,7 @@
 #ifndef CONTAINER_HH
 #define CONTAINER_HH
 
-// container template class for misc use in lists, queues, and such.
+// container template class for misc use in std::lists, queues, and such.
 template <class type>
 class Container {
 public:
@@ -65,7 +65,7 @@ public:
   static unsigned freesize; 
 
 #ifdef REUSESTATS
-  void printReuseStats(ostream&);
+  void printReuseStats(std::ostream&);
 #endif
 #endif
 };

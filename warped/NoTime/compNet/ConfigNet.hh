@@ -1,7 +1,7 @@
 #ifndef CONFIGNET_HH
 #define CONFIGNET_HH
 
-#include <fstream.h>
+#include <fstream>
 #include "Types.hh"
 
 class ConfigNet {

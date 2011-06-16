@@ -8,7 +8,7 @@
 
 
 #include "CommPhyInterface.hh"
-#include <fstream.h>
+#include <fstream>
 #include "ClumpsDefines.hh"
 #include <pthread.h>
 

@@ -13,7 +13,9 @@
 /** include files **/
 #include "ntupla.h"	// class nTupla
 #include "strutil.h"	// string functions
+#include <cstring>
 
+using namespace std;
 
 /** methods **/
 
@@ -316,7 +318,7 @@ bool nTupla::isInRegion( const nTupla &firstCell, const nTupla &lastCell) const
 	return true;
 }
 
-long nTupla::calculateIndex( const nTupla &dim, bool validateIncludes = true ) const
+long nTupla::calculateIndex( const nTupla &dim, bool validateIncludes ) const
 {
 	//MASSERTMSG( dim.dimension() == size, "Attemp to calculate an Index for a tuple with different dimension size");
 	if (dim.dimension() != size)

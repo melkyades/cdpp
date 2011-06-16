@@ -12,6 +12,8 @@
 
 #include "logparser.h"
 
+using namespace std;
+
 /********************************************************************
 * parseLine:
 * Returns True if line pointed by l contains an output message from a cell in modelName.

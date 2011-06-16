@@ -29,6 +29,8 @@
 #include "realfunc.h"	// calculateWithQuantum
 #include "strutil.h"
 
+using namespace std;
+
 /***************************************
  * TRANSPORT DELAY CELL STATE
  ***************************************/

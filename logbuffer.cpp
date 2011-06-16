@@ -15,9 +15,11 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <cstring>
 #include "VTime.hh"
 #include "logparser.h"
 
+using namespace std;
 
 /******************************************************************
 * class LogLine
@@ -56,7 +58,7 @@ class PrioritizeLogLine
 public :
 	int operator()( const LogLine *x, const LogLine *y )
 	{
-		return x->time > y->time;
+		return y->time <  x->time;
 	}
 };
 

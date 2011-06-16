@@ -1,7 +1,7 @@
 #ifndef OCEANSECTOR_HH
 #define OCEANSECTOR_HH
 
-#include <fstream.h>
+#include <fstream>
 #include "SimulationObj.hh"
 #include "OceanSectorState.hh"
 #include "OceanEvent.hh"
@@ -12,7 +12,7 @@
 #include "../rnd/builtin.h"
 #endif
 
-#include <strstream.h>
+#include <strstream>
 #include <math.h>
 #include "config.hh"
 

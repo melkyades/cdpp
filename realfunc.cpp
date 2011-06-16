@@ -11,7 +11,7 @@
 *******************************************************************/
 
 /** include files **/
-#include <stdlib.h>
+#include <cstdlib>
 #include "realfunc.h"
 #include "mathincl.h"
 extern "C"
@@ -19,6 +19,7 @@ extern "C"
 #include "randlib.h"
 }
 
+using namespace std;
 
 // Tolerance for the tangent
 #define	TOL_TAN		7.55e-8

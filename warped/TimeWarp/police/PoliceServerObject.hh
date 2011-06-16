@@ -68,16 +68,16 @@ public :
       name = new char[strlen(myname)+1];
       strcpy(name,myname);
 #ifdef OBJECTDEBUG
-      cout << " constucting Server object " << endl ;
+      cout << " constucting Server object " << std::endl ;
 #endif
     };
   
    ~PoliceServerObject() { 
 #ifdef OBJECTDEBUG
-       cout << " destructing Server object " << endl ;
+       cout << " destructing Server object " << std::endl ;
 #endif
        cout << "Received " << ((PoliceServerState *)state->current)->numPriorityCalls 
-            << " priority calls " << endl ;
+            << " priority calls " << std::endl ;
     };
 
   void initialize();

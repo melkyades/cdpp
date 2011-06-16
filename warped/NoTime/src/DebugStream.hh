@@ -30,8 +30,8 @@
 
 #include "NoTimeObject.hh"
 #include "KernelMsgs.hh"
-#include <fstream.h>
-#include <strstream.h>
+#include <fstream>
+#include <sstream>
 
 class CommManager;
 class LogicalProcess;
@@ -55,7 +55,7 @@ class DebugStream : public NoTimeObject {
   friend DebugStream& operator << (DebugStream&, const char *);
   friend DebugStream& operator << (DebugStream&, const int);
   friend DebugStream& operator << (DebugStream&, const long long);
-  friend DebugStream& operator << (DebugStream&, ostream& (*)(ostream&));
+  friend DebugStream& operator << (DebugStream&, std::ostream& (*)(std::ostream&));
   friend DebugStream& operator << (DebugStream&, const float);
 public:
   DebugStream(const DebugMessageKind);
@@ -73,7 +73,7 @@ public:
   BasicState* allocateState();
 
 protected:
-  virtual void sendDebugMessage(char*);
+  virtual void sendDebugMessage(const char*);
   virtual void writeMessageToFile(const char *);
   virtual void checkAndSend();
   virtual void displayMessage(const char *);
@@ -90,8 +90,8 @@ protected:
 
   BasicMsg* auxRecvMPIMsg();
 
-  ostrstream  tempDebugStream;  
-  fstream    debugFile;
+  std::ostringstream  tempDebugStream;  
+  std::fstream    debugFile;
   CommManager *communicationSystem;
   
   int        lpId;

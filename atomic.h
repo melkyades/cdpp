@@ -40,7 +40,7 @@ public:
 protected:
 	friend class ParallelSimulator ;
 
-	Atomic( const string &name = "Atomic" );	// Constructor
+	Atomic( const std::string &name = "Atomic" );	// Constructor
 
 	Atomic( const Atomic & ) ;	 	// Copy constructor
 
@@ -72,7 +72,7 @@ protected:
 	const AtomicState::State &state() const
 	{return ((AtomicState *)getCurrentState())->st;}
 
-	virtual string className() const
+	virtual std::string className() const
 	{return ATOMIC_NAME;}
 
 	//State functions

@@ -52,8 +52,8 @@ public:
 					// un valor indefinido En otro caso
 					// devuleve False.
 
-	string asString(int width = Impresion::Default.Width(), int precision = Impresion::Default.Precision() ) const;
-					// Devuelve el real como un string
+	std::string asString(int width = Impresion::Default.Width(), int precision = Impresion::Default.Precision() ) const;
+					// Devuelve el real como un std::string
 					// pero con cierto formato.
 	
 	Real &operator = ( const Real & );
@@ -91,7 +91,7 @@ private:
 
 
 template <class T, class Z>
-struct r_plus : public binary_function< T, T, Z>
+struct r_plus : public std::binary_function< T, T, Z>
 {
 	Z operator()(const T& t1, const T& t2) const
 	{
@@ -101,11 +101,11 @@ struct r_plus : public binary_function< T, T, Z>
 		return t1 + t2;
 	}
 	
-	string type(){return "+";}
+	std::string type(){return "+";}
 };
 
 template <class T, class Z>
-struct r_minus : public binary_function< T, T, Z>
+struct r_minus : public std::binary_function< T, T, Z>
 {
 	Z operator()(const T& t1, const T& t2) const
 	{
@@ -115,11 +115,11 @@ struct r_minus : public binary_function< T, T, Z>
 		return t1 - t2;
 	} 
 	
-	string type(){return "-";}
+	std::string type(){return "-";}
 };
 
 template <class T, class Z>
-struct r_divides : public binary_function< T, T, Z>
+struct r_divides : public std::binary_function< T, T, Z>
 {
 	Z operator()(const T& t1, const T& t2) const
 	{
@@ -129,11 +129,11 @@ struct r_divides : public binary_function< T, T, Z>
 		return t1 / t2;
 	}
 	
-	string type(){return "/";}
+	std::string type(){return "/";}
 };
 
 template <class T, class Z>
-struct r_multiplies : public binary_function< T, T, Z>
+struct r_multiplies : public std::binary_function< T, T, Z>
 {
 	Z operator()(const T& t1, const T& t2) const
 	{
@@ -143,11 +143,11 @@ struct r_multiplies : public binary_function< T, T, Z>
 		return t1 * t2;
 	}
 	
-	string type(){return "*";}
+	std::string type(){return "*";}
 };
 
 template <class T, class Z>
-struct r_equal_to : public binary_function< T, T, Z>
+struct r_equal_to : public std::binary_function< T, T, Z>
 {
 	Z operator()(const T& t1, const T& t2) const
 	{
@@ -157,11 +157,11 @@ struct r_equal_to : public binary_function< T, T, Z>
 		return t1.Equal(t2);
 	}
 	
-	string type(){return "==";}
+	std::string type(){return "==";}
 };
 
 template <class T, class Z>
-struct r_not_equal_to : public binary_function< T, T, Z>
+struct r_not_equal_to : public std::binary_function< T, T, Z>
 {
 	Z operator()(const T& t1, const T& t2) const
 	{
@@ -171,11 +171,11 @@ struct r_not_equal_to : public binary_function< T, T, Z>
 		return t1.NotEqual(t2);
 	}
 	
-	string type(){return "!=";}
+	std::string type(){return "!=";}
 };
 
 template <class T, class Z>
-struct r_less : public binary_function< T, T, Z>
+struct r_less : public std::binary_function< T, T, Z>
 {
 	Z operator()(const T& t1, const T& t2) const
 	{
@@ -185,11 +185,11 @@ struct r_less : public binary_function< T, T, Z>
 		return t1.Less(t2);
 	}
 	
-	string type(){return "<";}
+	std::string type(){return "<";}
 };
 
 template <class T, class Z>
-struct r_greater : public binary_function< T, T, Z>
+struct r_greater : public std::binary_function< T, T, Z>
 {
 	Z operator()(const T& t1, const T& t2) const
 	{
@@ -199,11 +199,11 @@ struct r_greater : public binary_function< T, T, Z>
 		return t1.Greater(t2);
 	}
 	
-	string type(){return ">";}
+	std::string type(){return ">";}
 };
 
 template <class T, class Z>
-struct r_greater_equal : public binary_function< T, T, Z>
+struct r_greater_equal : public std::binary_function< T, T, Z>
 {
 	Z operator()(const T& t1, const T& t2) const
 	{
@@ -213,11 +213,11 @@ struct r_greater_equal : public binary_function< T, T, Z>
 		return t1.GreaterEqual(t2);
 	}
 
-	string type(){return ">=";}
+	std::string type(){return ">=";}
 };
 
 template <class T, class Z>
-struct r_less_equal : public binary_function< T, T, Z>
+struct r_less_equal : public std::binary_function< T, T, Z>
 {
 	Z operator()(const T& t1, const T& t2) const
 	{
@@ -227,7 +227,7 @@ struct r_less_equal : public binary_function< T, T, Z>
 		return t1.LessEqual(t2);
 	}
 	
-	string type(){return "<=";}
+	std::string type(){return "<=";}
 };
 
 typedef r_less_equal< Real, TValBool >      REAL_Less_equal;
@@ -244,7 +244,7 @@ typedef r_minus< Real, Real >               REAL_Minus;
 
 /** inline **/
 inline
-ostream &operator << (ostream &os, Real r)
+std::ostream &operator << (std::ostream &os, Real r)
 {
 	if (r.IsUndefined())
 		return os << "?";

@@ -7,10 +7,10 @@
 
 #include "ClumpsDefines.hh"
 
-#include <fstream.h>
+#include <fstream>
 #include <sys/time.h>
 #include <unistd.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "UnixIPCSemaphore.hh"
 #include "UnixIPCSharedMemory.hh"

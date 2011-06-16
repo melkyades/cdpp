@@ -62,7 +62,7 @@ public:
     inputQ = qImplementation;
   }
 
-  //Insert an Event into the Input Event list
+  //Insert an Event into the Input Event std::list
   void insert(BasicEvent* event) {
     inputQ->insert(event);
   }
@@ -78,7 +78,7 @@ public:
     return inputQ->peekEvent();
   }
 
-  //This function removes the old events in the event list that are no more
+  //This function removes the old events in the event std::list that are no more
   //needed by the simulation kernel
   void garbageCollect(VTime* gTime) {
     inputQ->garbageCollect(gTime);

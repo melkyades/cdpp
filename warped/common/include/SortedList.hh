@@ -29,17 +29,17 @@
 //---------------------------------------------------------------------------
 
 #include "Container.hh"
-#include <fstream.h>
+#include <fstream>
 #include "warped.hh"
-// This class implements a doubly link list, which follows the
+// This class implements a doubly link std::list, which follows the
 // specification outlined in the warped kernel documentation
 
 template < class Element > class SortedList {
 
   //#ifdef OLD_STYLE_FRIENDS
-  //friend ostream& operator<< (ostream&, const SortedList<Element>& );
+  //friend std::ostream& operator<< (std::ostream&, const SortedList<Element>& );
   //#else
-  //friend ostream& operator<< <class Element> (ostream&, const SortedList<Element>& );
+  //friend std::ostream& operator<< <class Element> (std::ostream&, const SortedList<Element>& );
   //#endif
 
 public:
@@ -52,17 +52,17 @@ public:
   virtual void setFile(ofstream *outfile);
 
   void setFunc( int (*)(const Element*, const Element*) );
-  int size() { return listsize;};
+  int size() { return std::listsize;};
   Element* front();
   Element* back();
-  Element* seek (int, listMode_t);
+  Element* seek (int, std::listMode_t);
   virtual void insert(Element*);
   Element* get() const;
   Element* removeFind();
   Element* removeCurrent();
   Element* find(Element*, findMode_t mode = EQUAL);
   Element* findNext();
-  void print(ostream& = cout) const;
+  void print(std::ostream& = std::cout) const;
   
   void saveCurrent() { tmpPos = currentPos; };
   void restoreCurrent() { currentPos = tmpPos; };
@@ -91,7 +91,7 @@ public:
     insertPos = NULL;
     currentPos = NULL;
     tmpPos = NULL;
-    listsize = 0;
+    std::listsize = 0;
   };
 
   int memoryUseage;
@@ -104,7 +104,7 @@ protected:
   Container< Element > *currentPos;
   Container< Element > *tmpPos;
   int (*compare)(const Element*, const Element*);
-  int listsize;
+  int std::listsize;
 
 private:
 

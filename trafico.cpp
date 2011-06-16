@@ -13,9 +13,11 @@
 
 
 /** include files **/
-#include <time.h>
+#include <ctime>
 #include "trafico.h"    // class Trafico
 #include "message.h"    // class ExternalMessage, InternalMessage
+
+using namespace std;
 
 /*******************************************************************
 * Function Name: Trafico

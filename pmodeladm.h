@@ -18,8 +18,8 @@
 #include <vector>
 #include <map>
 #include <hash_map>		//Template hash_map
-#include <string>           // Template string
-#include "strutil.h"		// hash<string>
+#include <string>           // Template std::string
+#include "strutil.h"		// hash<std::string>
 #include "modelid.h"
 #include "cellpos.h"
 
@@ -37,18 +37,18 @@ class ParallelRoot ;
 class ParallelMainSimulator ;
 
 /** definitions **/
-
+using namespace __gnu_cxx;
 
 struct NewFunction
 {
-	virtual Atomic *operator()( const string &  ) = 0 ;   
+	virtual Atomic *operator()( const std::string &  ) = 0 ;   
 	virtual NewFunction *duplicate() const = 0 ;
 };
 
 template <class T> 
 struct NewAtomicFunction : NewFunction
 {
-	Atomic *operator()( const string &name )
+	Atomic *operator()( const std::string &name )
 	{return new T( name ) ;}
 	NewFunction *duplicate() const
 	{return new NewAtomicFunction<T>() ;}
@@ -60,19 +60,19 @@ class ParallelModelAdmin
 public:   
 	typedef int AtomicType ;
 
-	AtomicType registerAtomic( const NewFunction &f, const string & );
+	AtomicType registerAtomic( const NewFunction &f, const std::string & );
 
 	//Functions for accesing the ModelDB.
 #ifndef USE_VECTOR
 	typedef hash_map< ModelId, Model * > ModelDB;
 #else
-	typedef vector<Model*> ModelDB;
+	typedef std::vector<Model*> ModelDB;
 #endif
-	typedef hash_map< string, Model *,HashString > ModelDic;
+	typedef hash_map< std::string, Model *,HashString > ModelDic;
 
 	const ModelDB &models() const;
 
-	Model& model( const string& modelName ) const;	
+	Model& model( const std::string& modelName ) const;	
 	Model& model( const ModelId model ) const;
 
 	ParallelModelAdmin();
@@ -85,21 +85,21 @@ protected:
 	friend class Coordinator ;	
 	friend class CoupledCell ;	// para crear los atomicCell
 
-	typedef map< string, AtomicType, less <string> > AtomicTypes ;
-	typedef map< AtomicType, NewFunction*, less< AtomicType > > AtomicKinds ;
+	typedef std::map< std::string, AtomicType, std::less <std::string> > AtomicTypes ;
+	typedef std::map< AtomicType, NewFunction*, std::less< AtomicType > > AtomicKinds ;
 
 	ParallelModelAdmin( const ParallelModelAdmin & );	// Copy constructor
 
 	virtual Model &newRoot();
 
-	virtual Atomic &newAtomic( const AtomicType &, const string &modelName );
-	virtual Atomic &newAtomic( const string &typeNmae, const string &modelName );
+	virtual Atomic &newAtomic( const AtomicType &, const std::string &modelName );
+	virtual Atomic &newAtomic( const std::string &typeNmae, const std::string &modelName );
 
-	virtual AtomicCell &newAtomicCell( const CellPosition& cellPos, bool inertial = false, const string &modelName = "AtomicCell" ) ;
+	virtual AtomicCell &newAtomicCell( const CellPosition& cellPos, bool inertial = false, const std::string &modelName = "AtomicCell" ) ;
 
-	virtual Coupled &newCoupled( const string &modelName ) ;
-	virtual CoupledCell &newCoupledCell( const string &modelName ) ;
-	virtual FlatCoupledCell &newFlatCoupledCell( const string &modelName );
+	virtual Coupled &newCoupled( const std::string &modelName ) ;
+	virtual CoupledCell &newCoupledCell( const std::string &modelName ) ;
+	virtual FlatCoupledCell &newFlatCoupledCell( const std::string &modelName );
 
 	int totalObjectsCount() const;
 	int localObjectsCount() const;

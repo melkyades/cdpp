@@ -30,7 +30,7 @@
 #include "warped.hh"
 #include "util/Stopwatch.hh"
 #include "KernelMsgs.hh"
-#include <iomanip.h>
+#include <iomanip>
 
 class logicalProcessStats 
 {
@@ -69,13 +69,13 @@ public:
     kernelMsgs[msgType]++;
   };
 
-  void printNumberOfKernelMessages(ostream* statsFile){
-    *statsFile << "-----------------------------------------------------------------------" << endl;    
-    *statsFile << " *** Kernel Messages Sent/Received through MPI ***" << endl;
-    *statsFile << "-----------------------------------------------------------------------" << endl;
+  void printNumberOfKernelMessages(std::ostream* statsFile){
+    *statsFile << "-----------------------------------------------------------------------" << std::endl;    
+    *statsFile << " *** Kernel Messages Sent/Received through MPI ***" << std::endl;
+    *statsFile << "-----------------------------------------------------------------------" << std::endl;
     *statsFile <<"TERMN EVENTMSGS LGVTMSG LLGVTMG NEWGVT GVTACK LPACK  RCHKPT" 
-	       << endl;
-    *statsFile << "-----------------------------------------------------------------------" << endl;
+	       << std::endl;
+    *statsFile << "-----------------------------------------------------------------------" << std::endl;
     for(int i=1; i < 22; i++){
       switch(i) {
       case 3:
@@ -95,39 +95,39 @@ public:
 	break;
 #ifdef MATTERNGVTMANAGER
       case 13:
-	*statsFile << endl << "Number of MATTERNGVTMSG : " << kernelMsgs[i] 
-		  << endl;
+	*statsFile << std::endl << "Number of MATTERNGVTMSG : " << kernelMsgs[i] 
+		  << std::endl;
 	break;
       case 14:
-        *statsFile << "Number of RESTORECKPTMSG : " << kernelMsgs[i] << endl;
+        *statsFile << "Number of RESTORECKPTMSG : " << kernelMsgs[i] << std::endl;
 	break;
       case 20:
-	*statsFile << "Number of EXTAGENTMSG : " << kernelMsgs[i] << endl;
+	*statsFile << "Number of EXTAGENTMSG : " << kernelMsgs[i] << std::endl;
 	break;
 #else
       case 13:
-	*statsFile << "[" << setw(4) << kernelMsgs[i] << "]" << endl;
-	*statsFile << "-----------------------------------------------------------------------" << endl;
+	*statsFile << "[" << setw(4) << kernelMsgs[i] << "]" << std::endl;
+	*statsFile << "-----------------------------------------------------------------------" << std::endl;
 	break;
 #endif
 #ifdef MESSAGE_AGGREGATION
       case 15:
-	//*statsFile << "Number of TIMEWARPOBJMSG : " << kernelMsgs[i] << endl;
+	//*statsFile << "Number of TIMEWARPOBJMSG : " << kernelMsgs[i] << std::endl;
 	break;
       case 16:
-	//*statsFile << "Number of TRANSFEROBJMSG : " << kernelMsgs[i] << endl;
+	//*statsFile << "Number of TRANSFEROBJMSG : " << kernelMsgs[i] << std::endl;
 	break;
       case 17:
-	//*statsFile << "Number of OUTPUTQOBJMSG : " << kernelMsgs[i] << endl;
+	//*statsFile << "Number of OUTPUTQOBJMSG : " << kernelMsgs[i] << std::endl;
 	break;
       case 18:
-	//*statsFile << "Number of INPUTQOBJMSG : " << kernelMsgs[i] << endl;
+	//*statsFile << "Number of INPUTQOBJMSG : " << kernelMsgs[i] << std::endl;
 	break;
       case 19:
-	//*statsFile << "Number of STATEQOBJMSG : " << kernelMsgs[i] << endl;
+	//*statsFile << "Number of STATEQOBJMSG : " << kernelMsgs[i] << std::endl;
 	break;
       case 21:
-	//*statsFile << "Number of AGGREGATEMSG : " << kernelMsgs[i] << endl;
+	//*statsFile << "Number of AGGREGATEMSG : " << kernelMsgs[i] << std::endl;
 	break;
 #endif
       default:

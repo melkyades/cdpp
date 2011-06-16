@@ -1,7 +1,7 @@
 #ifndef ACTIVENODE_HH
 #define ACTIVENODE_HH
 
-#include <fstream.h>
+#include <fstream>
 #include "SimulationObj.hh"
 #include "ActiveNodeState.hh"
 #include "SmartPacket.hh"
@@ -12,7 +12,7 @@
 #include "../rnd/builtin.h"
 #endif
 
-#include <strstream.h>
+#include <strstream>
 #include <math.h>
 
 #include "config.hh"

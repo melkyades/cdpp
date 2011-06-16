@@ -20,6 +20,8 @@
 #include "loader.h"
 #include "mpi.h"
 
+using namespace std;
+
 /*******************************************************************
 * Function Name: openCommChanel
 * Opens the communications channel. Gets the machine ID

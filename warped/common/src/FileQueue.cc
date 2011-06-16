@@ -27,6 +27,7 @@
 //
 //-----------------------------------------------------------------------
 #include "FileQueue.hh"
+#include <cstring>
 
 int FileQueue::standardOut = -1;
 

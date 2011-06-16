@@ -27,7 +27,7 @@ class PartitionCellDetails;
 class CellPartitionException : public MException
 {
 public:
-	CellPartitionException( const string &str = "Class CellPartition: " ): MException( str )
+	CellPartitionException( const std::string &str = "Class CellPartition: " ): MException( str )
 	{} ;
 };	// PartitionZoneException
 
@@ -36,8 +36,8 @@ class CellPartition {
 
 private:	
 
-	typedef list< PartitionZoneDetails*> PartitionZoneList;
-	typedef list< PartitionCellDetails*> PartitionCellList;
+	typedef std::list< PartitionZoneDetails*> PartitionZoneList;
+	typedef std::list< PartitionCellDetails*> PartitionCellList;
 
 	PartitionZoneList localCells;
 	PartitionCellList remoteNeighbors;
@@ -56,7 +56,7 @@ public:
 	const nTupla& dimension() const 
 	{ return dim; }
 
-	CellPartition &addLocalZone( const string& strZone);
+	CellPartition &addLocalZone( const std::string& strZone);
 	CellPartition &addNeighborCell( const CellPosition& cell);
 	CellPartition &addNeighborCells( const CellPositionList& neighbors);
 
@@ -119,7 +119,7 @@ private:
 	long firstIndex;
 	long lastIndex;
 
-	PartitionZoneDetails ( const string& strZone) : zone( strZone ){}
+	PartitionZoneDetails ( const std::string& strZone) : zone( strZone ){}
 };
 
 class PartitionCellDetails {

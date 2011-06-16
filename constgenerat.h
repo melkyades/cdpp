@@ -22,9 +22,9 @@
 class ConstGenerator : public Atomic
 {
 public:
-	ConstGenerator( const string &name = "ConstGenerator" );				  // Default constructor
+	ConstGenerator( const std::string &name = "ConstGenerator" );				  // Default constructor
 
-	virtual string className() const
+	virtual std::string className() const
 		{return "ConstGenerator";}
 
 protected:

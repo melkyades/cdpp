@@ -17,6 +17,8 @@
 #include "parsimu.h"      // class Simulator
 #include "strutil.h"       // str2Value( ... )
 
+using namespace std;
+
 /*******************************************************************
 * Function Name: Generator
 * Description: constructor

@@ -1,6 +1,6 @@
 #include <iostream.h>
-#include <fstream.h>
-#include <string.h>
+#include <fstream>
+#include <string>
 
 #include "Node.hh"
 

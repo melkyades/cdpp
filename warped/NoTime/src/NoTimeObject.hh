@@ -28,7 +28,7 @@
 //
 //---------------------------------------------------------------------------
 
-#include <new.h>
+#include <new>
 #include "BasicNoTime.hh"
 #include "DefaultVTime.hh"
 #include "BasicState.hh"

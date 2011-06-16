@@ -1,10 +1,10 @@
 /*******************************************************************
 *
-*  DESCRIPCION: Cola GenÈrica (on demand)
+*  DESCRIPCION: Cola Gen√©rica (on demand)
 *
 *  AUTORES:
 *  	    Ing. Carlos Giorgetti
-*          Iv·n A. Melgrati
+*          Iv√°n A. Melgrati
 *          Dra. Ana Rosa Tymoschuk
 *	v2:Alejandro Troccoli
 *
@@ -17,10 +17,12 @@
 *         01/02/2001
 *******************************************************************/
 
-#include <string.h>
+#include <string>
 #include "queue.h"
 #include "message.h"
 #include "parsimu.h"
+
+using namespace std;
 
 /*******************************************************************
 * CLASS QueueState
@@ -55,8 +57,8 @@ int  QueueState::getSize() const {
 *********************************************************************/
 
 /*******************************************************************
-* Nombre de la Funci¢n: Queue::Queue()
-* DescripciÛn: Constructor
+* Nombre de la Funci¬¢n: Queue::Queue()
+* Descripci√≥n: Constructor
 ********************************************************************/
 Queue::Queue( const string &name ) : Atomic( name ), in( addInputPort( "in" ) )
 	, done( addInputPort( "done" ) ) , out( addOutputPort( "out" ) )
@@ -70,8 +72,8 @@ Queue::Queue( const string &name ) : Atomic( name ), in( addInputPort( "in" ) )
 
 
 /*******************************************************************
-* Nombre de la FunciÛn: Queue::initFunction()
-* DescripciÛn: FunciÛn de InicializaciÛn
+* Nombre de la Funci√≥n: Queue::initFunction()
+* Descripci√≥n: Funci√≥n de Inicializaci√≥n
 ********************************************************************/
 
 Model &Queue::initFunction()
@@ -82,8 +84,8 @@ Model &Queue::initFunction()
 
 
 /*******************************************************************
-* Nombre de la FunciÛn: Queue::externalFunction()
-* DescripciÛn: Maneja los eventos externos (nuevas solicitudes y aviso de "listo"
+* Nombre de la Funci√≥n: Queue::externalFunction()
+* Descripci√≥n: Maneja los eventos externos (nuevas solicitudes y aviso de "listo"
 ********************************************************************/
 
 Model &Queue::externalFunction( const ExternalMessage &msg )
@@ -98,27 +100,27 @@ Model &Queue::externalFunction( const ExternalMessage &msg )
 	}
 #endif	
 
-	if( msg.port() == in )                             	// Si entra una nueva peticiÛn
+	if( msg.port() == in )                             	// Si entra una nueva petici√≥n
 	{
 		elements().push_back( msg.value() ) ;             // Encolarla
-		if( elements().size() == 1 )                      // Si no hay otra, preparla para envÌo
+		if( elements().size() == 1 )                      // Si no hay otra, preparla para env√≠o
 			holdIn( AtomicState::active, preparationTime );
 	}
 
-	if( msg.port() == done )                            // Si notifican condiciÛn "listo"
+	if( msg.port() == done )                            // Si notifican condici√≥n "listo"
 	{
 		elements().pop_front() ;                          // Eliminar solicitud actual de cola
 		if( !elements().empty() )
 			holdIn( AtomicState::active, preparationTime );
-			// Programar siguiente envÌo
+			// Programar siguiente env√≠o
 	}
 
 	return *this;
 }
 
 /*******************************************************************
-* Nombre de la FunciÛn: Queue::internalFunction()
-* DescripciÛn: Pone el modelo en estado pasivo (esperando un "Done" o algo para enviar)
+* Nombre de la Funci√≥n: Queue::internalFunction()
+* Descripci√≥n: Pone el modelo en estado pasivo (esperando un "Done" o algo para enviar)
 ********************************************************************/
 Model &Queue::internalFunction( const InternalMessage & )
 {
@@ -137,12 +139,12 @@ Model &Queue::internalFunction( const InternalMessage & )
 
 
 /*******************************************************************
-* Nombre de la FunciÛn: Queue::outputFunction()
-* DescripciÛn: EnvÌa solicitud al receptor
+* Nombre de la Funci√≥n: Queue::outputFunction()
+* Descripci√≥n: Env√≠a solicitud al receptor
 ********************************************************************/
 Model &Queue::outputFunction( const CollectMessage &msg )
 {
-	if( !elements().empty() )   // Si la cola no est· vacÌa, enviar primer elemento
+	if( !elements().empty() )   // Si la cola no est√° vac√≠a, enviar primer elemento
 		sendOutput( msg.time(), out, elements().front() ) ;
 	return *this ;
 }

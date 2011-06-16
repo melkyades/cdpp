@@ -317,7 +317,7 @@ CommPhyClumpsDPC::locateOthers(){
     case LOCATIONMSG :
       initMsgsGot++ ;
       if(strcmp(machine,toRecv->machine) == 0) {
-	map[toRecv->id] = true ;
+	std::map[toRecv->id] = true ;
       }
       break ;
     case READYMSG :

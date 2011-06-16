@@ -2,7 +2,7 @@
 *
 *  DESCRIPTION: class StateVars
 *
-*  AUTHOR: Alejandro López
+*  AUTHOR: Alejandro LÃ³pez
 *
 *  EMAIL: mailto://alopez@dc.uba.ar
 *         
@@ -24,44 +24,47 @@
 class StateVarsException : public MException
 {
     public:
-    StateVarsException(const string &str = "Undefined state variable"): 
+    StateVarsException(const std::string &str = "Undefined state variable"): 
                 MException(str)  {} ;
 };
 
-class StateVars : protected map<const string, Real>
+class StateVars : protected std::map<const std::string, Real>
 {
     public:
 
-    inline bool exist(const string& name) const
+    inline bool exist(const std::string& name) const
     { return (find(name) != end()); }
     
-    bool createVariable(const string& name, Real& value = Real::tundef);
+    bool createVariable(const std::string& name, Real& value = Real::tundef);
 
-    Real &get(const string &name) const;           //throws StateVarsException
-    Real &set(const string &name, Real &newValue); //throws StateVarsException
+    Real &get(const std::string &name) const;           //throws StateVarsException
+    Real &set(const std::string &name, Real &newValue); //throws StateVarsException
     
     StateVars& operator=(const StateVars &src);
     
-    StateVars& setValues(const string &values);
+    StateVars& setValues(const std::string &values);
 
-    string asString(void) const;
+    std::string asString(void) const;
     
-    inline void print(ostream& os) const
+    inline void print(std::ostream& os) const
     { os << asString(); }
     
     void clear()
-    { order.clear(); this->map<const string, Real>::clear(); }
+    { order.clear(); this->std::map<const std::string, Real>::clear(); }
     
     
     protected:
     
     inline bool exist(int index) const
-    { return (order.find(index) != end()); }
+    {
+    	std::map<int, std::string>::const_iterator it = order.find(index);
+    	return (it != order.end());
+    }
     
-    const string& operator[](int index) const;
+    const std::string& operator[](int index) const;
 
     private:
-    map<int, string> order;
+    std::map<int, std::string> order;
 };
 
 

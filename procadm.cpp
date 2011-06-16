@@ -16,6 +16,8 @@
 #include "sprocadm.h"		  // StandAloneProcessorAdmin
 #include "pprocadm.h"		  // ParallelProcessorAdmin
 
+using namespace std;
+
 /** private data **/
 ProcessorAdmin *SingleProcessorAdmin::instance( NULL ) ;
 

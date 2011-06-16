@@ -17,6 +17,8 @@
 #include "message.h"          // class InitMessage
 #include "msgadm.h"           // SingleMsgAdmin
 
+using namespace std;
+
 /** public functions **/
 /*******************************************************************
 * Function Name: Simulator

@@ -31,12 +31,12 @@
 //
 //---------------------------------------------------------------------------
 
-#include <iostream.h>
-#include <strstream.h>
-#include <string.h>
+#include <iostream>
+#include <strstream>
+#include <std::string.h>
 #include <values.h>
-#include <ctype.h>
-#include <stdlib.h>
+#include <ctype>
+#include <cstdlib>
 
 // #if !defined (__GNUC_MINOR__) || __GNUC_MINOR__ < 6
 // typedef int bool;
@@ -66,12 +66,12 @@ MIN_FUNC(const type& x, const type& y) {
 }
 
 enum SIGN       {POSITIVE, NEGATIVE};
-enum listMode_t {START, CURRENT, END};
+enum std::listMode_t {START, CURRENT, END};
 enum findMode_t {LESS, LESSEQUAL, EQUAL, GREATEREQUAL, GREATER};
 
 
-inline ostream&
-operator<<(ostream& os, const SIGN s) {
+inline std::ostream&
+operator<<(std::ostream& os, const SIGN s) {
   switch (s) {
   case POSITIVE:
     os << '+';
@@ -80,7 +80,7 @@ operator<<(ostream& os, const SIGN s) {
     os << '-';
     break;
   default:
-    os << "(invalid SIGN value)" << endl;
+    os << "(invalid SIGN value)" << std::endl;
     break;
   }
   return os;

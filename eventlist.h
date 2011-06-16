@@ -15,7 +15,7 @@
 
 #include <list>
 #include "event.h"
-typedef list<Event> EventList;
+typedef std::list<Event> EventList;
 
 
 #endif

@@ -43,8 +43,8 @@ public:
 
 	void calcRealPos( CellPosition &pos );
 
-	void print( ostream &, char ='?' ) const;
-	void printFormatedList( ostream & ) const;
+	void print( std::ostream &, char ='?' ) const;
+	void printFormatedList( std::ostream & ) const;
 	
 private:
 	// ** instance variables ** //

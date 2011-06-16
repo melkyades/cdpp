@@ -12,14 +12,16 @@
 *******************************************************************/
 
 /** include files **/
-#include <time.h>
-#include <stdlib.h>
+#include <ctime>
+#include <cstdlib>
 #include "distri.h"     // class definition
 #include "strutil.h"    // lowercase
 extern "C"  
 {
 #include "randlib.h"
 }
+
+using namespace std;
 
 /** public functions **/
 /*******************************************************************

@@ -19,7 +19,7 @@
 #ifndef __TRANSDUCER_H
 #define __TRANSDUCER_H
 
-#include <map.h>
+#include <map>
 #include "atomic.h"
 #include "atomicstate.h"
 #include "message.h"
@@ -28,7 +28,7 @@ class TransducerState : public AtomicState {
 
 public:
 
-	typedef map< int, VTime, less<int> > JobsList ;
+	typedef std::map< int, VTime, std::less<int> > JobsList ;
 
 	long procCount ;
 	long cpuLoad ;
@@ -47,9 +47,9 @@ public:
 class Transducer: public Atomic
 {
 public:
-	Transducer( const string &name = "Transducer" ) ;	//Default constructor
+	Transducer( const std::string &name = "Transducer" ) ;	//Default constructor
 
-	virtual string className() const ;
+	virtual std::string className() const ;
 
 protected:
 	Model &initFunction();
@@ -89,7 +89,7 @@ private:
 
 // ** inline ** // 
 inline
-	string Transducer::className() const
+	std::string Transducer::className() const
 {
 	return "Transducer" ;
 }

@@ -28,18 +28,18 @@
 class Distribution
 {
 public:
-	static Distribution *create( const string &distributionName );
+	static Distribution *create( const std::string &distributionName );
 
 	virtual ~Distribution()			//Destructor
 		{}
 		
 	virtual int varCount() const = 0;
-	const string getVar(unsigned int) const;
+	const std::string getVar(unsigned int) const;
 	Distribution &setVar(unsigned int, float);
 	virtual float get() = 0;
 
 protected:
-	virtual const string get(unsigned int) const = 0;
+	virtual const std::string get(unsigned int) const = 0;
 	virtual Distribution &set(unsigned int, float) = 0;
 	Distribution();	 //Default constructor
 };	// class Distribution
@@ -59,7 +59,7 @@ public:
 	float get();
 
 protected:
-	const string get( unsigned int ) const
+	const std::string get( unsigned int ) const
 		{return "degreesfreedom";}
 	        
 	Distribution &set( unsigned , float value)
@@ -82,7 +82,7 @@ public:
 	float get();
 
 protected:
-	const string get( unsigned int index) const
+	const std::string get( unsigned int index) const
 		{return  index == 0?"mean":"deviation";}
 
 	Distribution &set( unsigned int, float ) ;
@@ -107,7 +107,7 @@ public:
 		{return value;}
 		
 protected:
-	const string get( unsigned int ) const
+	const std::string get( unsigned int ) const
 		{return "value";}
 		
 	Distribution &set( unsigned int, float ) ;
@@ -129,7 +129,7 @@ public:
 	float get();
 
 protected:
-	const string get( unsigned int ) const
+	const std::string get( unsigned int ) const
 		{return "mean";}
 		
 	Distribution &set( unsigned int, float ) ;
@@ -151,7 +151,7 @@ public:
 	float get();
 
 protected:
-	const string get( unsigned int ) const
+	const std::string get( unsigned int ) const
 		{return "mean";}
 		
 	Distribution &set( unsigned int, float ) ;

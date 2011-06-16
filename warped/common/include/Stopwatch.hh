@@ -20,7 +20,7 @@
 #ifndef STOPWATCH_HH
 #define STOPWATCH_HH
 #include "bool.hh"
-#include <iostream.h>
+#include <iostream>
 #include <sys/time.h>   // to get the system time
 
 class Stopwatch{

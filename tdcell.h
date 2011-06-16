@@ -22,7 +22,7 @@
 
 /** include files **/
 #include <list>
-#include <pair.h>
+#include <utility>
 #include "atomcell.h"         // base class header
 
 /** foward declarations **/
@@ -33,9 +33,9 @@
 class TDCellState : public AtomicCellState 
 {
 public:
-	typedef pair< string, Real >      QueueValue ;
+	typedef pair< std::string, Real >      QueueValue ;
 	typedef pair< VTime, QueueValue > QueueElement ;
-	typedef list< QueueElement >      Queue ;
+	typedef std::list< QueueElement >      Queue ;
 
 	Queue queueVal ;
 
@@ -51,9 +51,9 @@ public:
 class TransportDelayCell: public AtomicCell
 {
 public:
-	TransportDelayCell( const CellPosition& cellPos, const string & = TRANSPORT_DELAY_CELL_NAME , const LocalTransAdmin::Function &fn = LocalTransAdmin::InvalidFn ) ;
+	TransportDelayCell( const CellPosition& cellPos, const std::string & = TRANSPORT_DELAY_CELL_NAME , const LocalTransAdmin::Function &fn = LocalTransAdmin::InvalidFn ) ;
 
-	string className() const;
+	std::string className() const;
 
 protected:
 	Model &initFunction();
@@ -75,17 +75,17 @@ private:
 
 	const VTime & firstQueuedTime() const;
 	const Real & firstQueuedValue() const;
-	const string & firstQueuedPort() const;
+	const std::string & firstQueuedPort() const;
 
 	TransportDelayCell & updateRemainingTime( const VTime & );
-	TransportDelayCell & insertByTime( const VTime &, const string &, const Real & );
+	TransportDelayCell & insertByTime( const VTime &, const std::string &, const Real & );
 
 } ;  // TransportDelayCell
 
 /** inline **/
 
 inline
-	string TransportDelayCell::className() const
+	std::string TransportDelayCell::className() const
 {
 	return TRANSPORT_DELAY_CELL_NAME;
 }

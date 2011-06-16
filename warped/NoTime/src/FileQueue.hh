@@ -27,9 +27,9 @@
 //
 //------------------------------------------------------------------------
 
-#include <iostream.h>
-#include <fstream.h>
-#include <stdlib.h>
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
 #include "FileData.hh"
 
 class FileQueue {
@@ -52,7 +52,7 @@ public:
   char* outFileName;
   
 private:
-  ostream *outFile;
+  std::ostream *outFile;
   // to determine if it is a normal output file or pipe to stdout
   int statusBit;
 };

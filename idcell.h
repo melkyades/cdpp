@@ -28,8 +28,8 @@ class IDCellState : public AtomicCellState
 {
 public:
 
-	map<string, Real> futureValue;
-	map<string, Real> actualValue;
+	std::map<std::string, Real> futureValue;
+	std::map<std::string, Real> actualValue;
 
 	IDCellState(){};
 	virtual ~IDCellState(){};
@@ -43,11 +43,11 @@ public:
 class InertialDelayCell: public AtomicCell
 {
 public:
-	InertialDelayCell( const CellPosition& cellPos, const string &name = INERTIAL_DELAY_CELL_NAME , const LocalTransAdmin::Function &fn = LocalTransAdmin::InvalidFn )
+	InertialDelayCell( const CellPosition& cellPos, const std::string &name = INERTIAL_DELAY_CELL_NAME , const LocalTransAdmin::Function &fn = LocalTransAdmin::InvalidFn )
 	: AtomicCell( cellPos, name, fn )
 	{}
 
-	string className() const
+	std::string className() const
 	{return INERTIAL_DELAY_CELL_NAME;}
 
 protected:
@@ -63,35 +63,35 @@ protected:
 	void initializeCell();
 private:
 
-	Real futureValue( const string& ) const;
-	void futureValue( const string&, const Real& );
+	Real futureValue( const std::string& ) const;
+	void futureValue( const std::string&, const Real& );
 
-	Real actualValue( const string& ) const;
-	void actualValue( const string&, const Real & );
+	Real actualValue( const std::string& ) const;
+	void actualValue( const std::string&, const Real & );
 
 } ;  // InertialDelayCell
 
 /** inline **/
 inline
-	Real InertialDelayCell::futureValue(const string &port) const
+	Real InertialDelayCell::futureValue(const std::string &port) const
 {
 	return ((IDCellState*)getCurrentState())->futureValue[port];	
 }
 
 inline
-	void InertialDelayCell::futureValue (const string &port, const Real& r)
+	void InertialDelayCell::futureValue (const std::string &port, const Real& r)
 {
 	((IDCellState*)getCurrentState())->futureValue[port] = r;
 }
 
 inline
-	Real InertialDelayCell::actualValue(const string &port) const
+	Real InertialDelayCell::actualValue(const std::string &port) const
 {
 	return ((IDCellState*)getCurrentState())->actualValue[port];	
 }
 
 inline
-	void InertialDelayCell::actualValue (const string &port, const Real& r)
+	void InertialDelayCell::actualValue (const std::string &port, const Real& r)
 {
 	((IDCellState*)getCurrentState())->actualValue[port] = r;
 }

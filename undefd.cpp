@@ -13,6 +13,7 @@
 /** include files **/
 #include "undefd.h"
 
+using namespace std;
 
 
 #ifdef __WINDOWS__

@@ -19,6 +19,8 @@
 #include "message.h"    // class ExternalMessage 
 #include "parsimu.h"    // class ParallelMainSimulator
 
+using namespace std;
+
 /*******************************************************************
 * CLASS TransducerState
 *********************************************************************/

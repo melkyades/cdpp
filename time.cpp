@@ -15,6 +15,8 @@
 #include "VTime.hh"         // base class
 #include "stringp.h"      // operator + int
 
+using namespace std;
+
 /** public data **/
 const VTime VTime::Zero ;	  // Zero constant
 const VTime VTime::Inf( 32767, 59, 59, 999 ) ;	// Infinity constant

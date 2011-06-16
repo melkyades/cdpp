@@ -28,7 +28,7 @@
 
 #include "CommPhyTCPMPL.hh"
 #include "TCPMPL.hh"
-#include <stdlib.h>
+#include <cstdlib>
 #include <iostream.h>
 
 void

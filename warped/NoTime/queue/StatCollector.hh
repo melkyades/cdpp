@@ -3,7 +3,7 @@
 
 #include "SimulationObj.hh"
 #include "Types.hh"
-#include <fstream.h>
+#include <fstream>
 #include "FileQueue.hh"
 
 // This object collects statistics of the clients from the server. The 

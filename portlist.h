@@ -24,14 +24,14 @@
 
 #define	DEFAULT_FUNCTION_InPort		""
 
-typedef map< string, string, less< string > > PortInFunction;
-typedef map< string, Real, less< string > >   PortValues;
-typedef map< PortId, Port *, less< PortId > > PortList;
+typedef std::map< std::string, std::string, std::less< std::string > > PortInFunction;
+typedef std::map< std::string, Real, std::less< std::string > >   PortValues;
+typedef std::map< PortId, Port *, std::less< PortId > > PortList;
 
-typedef multimap< const string, const Port * > VirtualPortList;
+typedef std::multimap< const std::string, const Port * > VirtualPortList;
 
 
-const Port *getPort( VirtualPortList *pl, string name);
+const Port *getPort( VirtualPortList *pl, std::string name);
 		// Devuelve el puerto identificado por el nombre  indicado.
 
 
@@ -43,39 +43,41 @@ class CellDescription
 {
 public:
 	CellDescription() { }
-	CellDescription( CellPosition &cp, string &ip );
+	CellDescription( CellPosition &cp, std::string &ip );
 
 	const CellPosition &cellPos() const { return cell_pos; }
 	void cellPos( const CellPosition &cp ) { cell_pos = cp; }
 	
-	const string &inPort() const { return in_port; }
-	void inPort( const string &ip ) { in_port = ip; }
+	const std::string &inPort() const { return in_port; }
+	void inPort( const std::string &ip ) { in_port = ip; }
 
 private:
 	CellPosition	cell_pos ;
-	string		in_port ;
+	std::string		in_port ;
 } ;
 
 
 inline
-CellDescription::CellDescription( CellPosition &cp, string &ip )
+CellDescription::CellDescription( CellPosition &cp, std::string &ip )
 : cell_pos( cp )
 , in_port( ip )
 {
 }
 
- 
-inline
-bool less<CellDescription>::operator ()(const CellDescription &a, const CellDescription &b) const
-{
-	return (a.cellPos() < b.cellPos()) || (a.cellPos() == b.cellPos() && a.inPort() < b.inPort() );
+namespace std {
+	template<>
+	inline
+	bool less<CellDescription>::operator ()(const CellDescription &a, const CellDescription &b) const
+	{
+		return (a.cellPos() < b.cellPos()) || (a.cellPos() == b.cellPos() && a.inPort() < b.inPort() );
+	}
+
 }
 
-
-typedef map< CellDescription, string, less< CellDescription > > FlatPortInFunction;
+typedef std::map< CellDescription, std::string, std::less< CellDescription > > FlatPortInFunction;
 	// Nota: < <cellPos, inPort>, functionName> >
 	
-typedef map< CellDescription, Real, less< CellDescription > >   FlatPortValues;
+typedef std::map< CellDescription, Real, std::less< CellDescription > >   FlatPortValues;
 	// Nota: < <cellPos, inPort>, lastValue> >
 
 #endif // __PORTLIST_H

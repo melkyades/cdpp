@@ -24,15 +24,15 @@
 class BSDChannel: public CommChannel
 {
 public:
-	BSDChannel( const string &serviceName );  
+	BSDChannel( const std::string &serviceName );  
 
 	BSDChannel( int portNumber );  
 
 	~BSDChannel();	 			//Destructor
 
-	string readLine() ;
+	std::string readLine() ;
 
-	CommChannel &writeLine( const string & ) ;
+	CommChannel &writeLine( const std::string & ) ;
 
 private:
 	BSDChannel &open( int portNumber ) ;

@@ -23,11 +23,11 @@ class Distribution ;
 class Quant: public Atomic
 {
 public:
-	Quant( const string &name = "Quant" ) ;      // Default constructor
+	Quant( const std::string &name = "Quant" ) ;      // Default constructor
 
 	~Quant();                                 // Destructor
 
-	virtual string className() const
+	virtual std::string className() const
 	{return "Quant";}
 
 protected:

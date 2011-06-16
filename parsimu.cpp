@@ -11,9 +11,10 @@
 *******************************************************************/
 
 /** include files **/
-#include <fstream.h>
-#include <strstream.h>
+#include <fstream>
+#include <strstream>
 #include <map>
+#include <cstring>
 #include "parsimu.h"		// base header
 #include "stdaload.h"
 #include "ini.h"       	// class Ini
@@ -30,6 +31,8 @@
 #ifdef MPI
 #include "mpi.h"		// MPI_Routines
 #endif
+
+using namespace std;
 
 //define SIMUNTIL. Set the lp simulation stop time to Infinity. 
 //The actual simulation stop time will be controlled by the Parallel Root
@@ -1173,7 +1176,7 @@ void ParallelMainSimulator::showEvents( const EventList &events, ostream &out  )
 * Lists all the log files associated to each model. The output will
 * be used by drawlog.
 ********************************************************************/
-void ParallelMainSimulator::showLogInfo( ostream &out = cout )
+void ParallelMainSimulator::showLogInfo( ostream &out )
 {
 
 	const ParallelModelAdmin::ModelDB& models( SingleParallelModelAdm::Instance().models());
@@ -1277,7 +1280,7 @@ ParallelMainSimulator &ParallelMainSimulator::afterInitialize()
 /*******************************************************************
 * Function Name: showModelPatition
 ********************************************************************/
-void ParallelMainSimulator::showModelPartition(ostream &out = cout )
+void ParallelMainSimulator::showModelPartition(ostream &out)
 {
 	const ParallelModelAdmin::ModelDB& models( SingleParallelModelAdm::Instance().models());
 

@@ -1295,9 +1295,9 @@ else
   cat > conftest.$ac_ext <<EOF
 #line 1297 "configure"
 #include "confdefs.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdarg.h>
-#include <string.h>
+#include <string>
 #include <float.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
@@ -1320,7 +1320,7 @@ if test $ac_cv_header_stdc = yes; then
 cat > conftest.$ac_ext <<EOF
 #line 1322 "configure"
 #include "confdefs.h"
-#include <string.h>
+#include <string>
 EOF
 if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
   egrep "memchr" >/dev/null 2>&1; then
@@ -1338,7 +1338,7 @@ if test $ac_cv_header_stdc = yes; then
 cat > conftest.$ac_ext <<EOF
 #line 1340 "configure"
 #include "confdefs.h"
-#include <stdlib.h>
+#include <cstdlib>
 EOF
 if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
   egrep "free" >/dev/null 2>&1; then
@@ -1557,7 +1557,7 @@ else
 #include "confdefs.h"
 #include <sys/types.h>
 #if STDC_HEADERS
-#include <stdlib.h>
+#include <cstdlib>
 #include <stddef.h>
 #endif
 EOF

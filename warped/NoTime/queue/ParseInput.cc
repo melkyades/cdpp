@@ -1,5 +1,5 @@
 #include "ParseInput.hh"
-#include <fstream.h>
+#include <fstream>
 
 ParseInput::ParseInput() {
   configFile.open("/home/nthondug/research/warped/NoTime/queue/Queue.config");

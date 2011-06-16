@@ -19,6 +19,8 @@
 #include "msgbag.h"
 #include "log.h"			// class Log
 
+using namespace std;
+
 /** public data **/
 const ProcId ParallelProcessor::InvalidId( -1 ) ;
 

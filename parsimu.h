@@ -14,7 +14,7 @@
 #define __PARALLELSIMULATOR_H
 
 /** include files **/
-#include <iostream.h>
+#include <iostream>
 #include "proot.h"          	// EventList
 #include "ini.h"           		// class Ini
 #include "pini.h"	   		// class PIni
@@ -36,24 +36,24 @@ public:
 
 	void registerNewAtomics() ;
 
-	string outputName()
+	std::string outputName()
 	{return loader()->outputName();}
 
-	string logName()
+	std::string logName()
 	{return Log::Default.filename();}
 
-	ostream &debugStream();
+	std::ostream &debugStream();
 
-	ostream &evalDebugStream()
+	std::ostream &evalDebugStream()
 	{return EvalDebug().Stream();}
 
 	bool evalDebug()
 	{return EvalDebug().Active();}
 
-	bool existsParameter( const string &modelName, const string &parameterName ) const
+	bool existsParameter( const std::string &modelName, const std::string &parameterName ) const
 	{return iniFile().exists( modelName, parameterName );}
 
-	const string getParameter( const string &modelName, const string &parameterName ) const ;
+	const std::string getParameter( const std::string &modelName, const std::string &parameterName ) const ;
 
 	SimLoader *loader()
 	{return sloader;}
@@ -87,11 +87,11 @@ protected:
 
 	// ** Methods ** //
 
-	ParallelMainSimulator &loadModels( istream&, istream&, bool printParserInfo ) ;
+	ParallelMainSimulator &loadModels( std::istream&, std::istream&, bool printParserInfo ) ;
 	ParallelMainSimulator &setUpLogicalProcess();
-	ParallelMainSimulator &loadExternalEvents( istream& ) ;
-	ParallelMainSimulator &log( ostream & ) ;
-	ParallelMainSimulator &output( ostream & ) ;
+	ParallelMainSimulator &loadExternalEvents( std::istream& ) ;
+	ParallelMainSimulator &log( std::ostream & ) ;
+	ParallelMainSimulator &output( std::ostream & ) ;
 	ParallelMainSimulator &loadModel( Coupled &, bool ) ;
 	ParallelMainSimulator &loadPorts( Coupled & ) ;
 	ParallelMainSimulator &loadComponents( Coupled &, bool ) ;
@@ -102,16 +102,16 @@ protected:
 	ParallelMainSimulator &loadMachines (Coupled & );
 	ParallelMainSimulator &loadMachines( CoupledCell &coupledcell );
 	ParallelMainSimulator &loadInitialCellValues( CoupledCell & ) ;
-	ParallelMainSimulator &loadInitialCellValuesFromFile( CoupledCell &parent, const string &fileName );
-	ParallelMainSimulator &loadInitialCellValuesFromMapFile( CoupledCell &parent, const string &fileName );
+	ParallelMainSimulator &loadInitialCellValuesFromFile( CoupledCell &parent, const std::string &fileName );
+	ParallelMainSimulator &loadInitialCellValuesFromMapFile( CoupledCell &parent, const std::string &fileName );
 	ParallelMainSimulator &loadStateVariables( CoupledCell & ) ;
 	ParallelMainSimulator &loadInitialVariablesValues( CoupledCell & ) ;
-	ParallelMainSimulator &loadInitialVariablesValuesFromFile( CoupledCell &parent, const string &fileName );
+	ParallelMainSimulator &loadInitialVariablesValuesFromFile( CoupledCell &parent, const std::string &fileName );
 	ParallelMainSimulator &loadDefaultTransitions( CoupledCell &, bool ) ;
 	ParallelMainSimulator &loadPortInTransitions( CoupledCell &, bool ) ;
 	ParallelMainSimulator &loadLocalZones( CoupledCell &, bool ) ;
 	ParallelMainSimulator &registerTransition(const LocalTransAdmin::Function &, bool );
-	ParallelMainSimulator &registerTransitionPortIn(const LocalTransAdmin::Function &, bool, const string & );
+	ParallelMainSimulator &registerTransitionPortIn(const LocalTransAdmin::Function &, bool, const std::string & );
 	ParallelMainSimulator &afterInitialize();
 
 #ifndef KERNEL_NOTIME
@@ -122,11 +122,11 @@ protected:
 	}
 #endif
 
-	void showEvents( const EventList &events, ostream &out = cout ) ;
-	void showModelPartition( ostream &out = cout );
-	void showLogInfo( ostream &out = cout );
+	void showEvents( const EventList &events, std::ostream &out = std::cout ) ;
+	void showModelPartition( std::ostream &out = std::cout );
+	void showLogInfo( std::ostream &out = std::cout );
 
-	bool splitString( const string &full, string &first, string &second, char separator );
+	bool splitString( const std::string &full, std::string &first, std::string &second, char separator );
 
 	const Ini &iniFile() const
 	{return ini;}
@@ -139,7 +139,7 @@ private:
 
 	// ** instance variables ** //
 	SimLoader *sloader ;	
-	ostream *vDebugStream;
+	std::ostream *vDebugStream;
 
 	Ini ini;
 	PIni pini;

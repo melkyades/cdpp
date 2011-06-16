@@ -38,7 +38,7 @@ struct Event
 		
 	Event &operator =( const Event &ev ) ;
 
-	const string asString() const
+	const std::string asString() const
 		{return time.asString() + " / " + port->asString() + " / " + value.asString();}
 } ;
 

@@ -30,11 +30,11 @@
 #include "warped.hh"
 #include "BasicEvent.hh"
 #include "Container.hh"
-#include <fstream.h>
-#include <stdlib.h>
+#include <fstream>
+#include <cstdlib>
 
 class BasicState {
-  friend ostream &operator<<(ostream &, const BasicState &);
+  friend std::ostream &operator<<(std::ostream &, const BasicState &);
 public:
   // these ptrs are put in, because Containers are no longer used.
 
@@ -67,7 +67,7 @@ public:
   
   virtual ~BasicState(){};
   virtual BasicState& operator=(BasicState&);
-  virtual void print(ostream& os);
+  virtual void print(std::ostream& os);
   
   // The following functions needs to know the size of the object
   // to serialize.

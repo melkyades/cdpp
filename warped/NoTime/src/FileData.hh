@@ -28,7 +28,7 @@
 //
 //------------------------------------------------------------------------
 
-#include <ostream.h>
+#include <ostream>
 #include "DefaultVTime.hh"
 
 struct FileData {
@@ -48,8 +48,8 @@ struct FileData {
 };
 
 inline
-ostream& 
-operator<<(ostream& os, const FileData& e) {
+std::ostream& 
+operator<<(std::ostream& os, const FileData& e) {
   os << " Length: " << e.length 
      << "Line: " << e.line;
   

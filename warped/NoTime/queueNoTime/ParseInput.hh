@@ -1,7 +1,7 @@
 #ifndef PARSE_INPUT_HH
 #define PARSE_INPUT_HH
 
-#include <fstream.h>
+#include <fstream>
 #include "Types.hh"
 
 class ParseInput {

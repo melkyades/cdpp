@@ -21,7 +21,7 @@
 #define __SIMULATOR_H
 
 /** include files **/
-#include <iostream.h>
+#include <iostream>
 #include "root.h"          // EventList 
 #include "ini.h"           // class Ini
 #include "loader.h"        // class SimLoader 
@@ -48,22 +48,22 @@ public:
 	
 	void registerNewAtomics() ;
 	
-	ostream &outputStream()
+	std::ostream &outputStream()
 	{return loader()->outputStream();}
 	
-	ostream &logStream()
+	std::ostream &logStream()
 	{return loader()->logStream();}
 	
-	ostream &evalDebugStream()
+	std::ostream &evalDebugStream()
 	{return EvalDebug().Stream();}
 	
 	bool evalDebug()
 	{return EvalDebug().Active();}
 	
-	bool existsParameter( const string &modelName, const string &parameterName ) const
+	bool existsParameter( const std::string &modelName, const std::string &parameterName ) const
 	{return iniFile().exists( modelName, parameterName );}
 	
-	const string getParameter( const string &modelName, const string &parameterName ) const ;
+	const std::string getParameter( const std::string &modelName, const std::string &parameterName ) const ;
 	
 	SimLoader *loader()
 	{return sloader;}
@@ -95,7 +95,7 @@ protected:
 	const Ini &iniFile() const
 	{return ini;}
 	
-	bool splitString( const string &full, string &first, string &second, char separator );
+	bool splitString( const std::string &full, std::string &first, std::string &second, char separator );
 	
 };	// class ParallelMainSimulator
 

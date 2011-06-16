@@ -2,7 +2,7 @@
 *
 *  DESCRIPTION: class Congestion
 *
-*  AUTHOR: Andrea Díaz && Verónica Vazquez
+*  AUTHOR: Andrea Dï¿½az && Verï¿½nica Vazquez
 *
 *  EMAIL: mailto://rodiaz@dc.uba.ar
 *         mailto://vvazqu@dc.uba.ar
@@ -15,16 +15,16 @@
 #define __CONGESTION_H
 
 /** include files **/
-#include <map.h>
+#include <map>
 #include "atomic.h"     // class Atomic
 #include "except.h"     // class InvalidMessageException
 
 class Congestion: public Atomic 
 {
 public:
-	Congestion( const string &name = "Congestion"); // Default Constructor
+	Congestion( const std::string &name = "Congestion"); // Default Constructor
 
-	virtual string className() const;
+	virtual std::string className() const;
 
 
 protected:

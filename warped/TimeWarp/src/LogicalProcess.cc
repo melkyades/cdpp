@@ -30,7 +30,7 @@
 #include "LogicalProcess.hh"
 #include "SimulationTime.hh"
 #include <math.h>
-#include <iomanip.h>
+#include <iomanip>
 #ifdef STATS
 #include <stdio.h>
 #endif

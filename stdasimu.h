@@ -14,7 +14,7 @@
 #define __STANDALONESIMULATOR_H
 
 /** include files **/
-#include <iostream.h>
+#include <iostream>
 #include "root.h"          // EventList 
 #include "ini.h"           // class Ini
 #include "loader.h"        // class SimLoader 
@@ -34,26 +34,26 @@ protected:
 	friend class Atomic ;
 	
 	// ** Methods ** //
-	ParallelMainSimulator &loadModels( istream&, bool printParserInfo ) ;
-	ParallelMainSimulator &loadExternalEvents( istream& ) ;
-//	ParallelMainSimulator &log( ostream & ) ;
-//	ParallelMainSimulator &output( ostream & ) ;
+	ParallelMainSimulator &loadModels( std::istream&, bool printParserInfo ) ;
+	ParallelMainSimulator &loadExternalEvents( std::istream& ) ;
+//	ParallelMainSimulator &log( std::ostream & ) ;
+//	ParallelMainSimulator &output( std::ostream & ) ;
 	ParallelMainSimulator &loadModel( Coupled &, Ini &, bool ) ;
 	ParallelMainSimulator &loadPorts( Coupled &, Ini & ) ;
 	ParallelMainSimulator &loadComponents( Coupled &, Ini &, bool ) ;
 	ParallelMainSimulator &loadLinks( Coupled &, Ini & ) ;
 	ParallelMainSimulator &loadCells( CoupledCell &, Ini &, bool ) ;
 	ParallelMainSimulator &loadInitialCellValues( CoupledCell &, Ini & ) ;
-	ParallelMainSimulator &loadInitialCellValuesFromFile( CoupledCell &parent, const string &fileName );
-	ParallelMainSimulator &loadInitialCellValuesFromMapFile( CoupledCell &parent, const string &fileName );
+	ParallelMainSimulator &loadInitialCellValuesFromFile( CoupledCell &parent, const std::string &fileName );
+	ParallelMainSimulator &loadInitialCellValuesFromMapFile( CoupledCell &parent, const std::string &fileName );
 	ParallelMainSimulator &loadDefaultTransitions( CoupledCell &, Ini &, bool ) ;
 	ParallelMainSimulator &loadPortInTransitions( CoupledCell &, Ini &, bool ) ;
 	ParallelMainSimulator &loadLocalZones( CoupledCell &, Ini &, bool ) ;
 	
 	ParallelMainSimulator &registerTransition(const LocalTransAdmin::Function &, Ini &, bool );
-	ParallelMainSimulator &registerTransitionPortIn(const LocalTransAdmin::Function &, Ini &, bool, const string & );
+	ParallelMainSimulator &registerTransitionPortIn(const LocalTransAdmin::Function &, Ini &, bool, const std::string & );
 	
-	void showEvents( const EventList &events, ostream &out = cout ) ;
+	void showEvents( const EventList &events, std::ostream &out = std::cout ) ;
 	
 	
 };	// class StandAloneMainSimulator

@@ -11,8 +11,8 @@
 *******************************************************************/
 
 /** include files **/
-#include <fstream.h>
-#include <strstream.h>
+#include <fstream>
+#include <strstream>
 #include "stdasimu.h"	// base header
 #include "sprocadm.h"	// SingleStandAloneProcessorAdmin
 #include "ini.h"        	// class Ini
@@ -24,6 +24,7 @@
 #include "tdcell.h"		//
 #include "idcell.h"		//
 
+using namespace std;
 
 /*******************************************************************
 * Function Name: run

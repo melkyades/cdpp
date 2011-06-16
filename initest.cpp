@@ -11,9 +11,11 @@
 *
 *******************************************************************/
 
-#include <iostream.h>
+#include <iostream>
 #include "ini.h"
 #include "prnutil.h"
+
+using namespace std;
 
 int main( int argc, const char *argv[] )
 {

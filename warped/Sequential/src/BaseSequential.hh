@@ -29,7 +29,7 @@
 //
 //---------------------------------------------------------------------------
 #include "warped.hh"
-#include <fstream.h>
+#include <fstream>
 #include "SequentialObjectRecord.hh"
 #include "InputQInterface.hh"
 
@@ -60,7 +60,7 @@ public:
   
 #ifdef LPDEBUG
   virtual void setFile(ofstream *) {
-    cerr << name << ": Error! BaseSequential::setFile called!" << endl;
+    cerr << name << ": Error! BaseSequential::setFile called!" << std::endl;
     abort();
   };
 #endif

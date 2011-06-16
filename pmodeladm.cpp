@@ -11,7 +11,7 @@
 *******************************************************************/
 
 /** include files **/
-#include <set.h>
+#include <set>
 #include "pmodeladm.h"         // base header
 #include "parsimu.h"		   //ParallelMainSimulator
 #include "except.h"		   //InvalidModelId exception
@@ -21,6 +21,7 @@
 #include "tdcell.h"           // TransportDelayCell
 #include "flatcoup.h"         // class FlatCoupledCell
 
+using namespace std;
 
 /** private data **/
 ParallelModelAdmin *SingleParallelModelAdm::instance( NULL ) ;

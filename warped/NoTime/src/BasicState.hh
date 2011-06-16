@@ -29,17 +29,17 @@
 //---------------------------------------------------------------------------
 
 #include "SimulationTime.hh"
-#include <iostream.h>
+#include <iostream>
 
 class BasicState {
-  friend ostream &operator<<(ostream &, const BasicState &);
+  friend std::ostream &operator<<(std::ostream &, const BasicState &);
 public:
   VTime lVT;
 
   BasicState() {};
   virtual ~BasicState(){};
   virtual BasicState& operator=(BasicState&);
-  virtual void print(ostream& os);
+  virtual void print(std::ostream& os);
   
   virtual void copyState( BasicState * );
   virtual int  getSize() const;

@@ -25,10 +25,10 @@ class MessageBag
 {
 
 public:
-	typedef list<const BasicPortMessage*> MessageList;
+	typedef std::list<const BasicPortMessage*> MessageList;
 private:
 
-	typedef map< string, MessageList , less< string > > MessagesOnPort;
+	typedef std::map< std::string, MessageList , std::less< std::string > > MessagesOnPort;
 
 	MessagesOnPort msgs;
 	int count;
@@ -41,9 +41,9 @@ public:
 
 	MessageBag &add( const BasicPortMessage* );
 
-	bool portHasMsgs( const string& portName ) const;
+	bool portHasMsgs( const std::string& portName ) const;
 
-	const MessageList& msgsOnPort( const string& portName ) const;
+	const MessageList& msgsOnPort( const std::string& portName ) const;
 
 	int size() const
 	{return count;}
@@ -65,6 +65,7 @@ public:
 
 
 		bool operator ==( const iterator &it ) const;
+		bool operator !=( const iterator &it ) const;
 		iterator &operator=( const iterator &it );
 
 		MessagesOnPort::const_iterator msgsxport, msgsEnd;

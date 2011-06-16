@@ -15,6 +15,8 @@
 
 #include "modelstate.h"
 
+using namespace std;
+
 class AtomicState : public ModelState {
 public:
 
@@ -37,13 +39,13 @@ public:
 };
 
 inline 
-ostream& operator<<( ostream& o, const AtomicState::State& st) {
+ostream& operator<<( std::ostream& o, const AtomicState::State& st) {
 	o << (int) st;
 	return o;
 }
 
 inline
-istream& operator>>( istream& is, AtomicState::State& st) {
+istream& operator>>( std::istream& is, AtomicState::State& st) {
 	int s;
 	is >> s;
 	st = AtomicState::State(s);

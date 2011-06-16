@@ -31,8 +31,8 @@
 #include "warped.hh"
 #include "Stopwatch.hh"
 #include "KernelMsgs.hh"
-#include <iomanip.h>
-#include <limits.h>
+#include <iomanip>
+#include <limits>
 
 
 class logicalProcessStats 

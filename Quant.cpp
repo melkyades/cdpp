@@ -18,6 +18,8 @@
 #include "strutil.h"       // str2float( ... )
 #include "realfunc.h"      // value with quantum
 
+using namespace std;
+
 /*******************************************************************
 * Function Name: Quant
 * Description: constructor

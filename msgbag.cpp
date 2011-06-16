@@ -14,6 +14,8 @@
 #include "message.h"
 #include "except.h"
 
+using namespace std;
+
 /*******************************************************************
 * Function Name: Constructor
 ********************************************************************/
@@ -199,6 +201,11 @@ bool MessageBag::iterator::operator ==( const iterator &it ) const
 		//If they point to the same object, they are equal.
 		return msgs == it.msgs;
 	}
+}
+
+bool MessageBag::iterator::operator !=( const iterator &it ) const
+{
+	return !(*this == it);
 }
 
 /*******************************************************************

@@ -8,13 +8,15 @@
 *******************************************************************/
 
 /** include files **/
-#include <iostream.h>
-#include <string.h>
+#include <iostream>
+#include <string>
 #include "strutil.h"	// isNumeric
 #include "stdaload.h"   // class StandAloneLoader
 #include "netload.h"    // class NetLoader
 #include "parsimu.h"   // class ParallelMainSimulator
 #include "pmodeladm.h"	// class SingleParallelModelAdm
+
+using namespace std;
 
 int main( int argc, char *argv[] )
 {

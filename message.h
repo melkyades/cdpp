@@ -32,6 +32,8 @@
 #include "strutil.h"
 #include "cellpos.h"
 
+#include <cassert>
+
 /** foward declarations **/
 class Port  ;
 class ParallelProcessor ;
@@ -49,7 +51,7 @@ public:
 
 	virtual int valueSize() const;
 
-	virtual string asString() const;
+	virtual std::string asString() const;
 
 	virtual BasicMsgValue* clone() const;
 
@@ -71,7 +73,7 @@ public:
 
 	int valueSize() const; 
 
-	string asString() const ;
+	std::string asString() const ;
 
 	BasicMsgValue* clone() const;
 
@@ -101,11 +103,11 @@ public:
 
 	virtual Message *clone() const = 0 ;
 
-	virtual const string type() const = 0 ;
+	virtual const std::string type() const = 0 ;
 
-	virtual const string asString() const;
-	virtual const string asStringReceived() const;
-	virtual const string asStringSent( const ProcId& dest ) const;
+	virtual const std::string asString() const;
+	virtual const std::string asStringReceived() const;
+	virtual const std::string asStringSent( const ProcId& dest ) const;
 
 
 
@@ -141,7 +143,7 @@ public:
 	virtual Message *clone() const
 	{ return new InitMessage(*this);}
 
-	virtual const string type() const
+	virtual const std::string type() const
 	{return "I" ;}
 };	// class InitMessage
 
@@ -155,7 +157,7 @@ public:
 	virtual Message *clone() const
 	{return new OutputSyncMessage(*this);}
 
-	virtual const string type() const
+	virtual const std::string type() const
 	{return "$" ;}
 
 protected:
@@ -177,7 +179,7 @@ public:
 	virtual Message *clone() const
 	{return new InternalMessage(*this);}
 
-	virtual const string type() const
+	virtual const std::string type() const
 	{return "*" ;}
 
 protected:
@@ -198,7 +200,7 @@ public:
 	virtual CollectMessage *clone() const
 	{return new CollectMessage(*this);}
 
-	virtual const string type() const
+	virtual const std::string type() const
 	{return "@" ;}
 
 protected:
@@ -236,10 +238,10 @@ public:
 	virtual Message *clone() const
 	{return new DoneMessage(*this);}
 
-	virtual const string type() const
+	virtual const std::string type() const
 	{return "D" ;}
 
-	virtual const string asString() const; 
+	virtual const std::string asString() const; 
 
 protected:
 	DoneMessage(const DoneMessage &msg)	  //Copy constructor
@@ -295,7 +297,7 @@ public:
 	Message &port( const Port &port )
 	{p = &port; return *this;}
 
-	virtual const string asString() const;
+	virtual const std::string asString() const;
 
 
 protected:
@@ -333,7 +335,7 @@ public:
 	virtual Message *clone() const
 	{return new BasicExternalMessage(*this);}
 
-	virtual const string type() const
+	virtual const std::string type() const
 	{return "X" ;}
 
 	Message& senderModelId( const ModelId& model)
@@ -398,7 +400,7 @@ public:
 	virtual Message *clone() const
 	{return new BasicOutputMessage(*this);}
 
-	virtual const string type() const
+	virtual const std::string type() const
 	{return "Y" ;}
 
 protected:

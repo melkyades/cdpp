@@ -15,21 +15,21 @@
 
 /** include files **/
 #include <list>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <string>
 #include "except.h"
 
 /** declarations **/
 class macroExpansion
 {
 public:
-	macroExpansion(string fileName);	// Constructor
+	macroExpansion(std::string fileName);	// Constructor
 
 	~macroExpansion();			// Destructor
 	
-	string expand();			// Make the Macro Expansion
+	std::string expand();			// Make the Macro Expansion
 
-	string tempFileName()			// Devuelve el nombre del
+	std::string tempFileName()			// Devuelve el nombre del
 		{return newFileName;}		// archivo temporario creado
 						// por Expand.	
 private:
@@ -43,29 +43,29 @@ private:
 	int isEndOfMacro( char *line );
 	int isBeginOfMacro( char *line );
 	
-	string getData( char *line, string macroCmdName )
+	std::string getData( char *line, std::string macroCmdName )
 			{ return getData( line, 0, macroCmdName); }
 
-	string getData( char *line, long posLine, string macroCmdName );
+	std::string getData( char *line, long posLine, std::string macroCmdName );
 	
-	void addIncludeFile( string file );
-	void putMacroExpansion( FILE *fileOut, string macroName );
-	int  putMacroExpansionInFile( FILE *fileOut, string macroName, string macroFile );
-	int  copyMacro( FILE *fileOut, FILE *fileIn, char *macroLine, string macroName);
+	void addIncludeFile( std::string file );
+	void putMacroExpansion( FILE *fileOut, std::string macroName );
+	int  putMacroExpansionInFile( FILE *fileOut, std::string macroName, std::string macroFile );
+	int  copyMacro( FILE *fileOut, FILE *fileIn, char *macroLine, std::string macroName);
 
 	///////////////////////
 	// Internal structure
 	///////////////////////
-	string		fileName;
-	string		newFileName;
-	list<string>	includeFiles;
+	std::string		fileName;
+	std::string		newFileName;
+	std::list<std::string>	includeFiles;
 	
 }; // macroExpansion
 
 
 extern macroExpansion	*instanceMacroExpansion;
 
-inline macroExpansion &MacroExpansion(string fileName = "")
+inline macroExpansion &MacroExpansion(std::string fileName = "")
 {
 	if (instanceMacroExpansion == NULL)
 		instanceMacroExpansion = new macroExpansion(fileName);

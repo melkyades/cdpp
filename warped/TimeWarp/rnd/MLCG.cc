@@ -52,7 +52,7 @@ MLCG::reset()
     //
     //	Most people pick stupid seed numbers that do not have enough
     //	bits. In this case, if they pick a small seed number, we
-    //	map that to a specific seed.
+    //	std::map that to a specific seed.
     //
     if (seed1 < 0) {
 	seed1 = (seed1 + 2147483561);

@@ -2,7 +2,7 @@
 *
 *  DESCRIPTION: class Congestion
 *
-*  AUTHOR: Andrea Díaz && Verónica Vazquez
+*  AUTHOR: Andrea DÃ­az && VerÃ³nica Vazquez
 *
 *  EMAIL: rodiaz@dc.uba.ar		
 *  	  vvazqu@dc.uba.ar	
@@ -17,6 +17,8 @@
 #include "parsimu.h"      // class Simulator
 #include "distri.h"        // class Distribution 
 #include "strutil.h"       // str2Value( ... )
+
+using namespace std;
 
 /*******************************************************************
 * Function Name: Congestion

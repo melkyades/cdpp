@@ -38,7 +38,7 @@ struct InFileData {
 };
 
 inline
-ostream& operator<<(ostream& os, const InFileData& e) {
+ostream& operator<<(std::ostream& os, const InFileData& e) {
   os << "Time of last read from file: " << e.time;
   return os;
 }

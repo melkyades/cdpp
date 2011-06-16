@@ -19,8 +19,8 @@
 #define __PORT_H
 
 /** include files **/
-#include <list>       // Template list
-#include <string>    // class string 
+#include <list>       // Template std::list
+#include <string>    // class std::string 
 #include "modelid.h"   // class ModelId
 #include "pmodeladm.h"	//class SingleParallelModelAdmin
 
@@ -34,21 +34,21 @@ typedef Port Influence ;
 
 typedef const Influence* CPInf ;
 
-typedef list<CPInf> InfluenceList;
+typedef std::list<CPInf> InfluenceList;
 typedef int PortId ;
 
 class Port
 {
 public:
-	Port( const string & , const ModelId & ) ;  // Default constructor
+	Port( const std::string & , const ModelId & ) ;  // Default constructor
 
 	const InfluenceList &influences() const
 	{ return influenceList; }
 
-	const string &name() const
+	const std::string &name() const
 	{ return pname; }
 
-	Port &name( const string & ) ;
+	Port &name( const std::string & ) ;
 
 	const PortId &id() const
 	{ return pid; }
@@ -62,7 +62,7 @@ public:
 	bool operator ==( const Port &port ) const	 // Equality operator
 	{ return pid == port.id(); }
 
-	const string asString() const
+	const std::string asString() const
 	{ return pname; }
 
 	static int newPortId();
@@ -79,7 +79,7 @@ private:
 
 	PortId pid ;
 
-	string pname ;
+	std::string pname ;
 
 	const ModelId& mid ;
 

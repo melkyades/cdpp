@@ -15,8 +15,8 @@
 #define __SMODEL_ADMIN_H
 
 /** include files **/
-#include <map.h>            // Template map
-#include <string>           // Template string
+#include <map>            // Template std::map
+#include <string>           // Template std::string
 #include "pmodeladm.h"
 
 class StandAloneModelAdmin : public ModelAdmin
@@ -36,14 +36,14 @@ protected:
 //	StandAloneModelAdmin& operator =( const StandAloneModelAdmin & ) ;// Assignment operator
 //	int operator ==( const StandAloneModelAdmin & ) const;	 //Equality operator
 
-	virtual Atomic &newAtomic( const AtomicType &, const string &modelName );
-	virtual Atomic &newAtomic( const string &typeNmae, const string &modelName );
+	virtual Atomic &newAtomic( const AtomicType &, const std::string &modelName );
+	virtual Atomic &newAtomic( const std::string &typeNmae, const std::string &modelName );
 
-	virtual AtomicCell &newAtomicCell( bool inertial = false, const string &modelName = "AtomicCell" ) ;
+	virtual AtomicCell &newAtomicCell( bool inertial = false, const std::string &modelName = "AtomicCell" ) ;
 
-	virtual Coupled &newCoupled( const string &modelName ) ;
-	virtual CoupledCell &newCoupledCell( const string &modelName ) ;
-	virtual FlatCoupledCell &newFlatCoupledCell( const string &modelName ) ;
+	virtual Coupled &newCoupled( const std::string &modelName ) ;
+	virtual CoupledCell &newCoupledCell( const std::string &modelName ) ;
+	virtual FlatCoupledCell &newFlatCoupledCell( const std::string &modelName ) ;
 
 
 public:

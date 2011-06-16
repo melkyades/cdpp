@@ -30,6 +30,8 @@
 
 #include "KernelMsgs.hh"
 
+using namespace std;
+
 ostream&
 operator<<(ostream& os, const KernelMsgType type) {
   switch(type) {

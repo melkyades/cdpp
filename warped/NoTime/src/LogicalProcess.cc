@@ -31,14 +31,17 @@
 #include "LogicalProcess.hh"
 #include "SimulationTime.hh"
 #include <math.h>
-#include <iomanip.h>
-#include <strstream.h>
-#include <string.h>
+#include <iomanip>
+#include <sstream>
+#include <string>
+#include <cstring>
 #include "Interactive.hh"
 
 #ifdef INTERACTIVE
 #include "DebugStream.hh"
 #endif
+
+using namespace std;
 
 LogicalProcess::LogicalProcess(int totalNum, int myNum, int lpNum) : comm(lpNum, this) {
 #ifdef INTERACTIVE
@@ -182,13 +185,15 @@ LogicalProcess::registerObject(BasicNoTime* object) {
   numRegistered++;
   
   if ((object->id >= totalObjects) || (object->id < 0)) {
-    ostrstream errmsg;
-    char* errstr;
+    ostringstream errmsg;
+	string s;
+	
     errmsg << "Object id " << object->id << " trying to register, but " 
 	   << totalObjects-1 << " is the largest id allowed!" << ends;
-    errstr = errmsg.str();
+	s = errmsg.str();
+    
     TerminateMsg * ouch = new TerminateMsg;
-    strcpy(ouch->error, errstr);
+    strcpy(ouch->error, s.c_str());
     comm.recvMsg(ouch);
   }
   

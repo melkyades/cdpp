@@ -1,6 +1,6 @@
-#include <fstream.h>
+#include <fstream>
 #include <iostream.h>
-#include <string.h>
+#include <string>
 
 #include "LogicalProcess.hh"
 
@@ -8,7 +8,7 @@
 #include "ActiveNode1.hh"
 
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 const VTime LogicalProcess::SIMUNTIL = 50;
 

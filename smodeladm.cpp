@@ -18,6 +18,8 @@
 #include "tdcell.h"           // TransportDelayCell
 #include "flatcoup.h"         // class FlatCoupledCell
 
+using namespace std;
+
 /** public functions **/
 
 /*******************************************************************

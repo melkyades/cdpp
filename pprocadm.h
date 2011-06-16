@@ -15,7 +15,7 @@
 
 /** include files **/
 #include <map>
-#include <iostream.h>
+#include <iostream>
 #include "pprocess.h"          // ProcId
 
 /** forward declarations **/
@@ -43,12 +43,12 @@ public:
 	ParallelProcessor &generateRoot( RootModel *, const ProcId);
 
 	ParallelProcessor &processor( const ProcId & ) ;
-	ParallelProcessor &processor( const string & ) ;
+	ParallelProcessor &processor( const std::string & ) ;
 
 	void   model( const ProcId &, Model *);
 	Model &model( const ProcId &);
 
-	void showProcessors( ostream &out = cout);
+	void showProcessors( std::ostream &out = std::cout);
 
 	static const ProcId rootId ;
 
@@ -59,8 +59,8 @@ private:
 	friend class SingleParallelProcessorAdmin ;
 	friend class ParallelRoot ;
 
-	typedef map< ProcId, ParallelProcessor *, less< ProcId > > ProcessorDB ; 
-	typedef map< ProcId, Model *, less <ProcId> > ProcessorModelDB;
+	typedef std::map< ProcId, ParallelProcessor *, std::less< ProcId > > ProcessorDB ; 
+	typedef std::map< ProcId, Model *, std::less <ProcId> > ProcessorModelDB;
 
 	ProcessorDB procDB ;
 	ProcessorModelDB procModelDB;

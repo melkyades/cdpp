@@ -31,7 +31,7 @@
 #include "warped.hh"
 #include "config.hh"
 
-#include <fstream.h>
+#include <fstream>
 
 // This class implements a doubly link list, which follows the
 // specification outlined in the warped kernel documentation

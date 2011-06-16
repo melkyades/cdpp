@@ -15,9 +15,12 @@
 *******************************************************************/
 
 /** include files **/
-#include <iomanip.h>
+#include <iomanip>
 #include "cellstate.h"
 #include "impresion.h"
+
+using namespace std;
+
 
 /** public functions **/
 /*******************************************************************
@@ -29,7 +32,7 @@ CellState::CellState( nTupla &dim, bool wrap )
 	dimList = new nTupla;
 	*dimList = dim;
 
-	matrix = new (Real *)[ dim.totalElements() ];
+	matrix = new Real*[ dim.totalElements() ];
 
 	for (register long i = 0; i < dim.totalElements(); i++)
 		 matrix[i] = new Real;

@@ -29,7 +29,7 @@
 //
 //---------------------------------------------------------------------------
 
-#include <fstream.h>
+#include <fstream>
 #include "warped.hh"
 #include "config.hh"
 

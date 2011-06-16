@@ -1,6 +1,6 @@
 #ifdef NEW_MEM_ALLOC
 
-# include <stdio.h>
+# include <cstdio>
 # include <stdlib.h>
 
 # define MAX_ENTRIES        32   // How many distinct size that need to be
@@ -9,14 +9,14 @@
 # define MULTIPLES_FACTOR   32   // Each entry is a multiple of this factor
                                  // .ie. each  entry has blocks of size
                                  // MULTIPLIES_FACTOR * n where 'n' the
-                                 // number of the list entry.
+                                 // number of the std::list entry.
                                  // Note : But for the last entry which has
                                  // ---- : all the larger blocks
 
 # define MULTIPLES_POW_2     5   // Which power of 2 is the factor specified.
                                  // This is helpful in avoiding division
 
-                                 // Note : The last entry in the list has
+                                 // Note : The last entry in the std::list has
                                  // ----   all nodes > the previous entry.
                                  //        .ie. all big blocks go in there.
 
@@ -36,8 +36,8 @@ typedef
 struct BlockInfo {               // Structure for info. on memory block.
   unsigned sizeAndFlag;          // This variable is used to maintain the
                                  // size and usage information on a block
-  BlockHeader *next;             // Points to the next block in the list
-  BlockHeader *prev;             // Points to the prev block in the free list
+  BlockHeader *next;             // Points to the next block in the std::list
+  BlockHeader *prev;             // Points to the prev block in the free std::list
   
                                  // The size of this block is needed while
                                  // garbage collecting.
@@ -56,7 +56,7 @@ struct BlockInfo {               // Structure for info. on memory block.
                                  // wise AND it with sizeAndFlag variable.
                                  // Similary operations are used to extract /
                                  // set size of the block etc. Some Macros to
-                                 // the standard stuff are listed below.
+                                 // the standard stuff are std::listed below.
 
 #define getSize(x)     ((x & FREE))
 #define markInUse(x)   ((x |= INUSE))
@@ -65,7 +65,7 @@ struct BlockInfo {               // Structure for info. on memory block.
 #define inUse(x)       ((x & INUSE))
 
 typedef			
-struct GlobalBlockList_Info {         // Structure used to maintain the list of
+struct GlobalBlockList_Info {         // Structure used to maintain the std::list of
   struct GlobalBlockList_Info *link;  // chunks of memory allocated by the 
   char                        *memory;// system.
 } GlobalBlockList;                  

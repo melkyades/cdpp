@@ -30,7 +30,7 @@
 
 #include<iostream.h>
 #include<fstream.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 int numProcs, seq, numLPs, cacheSpeed, mainSpeed, numRequests;
 float cacheHit;

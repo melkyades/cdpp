@@ -21,10 +21,13 @@
 #include <cstdlib>
 #include <strstream>
 #include <fstream>
+#include <cstring>
 #include "ini.h"     // Class Ini
 #include "VTime.hh"    // Class VTime
 #include "logparser.h"
 #include "cellstate.h"
+
+using namespace std;
 
 static const string defaultPortName("out"); /* AtomicCell::outPort */
 
@@ -490,7 +493,7 @@ int main( int argc, char *argv[] )
 				nextShowTime = nextShowTime + timeInterval;
 
 
-		} while( nextTime != VTime::Inf ) ;
+		} while( !(nextTime == VTime::Inf) ) ;
 
 		for( filecounter = 0; filecounter < filecount; filecounter++)
 		{

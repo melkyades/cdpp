@@ -4,7 +4,7 @@
 *
 *  AUTORES:
 *  		Ing. Carlos Giorgetti
-*          	Iv醤 A. Melgrati
+*          	Iv谩n A. Melgrati
 *          	Dra. Ana Rosa Tymoschuk
 *
 *	v2:	Alejandro Troccoli
@@ -17,8 +17,8 @@
 *  FECHA: 19/10/1999
 *	   05/02/2001 (v2)
 *******************************************************************/
-#include <stdlib.h>
-#include <time.h>
+#include <cstdlib>
+#include <ctime>
 #include "client.h"
 #include "message.h"
 #include "parsimu.h"
@@ -64,8 +64,8 @@ int  clientState::getSize() const {
 * CLASS clientState
 *********************************************************************/
 /*******************************************************************
-* Nombre de la Funci髇: Uniforme()
-* Descripci髇: Genera n鷐eros al azar entre 0 y 1 con distribuci髇 uniforme
+* Nombre de la Funci贸n: Uniforme()
+* Descripci贸n: Genera n煤meros al azar entre 0 y 1 con distribuci贸n uniforme
 ********************************************************************/
 double Uniforme(void)   // Devuelve un numero al azar segun una
 {                       // distribucion uniforme, comprendido entre
@@ -80,14 +80,14 @@ double Uniforme(void)   // Devuelve un numero al azar segun una
 	return ((double) unifx0) / ((double) unifm);
 }
 /*******************************************************************
-* Nombre de la Funci髇: Client::Client()
-* Descripci髇: Constructor
+* Nombre de la Funci贸n: Client::Client()
+* Descripci贸n: Constructor
 ********************************************************************/
 Client::Client( const string &name ) : Atomic( name ), out( addOutputPort( "out" ) )
 {
 	try
 	{
-        // Leer datos de la distribuci髇
+        // Leer datos de la distribuci贸n
 		dist = Distribution::create( ParallelMainSimulator::Instance().getParameter( description(), "distribution" ) );
 		MASSERT( dist ) ;
 		for ( register int i = 0; i < dist->varCount(); i++ )
@@ -133,8 +133,8 @@ Client::Client( const string &name ) : Atomic( name ), out( addOutputPort( "out"
 }
 
 /*******************************************************************
-* Nombre de la Funci髇: Client::initFunction()
-* Descripci髇: Inicializa el modelo y lo pone en funcionamiento
+* Nombre de la Funci贸n: Client::initFunction()
+* Descripci贸n: Inicializa el modelo y lo pone en funcionamiento
 ********************************************************************/
 Model &Client::initFunction()
 {
@@ -142,18 +142,18 @@ Model &Client::initFunction()
 	time_t t;
 	idtask( initial );
 	pid.r.idtask = idtask();                                            	// ID inicial
-	pid.r.origin = IPAddress;				    // Direcci髇 IP
+	pid.r.origin = IPAddress;				    // Direcci贸n IP
 	srand((unsigned) time(&t));
 	f= Uniforme();
 	pid.r.destino =  ( f > cargaserver1 ) ? 1 : 0; // Servidor de destino
-	holdIn( AtomicState::active, VTime::Zero ) ;     					 // Programar primer env韔 de inmediato
+	holdIn( AtomicState::active, VTime::Zero ) ;     					 // Programar primer env铆o de inmediato
 	return *this ;
 
 }
 
 /*******************************************************************
-* Nombre de la Funci髇: Client::internalFunction()
-* Descripci髇: Programa el siguiente pedido a los servidores
+* Nombre de la Funci贸n: Client::internalFunction()
+* Descripci贸n: Programa el siguiente pedido a los servidores
 ********************************************************************/
 Model &Client::internalFunction( const InternalMessage & )
 {
@@ -162,8 +162,8 @@ Model &Client::internalFunction( const InternalMessage & )
 }
 
 /*******************************************************************
-* Nombre de la Funci髇: Client::outputFunction()
-* Descripci髇: Env韆 el pedido actual y prepara el siguiente
+* Nombre de la Funci贸n: Client::outputFunction()
+* Descripci贸n: Env铆a el pedido actual y prepara el siguiente
 ********************************************************************/
 Model &Client::outputFunction( const CollectMessage &msg )
 {
@@ -175,7 +175,7 @@ Model &Client::outputFunction( const CollectMessage &msg )
 	srand((unsigned) time(&t));
 	f= Uniforme();
 	pid.r.destino =  ( f > cargaserver1 ) ? 1 : 0; // Servidor de destino
-	sendOutput( msg.time(), out, pid.f ) ;               // Enviar petici髇
+	sendOutput( msg.time(), out, pid.f ) ;               // Enviar petici贸n
 
 
 	return *this ;

@@ -23,6 +23,7 @@
 #include "parsimu.h"      // class ParallelMainSimulator
 #include "strutil.h"       // str2float( ... )
 
+using namespace std;
 
 /*******************************************************************
 * CLASS CPUState

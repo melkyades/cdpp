@@ -4,7 +4,7 @@
 
 #ifdef CLUMPS_DPC
 
-#include <fstream.h>
+#include <fstream>
 #include "MutexInterface.hh"
 #include <sys/types.h>
 #include <sys/ipc.h>

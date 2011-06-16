@@ -22,6 +22,8 @@
 #include "atomcell.h"		// class AtomicCell
 #include "strutil.h"            // for lowerCase()
 
+using namespace std;
+
 // ** public ** //
 
 /*******************************************************************

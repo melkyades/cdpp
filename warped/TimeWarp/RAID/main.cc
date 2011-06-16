@@ -27,9 +27,9 @@
 //
 //---------------------------------------------------------------------------
 
-#include <fstream.h>
+#include <fstream>
 #include <iostream.h>
-#include <string.h>
+#include <string>
 
 #include "config.hh"
 
@@ -44,7 +44,7 @@
 #include "RAIDFork.hh"
 #include "RAIDDisk.hh"
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "SimulationTime.hh"
 

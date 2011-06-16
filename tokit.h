@@ -2,7 +2,7 @@
 *
 *  DESCRIPTION: class TokenIterator
 *
-*  AUTHOR:      Alejandro López 
+*  AUTHOR:      Alejandro LÃ³pez 
 *
 *  EMAIL:       mailto:aplopez@dc.uba.ar
 *
@@ -14,26 +14,27 @@
 #define _TOKEN_ITERATOR_HPP
 
 #include <string>
+#include <iterator>
 
 class TokenIterator
 {
 private:
-    typedef istream_iterator<string> base_stream;
+    typedef std::istream_iterator<std::string> base_stream;
 
     base_stream base;
-    string current;
-    string buffer;
+    std::string current;
+    std::string buffer;
     bool ended;
-    int findInString(string &str, char c);
+    int findInString(std::string &str, char c);
     
 public:
     TokenIterator() : base(), current(""), buffer(""), ended(true) {};
-    TokenIterator(istream &ist) : base(ist), current(""), buffer(""),
+    TokenIterator(std::istream &ist) : base(ist), current(""), buffer(""),
                                   ended(false) { ++(*this); };
 
     
-    inline const string& operator*() const { return current; };
-    inline const string* operator->() const { return &current; };
+    inline const std::string& operator*() const { return current; };
+    inline const std::string* operator->() const { return &current; };
     //inline const char* begin() const { return current.begin(); };
     //inline const char* end() const { return current.end(); };
     TokenIterator& operator++();

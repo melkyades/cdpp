@@ -17,7 +17,7 @@
 /** include files **/
 #include <iostream>
 #include <list>
-#include <pair.h>
+#include <utility>
 #include "tdcell.h"
 
 /** foward declarations **/
@@ -36,7 +36,7 @@ void PrintCellState( CellState & ) ;
 /** inline **/
 template <class X, class Y>
 inline
-ostream &operator <<( ostream& os, pair<X,Y> &p )
+ostream &operator <<( std::ostream& os, pair<X,Y> &p )
 {
 	os << p.first << "/" << p.second;
 	return os;
@@ -44,9 +44,9 @@ ostream &operator <<( ostream& os, pair<X,Y> &p )
 
 template <class T>
 inline
-ostream &operator<<( ostream &os, list<T> t )
+ostream &operator<<( std::ostream &os, std::list<T> t )
 {
-	for( list<T>::iterator cursor = t.begin(); cursor != t.end() ; os << *cursor++ << endl ) ;
+	for( std::list<T>::iterator cursor = t.begin(); cursor != t.end() ; os << *cursor++ << std::endl ) ;
 	return os;
 }
 

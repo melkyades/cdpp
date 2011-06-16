@@ -1,10 +1,10 @@
 /*******************************************************************
 *
-*  DESCRIPCION: Router (rutea los paquetes de acuerdo a su direcci髇)
+*  DESCRIPCION: Router (rutea los paquetes de acuerdo a su direcci贸n)
 *
 *  AUTORES:
 *  	    Ing. Carlos Giorgetti
-*          Iv醤 A. Melgrati
+*          Iv谩n A. Melgrati
 *          Dra. Ana Rosa Tymoschuk
 *	    Alejandro Troccoli (v2)
 *
@@ -17,7 +17,7 @@
 *	   05/01/2001 (v2)
 *
 *******************************************************************/
-#include <string.h>
+#include <string>
 #include "router.h"
 #include "message.h"
 #include "parsimu.h"
@@ -56,8 +56,8 @@ int  RouterState::getSize() const {
 *********************************************************************/
 
 /*******************************************************************
-* Nombre de la Funci髇: Router::Router()
-* Descripci髇: Constructor (Inicializa el modelo)
+* Nombre de la Funci贸n: Router::Router()
+* Descripci贸n: Constructor (Inicializa el modelo)
 ********************************************************************/
 Router::Router( const string &name ): Atomic( name )
 	, in(addInputPort( "in" )),
@@ -77,8 +77,8 @@ out15(addOutputPort("out15")), preparationTime( 0, 0, 10, 0 )
 
 
 /*******************************************************************
-* Nombre de la Funci髇: Router::initFunction()
-* Descripci髇: Resetea la lista
+* Nombre de la Funci贸n: Router::initFunction()
+* Descripci贸n: Resetea la lista
 ********************************************************************/
 Model &Router::initFunction()
 {
@@ -88,8 +88,8 @@ Model &Router::initFunction()
 
 
 /*******************************************************************
-* Nombre de la Funci髇: Router::externalFunction()
-* Descripci髇: Recibe y encola los paquetes recibidos
+* Nombre de la Funci贸n: Router::externalFunction()
+* Descripci贸n: Recibe y encola los paquetes recibidos
 ********************************************************************/
 Model &Router::externalFunction( const ExternalMessage &msg )
 {
@@ -104,8 +104,8 @@ Model &Router::externalFunction( const ExternalMessage &msg )
 }
 
 /*******************************************************************
-* Nombre de la Funci髇: Router::internalFunction()
-* Descripci髇:  Prepara el siguiente paquete a enviar (o se pasiva si no hay ninguno)
+* Nombre de la Funci贸n: Router::internalFunction()
+* Descripci贸n:  Prepara el siguiente paquete a enviar (o se pasiva si no hay ninguno)
 ********************************************************************/
 Model &Router::internalFunction( const InternalMessage & )
 {
@@ -120,8 +120,8 @@ Model &Router::internalFunction( const InternalMessage & )
 
 
 /*******************************************************************
-* Nombre de la Funci髇: Router::outputFunction()
-* Descripci髇:  Rutea los paquetes a las bocas (ports) correspondientes
+* Nombre de la Funci贸n: Router::outputFunction()
+* Descripci贸n:  Rutea los paquetes a las bocas (ports) correspondientes
 ********************************************************************/
 Model &Router::outputFunction( const CollectMessage &msg )
 {

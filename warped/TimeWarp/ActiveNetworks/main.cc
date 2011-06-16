@@ -1,6 +1,6 @@
-#include <fstream.h>
+#include <fstream>
 #include <iostream.h>
-#include <string.h>
+#include <string>
 
 #include "config.hh"
 
@@ -13,7 +13,7 @@
 #include "ActiveNode1.hh"
 
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "CommMgrInterface.hh"
 #ifdef SEQUENTIAL

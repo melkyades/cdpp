@@ -58,9 +58,9 @@ public:
 	const VTime &nextChange() const ;
 	const VTime &lastChange() const ;
 	
-	const string asString() const ;
+	const std::string asString() const ;
 	
-	virtual const string description() const;
+	virtual const std::string description() const;
 	
 	static const ProcId InvalidId ;
 	
@@ -138,7 +138,7 @@ inline
 }
 
 inline
-	const string Processor::asString() const
+	const std::string Processor::asString() const
 {
 	return description() + "(" + id() + ")" ;
 }

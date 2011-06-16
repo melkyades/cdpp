@@ -16,6 +16,8 @@
 #include "model.h"      // class Model
 #include "msgadm.h"     // SingleMsgAdm 
 
+using namespace std;
+
 /** public data **/
 const ProcId Processor::InvalidId( -1 ) ;
 

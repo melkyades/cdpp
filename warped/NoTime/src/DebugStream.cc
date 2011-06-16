@@ -32,12 +32,16 @@
 #include "DebugStream.hh"
 #include "BasicState.hh"
 #include "ObjectRecord.hh"
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
+using namespace std;
+
+static char interactiveConsoleStr[] = "InteractiveConsole";
 DebugStream::DebugStream(const DebugMessageKind kind) {
-  ostrstream debugFileStream;
-  char*      debugFileName;
+/*  ostringstream debugFileStream;*/
+/*  char*      debugFileName;*/
 
   debugFlag = true;
   lpId      = -1;
@@ -47,7 +51,7 @@ DebugStream::DebugStream(const DebugMessageKind kind) {
   myKind                 = kind;
   doneReceivedSoFar      = 0;
   initializeFlag         = 0;
-  name                   = "InteractiveConsole";
+  name                   = interactiveConsoleStr;
 }
 
 void
@@ -130,6 +134,8 @@ DebugStream::waitForDoneMsgs() {
 	receiveMessage((BasicDebugMsg *) msg);
 	delete [] (char *) msg;
 	break;
+		default:
+		break;
       }
     }
   }
@@ -186,8 +192,8 @@ DebugStream::setLPid(const int lpIdentifier, const int totalLPs, LogicalProcess*
   lpHandle     = lp;
 
   if (lpId == 0) {
-    ostrstream debugFileStream;
-    char*      debugFileName;
+    ostringstream debugFileStream;
+    string      debugFileName;
 
     debugFileStream << "LP" << lpId << ".";
     switch (myKind) {
@@ -211,14 +217,13 @@ DebugStream::setLPid(const int lpIdentifier, const int totalLPs, LogicalProcess*
     debugFileStream << ends;
     debugFileName = debugFileStream.str();
     
-    debugFile.open(debugFileName, ios::out | ios::in);
+    debugFile.open(debugFileName.c_str(), ios::out | ios::in);
     
     if (!debugFile.good()) {
       cerr << "Error opening debug file [" << debugFileName << "].\n";
       abort();
     }
     
-    delete [] debugFileName;
   }
 
   if (myKind == CONSOLE) {
@@ -257,7 +262,7 @@ DebugStream::sendMessage(int dest, const DebugMessageKind msgKind) {
 
 void
 DebugStream::sendPartitionInformation() {
-  ostrstream partitionStream;
+  ostringstream partitionStream;
   ObjectRecord* simArray;
   int maxObjectId;
   BasicNoTime* simObject;
@@ -291,20 +296,18 @@ DebugStream::sendPartitionInformation() {
     cout << "Objects on LP0\n";
     cout << partitionStream.str();
     cout << endl;
-    delete [] partitionStream.str();
   }
   else {
-    char* partitionData = partitionStream.str();
-    DebugMessage* partitionMsg = (DebugMessage *) new char[sizeof(DebugMessage) + strlen(partitionData) + 1];
+    string partitionData = partitionStream.str();
+    DebugMessage* partitionMsg = (DebugMessage *) new char[sizeof(DebugMessage) + partitionData.size() + 1];
     new (partitionMsg) DebugMessage();
-    memcpy( ((char *) partitionMsg) + sizeof(DebugMessage), partitionData, strlen(partitionData) + 1);
-    partitionMsg->size = sizeof(DebugMessage) + strlen(partitionData) + 1;
+    memcpy( ((char *) partitionMsg) + sizeof(DebugMessage), partitionData.c_str(), partitionData.size() + 1);
+    partitionMsg->size = sizeof(DebugMessage) + partitionData.size() + 1;
     partitionMsg->destLP      = 0;
     partitionMsg->messageKind = PARTITION_MESSAGE;
     remoteSend(partitionMsg);
 
     delete [] (char *) partitionMsg;
-    delete [] partitionData;
   }
 }
 
@@ -442,13 +445,18 @@ DebugStream::receiveMessage(BasicDebugMsg *basicMsg) {
 
 void
 DebugStream::executeProcess() {
-  BasicEvent* debugEvent = getEvent();
-  ostrstream breakMessage;
+  /*BasicEvent* debugEvent = */getEvent();
+  ostringstream breakMessage;
   breakMessage << "LP" << lpId << " break point at LVT " << getLVT()  
 	      << ends;
-  sendDebugMessage(breakMessage.str());
+		  
+  string s = breakMessage.str();
+  char *c = new char[s.size() + 1];
+  memcpy(c, s.c_str(), s.size()+1);
+  sendDebugMessage(c);
+  
+  delete []c;
   sendMessage(-1, BREAK_POINT_MESSAGE);
-  delete [] breakMessage.str();
 
   if (lpId != 0) {
     pause();
@@ -471,7 +479,7 @@ DebugStream::finalize() {
 }
 
 void
-DebugStream::sendDebugMessage(char* message) {
+DebugStream::sendDebugMessage(const char* message) {
 #ifdef MPI  
   DebugMessage* debugMessage = (DebugMessage *) 
     new char[sizeof(DebugMessage) + strlen(message) + 1];;
@@ -495,14 +503,17 @@ DebugStream::checkAndSend() {
     tempDebugStream << ends;
     if (lpId == 0) {
       if (displayMessageFlag == true) {
-	displayMessage(tempDebugStream.str());
+		string s = tempDebugStream.str();
+	    displayMessage(s.c_str());
       }
       if (writeMessageToFileFlag == true) {
-	writeMessageToFile(tempDebugStream.str());
+		string s = tempDebugStream.str();
+		writeMessageToFile(s.c_str());
       }
     }
     else {
-      sendDebugMessage(tempDebugStream.str());
+		string s = tempDebugStream.str();
+		sendDebugMessage(s.c_str());
     }
     tempDebugStream.seekp(0);
   }
@@ -539,9 +550,10 @@ operator << (DebugStream& ds, const float f) {
 
 DebugStream&
 operator << (DebugStream& ds, ostream& (*modifier)(ostream&)) {
-  if ((modifier == ends) || (modifier == flush) || (modifier == endl)) {
+/*  if ((modifier == ends) || (modifier == flush) || (modifier == endl)) {
     ds.checkAndSend();
-  }
+  }*/ // commented by pocho
+  return ds;
 }
 
 BasicState*
@@ -568,7 +580,7 @@ DebugStream::setBreakPoint() {
 
 void 
 DebugStream::sendTimeInfo(char *objIdStr) {
-  ostrstream timeInfo;
+  ostringstream timeInfo;
   int objId = atoi(objIdStr);
   ObjectRecord* objRec;
 
@@ -587,24 +599,22 @@ DebugStream::sendTimeInfo(char *objIdStr) {
   
   timeInfo << ends;
 
+  string s = timeInfo.str();
   if (lpId == 0) {
-    displayMessage(timeInfo.str());
+    displayMessage(s.c_str());
   }
   else {
-    char* timeInfoStr = timeInfo.str();
-    
     DebugMessage* timeMsg = (DebugMessage *) new char[sizeof(DebugMessage) + 
-						     strlen(timeInfoStr) + 1];
+						     s.size() + 1];
     new (timeMsg) DebugMessage();
     timeMsg->messageKind = TIME_MESSAGE;
-    timeMsg->size        = sizeof(DebugMessage) + strlen(timeInfoStr) + 1;
+    timeMsg->size        = sizeof(DebugMessage) + s.size() + 1;
     timeMsg->destLP      = 0;
-    memcpy(((char *) timeMsg) + sizeof(DebugMessage), timeInfoStr, strlen(timeInfoStr) + 1);
+    memcpy(((char *) timeMsg) + sizeof(DebugMessage), s.c_str(), s.size() + 1);
     remoteSend(timeMsg);
     delete [] (char *) timeMsg;
   }
   
-  delete [] timeInfo.str();
 }
 
 void
@@ -669,7 +679,11 @@ DebugStream::interact() {
   do {
     communicationSystem->recvMPI(1000);
     cout << endl << PROMPT << flush;
-    gets(buffer);
+    char *result = gets(buffer);
+	if (result == 0)
+	{ 
+		/* gets failed */
+	}
     
     switch (buffer[0]) {
     case 'D':

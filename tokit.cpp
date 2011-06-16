@@ -2,7 +2,7 @@
 *
 *  DESCRIPTION: class TokenIterator
 *
-*  AUTHOR:      Alejandro López 
+*  AUTHOR:      Alejandro LÃ³pez 
 *
 *  EMAIL:       aplopez@dc.uba.ar
 *
@@ -14,6 +14,8 @@
 
 #define TOKEN_SEPARATOR     ':'
 #define ASSIGN_CHAR         '='
+
+using namespace std;
 
 // When reading a token from the istream_iterator, we receive a
 // string with no space character (32). That string is a list_of_tokens:

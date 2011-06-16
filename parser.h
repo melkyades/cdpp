@@ -21,7 +21,7 @@
 #define __PARSER_H
 
 /** include files **/
-#include <iterator.h>
+#include <iterator>
 #include <string>
 #include <map>
 #include "except.h"          // class MException
@@ -41,7 +41,7 @@ class Parser
 public:
 	~Parser() ;
 
-	Parser &parse( istream &source, bool printParserInformation, bool parseForPortIn, const string &elseFunction = "" ) ;
+	Parser &parse( std::istream &source, bool printParserInformation, bool parseForPortIn, const std::string &elseFunction = "" ) ;
 
 	SpecNode *specification() ;
 
@@ -53,7 +53,7 @@ private:
 
 	Parser() ; // constructor
 
-	int error( const string &text ) ;
+	int error( const std::string &text ) ;
 
 	Parser &addRule( RuleNode *rule, int Stochastic ) ;
 				// Add a rule. If Stochastic != 0 then
@@ -64,18 +64,18 @@ private:
 	bool parsingForPortIn ( void ) ;
 
 	int nextToken() ;
-	int analizeToken( string &token, bool &consumed, string &text ) ;
+	int analizeToken( std::string &token, bool &consumed, std::string &text ) ;
 
 	void setTempParsingForPortIn();
 	void setOldParsingForPortIn();
 
-	typedef pair< int, SyntaxNode * > ValuePair ;
-	typedef map< string, ValuePair, less< string > > Dictionary ;
+	typedef std::pair< int, SyntaxNode * > ValuePair ;
+	typedef std::map< std::string, ValuePair, std::less< std::string > > Dictionary ;
 
 
 	TokenIterator *cursor ;
 	Dictionary dict ;
-	string token ;
+	std::string token ;
 	bool read ;
 
 	SpecNode *spec ;

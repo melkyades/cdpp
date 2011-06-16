@@ -32,8 +32,8 @@
 
 #include "BasicEvent.hh"
 #include "Container.hh"
-#include <fstream.h>
-#include <stdlib.h>
+#include <fstream>
+#include <cstdlib>
 
 class BasicTimeWarp;
 
@@ -123,7 +123,7 @@ BasicState::deserialize(ifstream *inFile) {
   inFile->get(delimiter);
 
   if (delimiter != CHECKPOINT_DELIMITER) {
-    cerr << " ALIGNMENT ERROR in BasicState::deserialize" << endl;
+    cerr << " ALIGNMENT ERROR in BasicState::deserialize" << std::endl;
     abort();
   }
   

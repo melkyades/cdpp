@@ -17,6 +17,8 @@
 /** include files **/
 #include "tbool.h"
 
+using namespace std;
+
 /** public data **/
 const TValBool TValBool::ttrue( true )  ;
 const TValBool TValBool::tfalse( false ) ;

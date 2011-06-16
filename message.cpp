@@ -20,6 +20,8 @@
 /** include files **/
 #include "message.h"		// base header class
 
+using namespace std;
+
 /*******************************************************************
 *CLASS BASICMSGVALUE
 ********************************************************************/	

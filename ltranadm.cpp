@@ -23,6 +23,8 @@
 #include "evaldeb.h"	  // EvalDebug
 #include "atomcell.h"
 
+using namespace std;
+
 // ** public data ** //
 const LocalTransAdmin::Function LocalTransAdmin::InvalidFn ;
 

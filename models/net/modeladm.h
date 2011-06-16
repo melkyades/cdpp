@@ -15,7 +15,7 @@
 #define __MODEL_ADMIN_H
 
 /** include files **/
-#include <map.h>            // Template map
+#include <map>            // Template map
 #include <string>           // Template string
 
 /** foward declarations **/

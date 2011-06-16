@@ -21,6 +21,8 @@
 #include "value.h"
 #include "port.h"
 
+#include <cstring>
+
 /** definitions **/
 class TWMessage: public BasicEvent 
 {

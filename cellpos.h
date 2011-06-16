@@ -23,6 +23,6 @@
 
 typedef nTupla NeighborPosition ;
 typedef nTupla CellPosition ;
-typedef list< CellPosition > CellPositionList ;
+typedef std::list< CellPosition > CellPositionList ;
 
 #endif // __CELL_POSITION_H

@@ -11,6 +11,9 @@
 *******************************************************************/
 
 #include "log.h"
+#include <iostream>
+
+using namespace std;
 
 /*Single Instance of the Log object*/
 

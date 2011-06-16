@@ -7,8 +7,8 @@
 class modulo : public Atomic
 {
 public:
-        modulo( const string &name = "modulo" );                                  //Default constructor
-	virtual string className() const ;
+        modulo( const std::string &name = "modulo" );                                  //Default constructor
+	virtual std::string className() const ;
 
 protected:
 	Model &initFunction();

@@ -18,10 +18,12 @@
 *******************************************************************/
 
 /** include files **/
-#include <fstream.h>
+#include <fstream>
 #include "ini.h"
 #include "strutil.h"  // lowerCase
-#include "prnutil.h"  // operator << list< T >
+#include "prnutil.h"  // operator << std::list< T >
+
+using namespace std;
 
 /** public functions **/
 /*******************************************************************

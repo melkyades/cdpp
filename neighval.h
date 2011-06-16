@@ -21,7 +21,7 @@
 #define __NEIGHBORHOOD_VALUE_H
 
 /** include files **/
-#include <map.h>
+#include <map>
 #include <list>
 #include "except.h"	// class MException
 #include "real.h"	// The value of the cell
@@ -32,23 +32,23 @@
 class NeighborhoodValue
 {
 public:
-	typedef map<string, Real> CellPorts;
-	typedef map<CellPosition, CellPorts, less < CellPosition > > NeighborList;
+	typedef std::map<std::string, Real> CellPorts;
+	typedef std::map<CellPosition, CellPorts, std::less < CellPosition > > NeighborList;
 
 	NeighborhoodValue() {};
 	NeighborhoodValue& create( const CoupledCell      &coupled, 
 	                           const CellPositionList &neighbors, 
 				   const CellPosition     &center, 
-				   const list<string>     &ports);	// default constructor
+				   const std::list<std::string>     &ports);	// default constructor
 
 	~NeighborhoodValue()		// Destructor
 	{}
 
 	// ** Modifiers ** //
-	NeighborhoodValue &set( const string intportname, const Real &v )
+	NeighborhoodValue &set( const std::string intportname, const Real &v )
 	{ return set(NeighborPosition(dim,0), intportname, v);}
 
-	NeighborhoodValue &set( const NeighborPosition& n, const string &port, const Real &v);
+	NeighborhoodValue &set( const NeighborPosition& n, const std::string &port, const Real &v);
 
 	NeighborhoodValue &setAbsolutePosition( const CellPosition &pos, const Real &v);
 
@@ -57,15 +57,15 @@ public:
 			// Returns true if the CellPosition is contained
 			// in the neighborhood.
 
-	const Real &get( const NeighborPosition &n, const string &port ) const ; // throws InvalidNeighborRef
+	const Real &get( const NeighborPosition &n, const std::string &port ) const ; // throws InvalidNeighborRef
 
-	const Real &get(const string &port) const
+	const Real &get(const std::string &port) const
 	{ return get( NeighborPosition(dim,0), port ); }
 
 	unsigned dimension() const
 	{return dim;}
 
-	void print(ostream &os);
+	void print(std::ostream &os);
 
 	CellPosition centralPosition() const
 	{ return centralCell; }

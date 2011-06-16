@@ -30,6 +30,8 @@
 #include "strutil.h"           // lowerCase
 #include "proot.h"             // class Root
 
+using namespace std;
+
 /** public data **/
 const ProcId ParallelProcessorAdmin::rootId( 0 ) ;
 
@@ -203,7 +205,7 @@ Model &ParallelProcessorAdmin::model( const ProcId & pid) {
 /*******************************************************************
 * Function Name: showProcessors
 ********************************************************************/
-void ParallelProcessorAdmin::showProcessors( ostream &out = cout)
+void ParallelProcessorAdmin::showProcessors( ostream &out)
 {
 	ProcessorDB::iterator cursor( procDB.begin() );
 

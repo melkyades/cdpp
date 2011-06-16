@@ -18,6 +18,8 @@
 #include "debug.h"
 #include "cellstate.h"  // class CelLState
 
+using namespace std;
+
 /*******************************************************************
 * Method: Printinfluences
 ********************************************************************/

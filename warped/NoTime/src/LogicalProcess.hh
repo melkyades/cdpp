@@ -76,7 +76,7 @@ public:
   static const VTime SIMUNTIL;
 
 #ifdef DEBUG
-  ostream* getDebugFile() const {
+  std::ostream* getDebugFile() const {
     return debugFile;
   }
 #endif

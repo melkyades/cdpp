@@ -57,15 +57,15 @@ public:
 class AtomicCell: public Atomic
 {
 public:
-	static const string cellClassName;
-	static const string outPort;
-	static const string neighborChangePort;
-	static const string NCInPrefix;
-	static const string NCOutPrefix;
+	static const std::string cellClassName;
+	static const std::string outPort;
+	static const std::string neighborChangePort;
+	static const std::string NCInPrefix;
+	static const std::string NCOutPrefix;
 
 	~AtomicCell();
 
-	virtual string className() const
+	virtual std::string className() const
 	{ return ATOMIC_CELL_NAME; }
 
 	const CellPosition& cellPosition() const 
@@ -74,30 +74,30 @@ public:
 	AtomicCell &localFunction( const LocalTransAdmin::Function &lf )
 	{ localFn = lf; return *this; }
 
-	bool addInPort( string portName );
+	bool addInPort( std::string portName );
 		// Agrega un port de entrada. Si ya existia devuelve FALSE,
 		// sino devuelve TRUE.
 
-	bool addOutPort( string portName );
+	bool addOutPort( std::string portName );
 		// Agrega un port de salida. Si ya existia devuelve FALSE,
 		// sino devuelve TRUE.
 
-	void createNCPorts( list<string> &portNames);
+	void createNCPorts( std::list<std::string> &portNames);
 		// Crea los puertos NC.
 
 	void getOutPorts(VirtualPortList *vpl);
-		// Devuelve una lista de los puertos de salida
+		// Devuelve una std::lista de los puertos de salida
 
-	const Real &value(const string &port) const
+	const Real &value(const std::string &port) const
 	{ return neighborhood().get(port); }
 
-        Real &variable(const string &name)
+        Real &variable(const std::string &name)
         { return variables().get(name); }
 
-        Real &variable(const string &name, Real &value)
+        Real &variable(const std::string &name, Real &value)
         { return variables().set(name, value); }
 
-	//Port & port( const string & );
+	//Port & port( const std::string & );
 
 	//Port & port( const PortId & );
 
@@ -110,7 +110,7 @@ protected:
 	friend class LocalTransAdmin; // evaluate
 	friend class TransportDelayCell; // calculateInPort()
 
-	AtomicCell( const CellPosition& pos, const string & = cellClassName, const LocalTransAdmin::Function &id = LocalTransAdmin::InvalidFn) ; 
+	AtomicCell( const CellPosition& pos, const std::string & = cellClassName, const LocalTransAdmin::Function &id = LocalTransAdmin::InvalidFn) ; 
 
 	Model &outputFunction( const CollectMessage & );
 
@@ -124,9 +124,9 @@ protected:
 	const LocalTransAdmin::Function &localFunction() const
 	{ return localFn; }
 
-	void setPortInFunction( const string portName, const string functionName );
+	void setPortInFunction( const std::string portName, const std::string functionName );
 
-	void setPortValue( const string portName, const Real portValue );
+	void setPortValue( const std::string portName, const Real portValue );
 
 	const NeighborhoodValue &neighborhood() const
 	{ return ((AtomicCellState*)getCurrentState())->neighborhood; }
@@ -135,10 +135,10 @@ protected:
 	{ return ((AtomicCellState*)getCurrentState())->neighborhood; }
 
 	// Puertos OUT
-	const Port &outputPort(const string &portName) const;
+	const Port &outputPort(const std::string &portName) const;
 
 	// Puertos NEIGHBORCHANGE
-	const Port &neighborPort(const string &portName) const;
+	const Port &neighborPort(const std::string &portName) const;
 	
 	PortList &inputPort()		// Lista de puertos IN (Dinamica)
 	{ return in; }
@@ -158,19 +158,19 @@ protected:
 	PortList &outNCPortList()	// Lista de Puertos OUT de NC
 	{ return Yports; }
 	
-	list<string> &NCPorts()		// Lista de nombres de puertos NC
+	std::list<std::string> &NCPorts()		// Lista de nombres de puertos NC
 	{ return NCPortNames; }
 	
-	bool isInNCPort( const string portName ) const
+	bool isInNCPort( const std::string portName ) const
 	{ return (getNCPortByName(Xports, portName) != NULL); }
 
-	bool isOutNCPort( const string portName ) const
+	bool isOutNCPort( const std::string portName ) const
 	{ return (getNCPortByName(Yports, portName) != NULL); }
 
         StateVars &variables()
         { return (dynamic_cast<AtomicCellState*>(getCurrentState()))->variables; }
 
-	AtomicCell &value( const Real &val, const string &port )
+	AtomicCell &value( const Real &val, const std::string &port )
 	{ neighborhood().set(port, val); return *this; }
 
 	AtomicCell &setAllNCPortsValues( const Real &val );
@@ -183,20 +183,20 @@ protected:
 
 	void QuantumValue( const Real& );
 
-	string calculateInPort(string &portName);
-	string calculateOutPort(string &portName);
+	std::string calculateInPort(std::string &portName);
+	std::string calculateOutPort(std::string &portName);
 	
 private:
-	bool addInputNCPort( string portName );
-	bool addOutputNCPort( string portName );
-	const Port *getNCPortByName(const PortList &pl, const string portName) const;
+	bool addInputNCPort( std::string portName );
+	bool addOutputNCPort( std::string portName );
+	const Port *getNCPortByName(const PortList &pl, const std::string portName) const;
 	
 	LocalTransAdmin::Function localFn ;
 
 	// Atomic model in and out ports
 	PortList        Xports;		// In
 	PortList        Yports;		// Out
-	list<string>    NCPortNames;    // NC port names
+	std::list<std::string>    NCPortNames;    // NC port names
 
 	// Coupled model in and out ports
 	PortList 	in;		// record the In Ports (Dynamic)

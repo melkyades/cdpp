@@ -1,7 +1,7 @@
 #ifndef TABLESECTOR_HH
 #define TABLESECTOR_HH
 
-#include <fstream.h>
+#include <fstream>
 #include "SimulationObj.hh"
 #include "tableSectorState.hh"
 #include "tableEvent.hh"
@@ -13,7 +13,7 @@
 #include "../rnd/builtin.h"
 #endif
 
-#include <strstream.h>
+#include <strstream>
 #include <math.h>
 
 #include "config.hh"

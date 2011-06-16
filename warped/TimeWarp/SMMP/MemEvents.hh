@@ -52,7 +52,7 @@ public:
     cout << " size: " << size;
 #endif
     cout << " startTime: " << startTime << " processor: " << processor;
-    cout << endl;
+    cout << std::endl;
   };
   
 #if defined(LAZYCANCELLATION) || defined(LAZYAGGR_CANCELLATION)
@@ -60,11 +60,11 @@ public:
     register MemRequest* tmp = (MemRequest *)rhs;
     if((tmp->startTime == this->startTime) &&
        (tmp->processor == this->processor)){
-      //cout << "comparison is true" << endl;
+      //cout << "comparison is true" << std::endl;
       return BasicEvent::lazyCmp(rhs);
     }
     else {
-      //cout << "comparison is false" << endl;
+      //cout << "comparison is false" << std::endl;
       return false;
     }
   };

@@ -21,6 +21,8 @@
 #include "distri.h"        // class Distribution 
 #include "strutil.h"       // str2Value( ... )
 
+using namespace std;
+
 /*******************************************************************
 * CLASS GeneratorState
 *********************************************************************/

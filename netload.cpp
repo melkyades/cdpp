@@ -12,9 +12,10 @@
 *******************************************************************/
 
 /** include files **/
-#include <strstream.h>
-#include <function.h>      // Warning!!! must bne included before string (for operator !=)
+#include <strstream>
+#include <functional>      // Warning!!! must bne included before string (for operator !=)
 #include <string>
+#include <cassert>
 #include "netload.h"       // bass class
 #include "bsdchann.h"      // class BSDChannel
 
@@ -22,6 +23,8 @@
 #include "mpi.h"			//MPI_Routines
 #include "LogicalProcess.hh"
 #endif
+
+using namespace std;
 
 /** public functions **/
 

@@ -30,6 +30,8 @@
 #include "BasicNoTime.hh"
 #include "NoTime.hh"
 
+using namespace std;
+
 BasicNoTime::BasicNoTime()  {
   id                  = -1;
   name                = NULL;

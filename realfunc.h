@@ -17,6 +17,7 @@
 #include <functional>
 #include "real.h" 
 
+using namespace std;
 /** declarations **/
 
 Real valueWithQuantum(const Real &r, const Real& q);	// Devuelve el nuevo valor de r
@@ -119,7 +120,7 @@ struct r_tan : public unary_function< T, Z>
 		return tan(t);
 	}
 
-	string type(){ return "TAN";}
+	std::string type(){ return "TAN";}
 };
 
 template <class T, class Z>
@@ -133,7 +134,7 @@ struct r_tanh : public unary_function< T, Z>
 		return tanh(t);
 	}
 
-	string type(){ return "TANH";}
+	std::string type(){ return "TANH";}
 };
 
 template <class T, class Z>
@@ -147,7 +148,7 @@ struct r_sqrt : public unary_function< T, Z>
 		return sqrt(t);
 	}
 
-	string type(){ return "SQRT";}
+	std::string type(){ return "SQRT";}
 };
 
 template <class T, class Z>
@@ -161,7 +162,7 @@ struct r_sinh : public unary_function< T, Z>
 		return sinh(t);
 	}
 
-	string type(){ return "SINH";}
+	std::string type(){ return "SINH";}
 };
 
 
@@ -176,7 +177,7 @@ struct r_sin : public unary_function< T, Z>
 		return sin(t);
 	}
 
-	string type(){ return "SIN";}
+	std::string type(){ return "SIN";}
 };
 
 template <class T, class Z>
@@ -190,7 +191,7 @@ struct r_round : public unary_function< T, Z>
 		return round(t);
 	}
 
-	string type(){ return "ROUND";}
+	std::string type(){ return "ROUND";}
 };
 
 template <class T, class Z>
@@ -204,7 +205,7 @@ struct r_fractional : public unary_function< T, Z>
 		return fractional(t);
 	}
 
-	string type(){ return "FRACTIONAL";}
+	std::string type(){ return "FRACTIONAL";}
 };
 
 template <class T, class Z>
@@ -218,7 +219,7 @@ struct r_remainder : public binary_function< T, T, Z>
 		return remainder(t1,t2);
 	}
 
-	string type(){ return "REMAINDER";}
+	std::string type(){ return "REMAINDER";}
 };
 
 template <class T, class Z>
@@ -232,7 +233,7 @@ struct r_power : public binary_function< T, T, Z>
 		return power(t1,t2);
 	}
 
-	string type(){ return "POWER";}
+	std::string type(){ return "POWER";}
 };
 
 template <class T, class Z>
@@ -246,7 +247,7 @@ struct r_max : public binary_function< T, T, Z>
 		return max(t1,t2);
 	}
 
-	string type(){ return "MAX";}
+	std::string type(){ return "MAX";}
 };
 
 template <class T, class Z>
@@ -260,7 +261,7 @@ struct r_min : public binary_function< T, T, Z>
 		return min(t1,t2);
 	}
 
-	string type(){ return "MIN";}
+	std::string type(){ return "MIN";}
 };
 
 template <class T, class Z>
@@ -274,7 +275,7 @@ struct r_logn : public binary_function< T, T, Z>
 		return logn(t1,t2);
 	}
 
-	string type(){ return "LOGN";}
+	std::string type(){ return "LOGN";}
 };
 
 template <class T, class Z>
@@ -288,7 +289,7 @@ struct r_root : public binary_function< T, T, Z>
 		return root(t1,t2);
 	}
 
-	string type(){ return "ROOT";}
+	std::string type(){ return "ROOT";}
 };
 
 template <class T, class Z>
@@ -302,7 +303,7 @@ struct r_comb : public binary_function< T, T, Z>
 		return comb(t1,t2);
 	}
 
-	string type(){ return "COMB";}
+	std::string type(){ return "COMB";}
 };
 
 template <class T, class Z>
@@ -316,7 +317,7 @@ struct r_abs : public unary_function< T, Z>
 		return abs(t);
 	}
 
-	string type(){ return "ABS";}
+	std::string type(){ return "ABS";}
 };
 
 template <class T, class Z>
@@ -330,7 +331,7 @@ struct r_exp : public unary_function< T, Z>
 		return exp(t);
 	}
 
-	string type(){ return "EXP";}
+	std::string type(){ return "EXP";}
 };
 
 template <class T, class Z>
@@ -344,7 +345,7 @@ struct r_ln : public unary_function< T, Z>
 		return ln(t);
 	}
 
-	string type(){ return "LN";}
+	std::string type(){ return "LN";}
 };
 
 template <class T, class Z>
@@ -358,7 +359,7 @@ struct r_log : public unary_function< T, Z>
 		return log(t);
 	}
 
-	string type(){ return "LOG";}
+	std::string type(){ return "LOG";}
 };
 
 template <class T, class Z>
@@ -372,7 +373,7 @@ struct r_cosh : public unary_function< T, Z>
 		return cosh(t);
 	}
 
-	string type(){ return "COSH";}
+	std::string type(){ return "COSH";}
 };
 
 template <class T, class Z>
@@ -386,7 +387,7 @@ struct r_cos : public unary_function< T, Z>
 		return cos(t);
 	}
 
-	string type(){ return "COS";}
+	std::string type(){ return "COS";}
 };
 
 template <class T, class Z>
@@ -400,7 +401,7 @@ struct r_sec : public unary_function< T, Z>
 		return sec(t);
 	}
 
-	string type(){ return "SEC";}
+	std::string type(){ return "SEC";}
 };
 
 template <class T, class Z>
@@ -414,7 +415,7 @@ struct r_sech : public unary_function< T, Z>
 		return sech(t);
 	}
 
-	string type(){ return "SECH";}
+	std::string type(){ return "SECH";}
 };
 
 template <class T, class Z>
@@ -428,7 +429,7 @@ struct r_trunc : public unary_function< T, Z>
 		return trunc(t);
 	}
 
-	string type(){ return "TRUNC";}
+	std::string type(){ return "TRUNC";}
 };
 
 template <class T, class Z>
@@ -442,7 +443,7 @@ struct r_truncUpper : public unary_function< T, Z>
 		return truncUpper(t);
 	}
 
-	string type(){ return "TRUNCUPPER";}
+	std::string type(){ return "TRUNCUPPER";}
 };
 
 template <class T, class Z>
@@ -456,7 +457,7 @@ struct r_atanh : public unary_function< T, Z>
 		return atanh(t);
 	}
 
-	string type(){ return "ATANH";}
+	std::string type(){ return "ATANH";}
 };
 
 template <class T, class Z>
@@ -470,7 +471,7 @@ struct r_atan : public unary_function< T, Z>
 		return atan(t);
 	}
 
-	string type(){ return "ATAN";}
+	std::string type(){ return "ATAN";}
 };
 
 template <class T, class Z>
@@ -484,7 +485,7 @@ struct r_asinh : public unary_function< T, Z>
 		return asinh(t);
 	}
 
-	string type(){ return "ASINH";}
+	std::string type(){ return "ASINH";}
 };
 
 template <class T, class Z>
@@ -498,7 +499,7 @@ struct r_asin : public unary_function< T, Z>
 		return asin(t);
 	}
 
-	string type(){ return "ASIN";}
+	std::string type(){ return "ASIN";}
 };
 
 template <class T, class Z>
@@ -512,7 +513,7 @@ struct r_acosh : public unary_function< T, Z>
 		return acosh(t);
 	}
 
-	string type(){ return "ACOSH";}
+	std::string type(){ return "ACOSH";}
 };
 
 template <class T, class Z>
@@ -526,7 +527,7 @@ struct r_acos : public unary_function< T, Z>
 		return acos(t);
 	}
 
-	string type(){ return "ACOS";}
+	std::string type(){ return "ACOS";}
 };
 
 template <class T, class Z>
@@ -540,7 +541,7 @@ struct r_cotan : public unary_function< T, Z>
 		return cotan(t);
 	}
 
-	string type(){ return "COTAN";}
+	std::string type(){ return "COTAN";}
 };
 
 template <class T, class Z>
@@ -554,7 +555,7 @@ struct r_asec : public unary_function< T, Z>
 		return asec(t);
 	}
 
-	string type(){ return "ASEC";}
+	std::string type(){ return "ASEC";}
 };
 
 template <class T, class Z>
@@ -568,7 +569,7 @@ struct r_acotan : public unary_function< T, Z>
 		return acotan(t);
 	}
 
-	string type(){ return "ACOTAN";}
+	std::string type(){ return "ACOTAN";}
 };
 
 template <class T, class Z>
@@ -582,7 +583,7 @@ struct r_asech : public unary_function< T, Z>
 		return asech(t);
 	}
 
-	string type(){ return "ASECH";}
+	std::string type(){ return "ASECH";}
 };
 
 template <class T, class Z>
@@ -596,7 +597,7 @@ struct r_acosech : public unary_function< T, Z>
 		return acosech(t);
 	}
 
-	string type(){ return "ACOSECH";}
+	std::string type(){ return "ACOSECH";}
 };
 
 template <class T, class Z>
@@ -610,7 +611,7 @@ struct r_acotanh : public unary_function< T, Z>
 		return acotanh(t);
 	}
 
-	string type(){ return "ACOTANH";}
+	std::string type(){ return "ACOTANH";}
 };
 
 template <class T, class Z>
@@ -624,7 +625,7 @@ struct r_CtoF : public unary_function< T, Z>
 		return CtoF(t);
 	}
 
-	string type(){ return "C_F";}
+	std::string type(){ return "C_F";}
 };
 
 template <class T, class Z>
@@ -638,7 +639,7 @@ struct r_CtoK : public unary_function< T, Z>
 		return CtoK(t);
 	}
 
-	string type(){ return "C_K";}
+	std::string type(){ return "C_K";}
 };
 
 template <class T, class Z>
@@ -652,7 +653,7 @@ struct r_FtoC : public unary_function< T, Z>
 		return FtoC(t);
 	}
 
-	string type(){ return "F_C";}
+	std::string type(){ return "F_C";}
 };
 
 template <class T, class Z>
@@ -666,7 +667,7 @@ struct r_FtoK : public unary_function< T, Z>
 		return FtoK(t);
 	}
 
-	string type(){ return "F_K";}
+	std::string type(){ return "F_K";}
 };
 
 template <class T, class Z>
@@ -680,7 +681,7 @@ struct r_KtoC : public unary_function< T, Z>
 		return KtoC(t);
 	}
 
-	string type(){ return "K_C";}
+	std::string type(){ return "K_C";}
 };
 
 template <class T, class Z>
@@ -693,7 +694,7 @@ struct r_KtoF : public unary_function< T, Z>
 
 		return KtoF(t);
 	}
-	string type(){ return "K_F";}
+	std::string type(){ return "K_F";}
 };
 
 
@@ -708,7 +709,7 @@ struct r_cosec : public unary_function< T, Z>
 		return cosec(t);
 	}
 
-	string type(){ return "COSEC";}
+	std::string type(){ return "COSEC";}
 };
 
 template <class T, class Z>
@@ -722,7 +723,7 @@ struct r_cosech : public unary_function< T, Z>
 		return cosech(t);
 	}
 
-	string type(){ return "COSECH";}
+	std::string type(){ return "COSECH";}
 };
 
 template <class T, class Z>
@@ -736,7 +737,7 @@ struct r_sign : public unary_function< T, Z>
 		return sign(t);
 	}
 
-	string type(){ return "SIGN";}
+	std::string type(){ return "SIGN";}
 };
 
 template <class T, class Z>
@@ -750,7 +751,7 @@ struct r_random : public unary_function< T, Z>
 		return random(t);
 	}
 
-	string type(){ return "RANDOM";}
+	std::string type(){ return "RANDOM";}
 };
 
 template <class T, class Z>
@@ -764,7 +765,7 @@ struct r_even : public unary_function< T, Z>
 		return even(t);
 	}
 
-	string type(){ return "EVEN";}
+	std::string type(){ return "EVEN";}
 };
 
 template <class T, class Z>
@@ -778,7 +779,7 @@ struct r_odd : public unary_function< T, Z>
 		return odd(t);
 	}
 
-	string type(){ return "ODD";}
+	std::string type(){ return "ODD";}
 };
 
 template <class T, class Z>
@@ -792,7 +793,7 @@ struct r_isInt : public unary_function< T, Z>
 		return isInt(t);
 	}
 
-	string type(){ return "ISINT";}
+	std::string type(){ return "ISINT";}
 };
 
 template <class T, class Z>
@@ -806,7 +807,7 @@ struct r_isPrime : public unary_function< T, Z>
 		return isPrime(t);
 	}
 
-	string type(){ return "ISPRIME";}
+	std::string type(){ return "ISPRIME";}
 };
 
 template <class T, class Z>
@@ -820,7 +821,7 @@ struct r_isUndef : public unary_function< T, Z>
 		return isUndefinedReal(t);
 	}
 
-	string type(){ return "ISUNDEF";}
+	std::string type(){ return "ISUNDEF";}
 };
 
 template <class T, class Z>
@@ -834,7 +835,7 @@ struct r_fact : public unary_function< T, Z>
 		return fact(t);
 	}
 
-	string type(){ return "FACT";}
+	std::string type(){ return "FACT";}
 };
 
 template <class T, class Z>
@@ -848,7 +849,7 @@ struct r_chi : public unary_function< T, Z>
 		return chi(t);
 	}
 
-	string type(){ return "CHI";}
+	std::string type(){ return "CHI";}
 };
 
 template <class T, class Z>
@@ -862,7 +863,7 @@ struct r_randInt : public unary_function< T, Z>
 		return randInt(t);
 	}
 
-	string type(){ return "RANDINT";}
+	std::string type(){ return "RANDINT";}
 };
 
 template <class T, class Z>
@@ -876,7 +877,7 @@ struct r_beta : public binary_function< T, T, Z>
 		return beta(t1,t2);
 	}
 
-	string type(){ return "BETA";}
+	std::string type(){ return "BETA";}
 };
 
 template <class T, class Z>
@@ -890,7 +891,7 @@ struct r_exponential : public unary_function< T, Z>
 		return exponential(t);
 	}
 
-	string type(){ return "EXPONENTIAL";}
+	std::string type(){ return "EXPONENTIAL";}
 };
 
 template <class T, class Z>
@@ -904,7 +905,7 @@ struct r_f : public binary_function< T, T, Z>
 		return f(t1,t2);
 	}
 
-	string type(){ return "F";}
+	std::string type(){ return "F";}
 };
 
 template <class T, class Z>
@@ -918,7 +919,7 @@ struct r_gamma : public binary_function< T, T, Z>
 		return gamma(t1,t2);
 	}
 
-	string type(){ return "GAMMA";}
+	std::string type(){ return "GAMMA";}
 };
 
 template <class T, class Z>
@@ -932,7 +933,7 @@ struct r_normal : public binary_function< T, T, Z>
 		return normal(t1,t2);
 	}
 
-	string type(){ return "NORMAL";}
+	std::string type(){ return "NORMAL";}
 };
 
 template <class T, class Z>
@@ -946,7 +947,7 @@ struct r_uniform : public binary_function< T, T, Z>
 		return uniform(t1,t2);
 	}
 
-	string type(){ return "UNIFORM";}
+	std::string type(){ return "UNIFORM";}
 };
 
 template <class T, class Z>
@@ -960,7 +961,7 @@ struct r_binomial : public binary_function< T, T, Z>
 		return binomial(t1,t2);
 	}
 
-	string type(){return "BINOMIAL";}
+	std::string type(){return "BINOMIAL";}
 };
 
 template <class T, class Z>
@@ -974,7 +975,7 @@ struct r_poisson : public unary_function< T, Z>
 		return poisson(t);
 	}
 
-	string type(){ return "POISSON";}
+	std::string type(){ return "POISSON";}
 };
 
 template <class T, class Z>
@@ -988,7 +989,7 @@ struct r_mcm : public binary_function< T, T, Z>
 		return mcm(t1,t2);
 	}
 
-	string type(){ return "MCM";}
+	std::string type(){ return "MCM";}
 };
 
 template <class T, class Z>
@@ -1002,7 +1003,7 @@ struct r_gcd : public binary_function< T, T, Z>
 		return gcd(t1,t2);
 	}
 
-	string type(){ return "GCD";}
+	std::string type(){ return "GCD";}
 };
 
 template <class T, class Z>
@@ -1016,7 +1017,7 @@ struct r_hip : public binary_function< T, T, Z>
 		return hip(t1,t2);
 	}
 
-	string type(){ return "HIP";}
+	std::string type(){ return "HIP";}
 };
 
 
@@ -1031,7 +1032,7 @@ struct r_RectToPolar_r : public binary_function< T, T, Z>
 		return rectToPolar_r(t1,t2);
 	}
 
-	string type(){ return "RECT_POLARR";}
+	std::string type(){ return "RECT_POLARR";}
 };
 
 
@@ -1046,7 +1047,7 @@ struct r_RectToPolar_angle : public binary_function< T, T, Z>
 		return rectToPolar_angle(t1,t2);
 	}
 
-	string type(){ return "RECT_POLARA";}
+	std::string type(){ return "RECT_POLARA";}
 };
 
 
@@ -1061,7 +1062,7 @@ struct r_PolarToRect_x : public binary_function< T, T, Z>
 		return polarToRect_x(t1,t2);
 	}
 
-	string type(){ return "POLAR_RECTX";}
+	std::string type(){ return "POLAR_RECTX";}
 };
 
 
@@ -1076,7 +1077,7 @@ struct r_PolarToRect_y : public binary_function< T, T, Z>
 		return polarToRect_y(t1,t2);
 	}
 
-	string type(){ return "POLAR_RECTY";}
+	std::string type(){ return "POLAR_RECTY";}
 };
 
 template <class T, class Z>
@@ -1090,7 +1091,7 @@ struct r_nextPrime : public unary_function< T, Z>
 		return nextPrime(t);
 	}
 
-	string type(){ return "NEXTPRIME";}
+	std::string type(){ return "NEXTPRIME";}
 };
 
 template <class T, class Z>
@@ -1104,7 +1105,7 @@ struct r_radToDeg : public unary_function< T, Z>
 		return radToDeg(t);
 	}
 
-	string type(){ return "RAD_DEG";}
+	std::string type(){ return "RAD_DEG";}
 };
 
 template <class T, class Z>
@@ -1118,7 +1119,7 @@ struct r_degToRad : public unary_function< T, Z>
 		return degToRad(t);
 	}
 
-	string type(){ return "DEG_RAD";}
+	std::string type(){ return "DEG_RAD";}
 };
 
 template <class T, class Z>
@@ -1132,7 +1133,7 @@ struct r_nth_Prime : public unary_function< T, Z>
 		return nth_Prime(t);
 	}
 
-	string type(){ return "NTH_PRIME";}
+	std::string type(){ return "NTH_PRIME";}
 };
 
 template <class T, class Z>
@@ -1146,7 +1147,7 @@ struct r_randomSign : public unary_function< T, Z>
 		return randomSign(t);
 	}
 
-	string type(){ return "RANDOM_SIGN";}
+	std::string type(){ return "RANDOM_SIGN";}
 };
 
 /****************************************************************************/
@@ -1180,7 +1181,7 @@ struct r_if : public threeChild_function< T1, T2, T2, Z>
 		return realIf(t1,t2,t3);
 	}
 
-	string type(){ return "IF";}
+	std::string type(){ return "IF";}
 };
 
 template <class T1, class T2, class Z>
@@ -1194,7 +1195,7 @@ struct r_ifu : public fourChild_function< T1, T2, T2, T2, Z>
 		return realIfu(t1,t2,t3,t4);
 	}
 
-	string type(){ return "IFU";}
+	std::string type(){ return "IFU";}
 };
 
 

@@ -1,7 +1,7 @@
 #ifdef NEW_MEM_ALLOC
 
 #include "NewMemAlloc.hh"
-#include <iostream.h>
+#include <iostream>
 
 NewMemAlloc GlobalMemoryManager;
 
@@ -279,7 +279,7 @@ NewMemAlloc::checkLastEntry(int size, char coaleseFlag)
        
        if (tempSize <= (MAX_ENTRIES - 1)) {
 	 // Yes. So delete this guy from this list and insert it in the
-	 // list which points to the right size
+	 // std::list which points to the right size
 	 removeFromList(searchBlock);
 	 setSize(tempBlock->sizeAndFlag, tempSize);
 	 markFree(tempBlock->sizeAndFlag);
@@ -385,7 +385,7 @@ NewMemAlloc::allocateBlock(size_t size)
       
       if (freeBlocksList[listNumber] != NULL) {
 	// Okay... We have an unused block of memory. So remove it from the
-	// list and then set the up the used bit etc. before returning to user
+	// std::list and then set the up the used bit etc. before returning to user
 	
 	returnBlock = (int *) (searchBlock = freeBlocksList[listNumber]);
 	

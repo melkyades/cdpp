@@ -10,7 +10,7 @@
 #if !defined(MY_LIST)
 #define MY_LIST
 
-#include <stdlib.h>
+#include <cstdlib>
 #include "real.h"
 #include "cellpos.h"
 

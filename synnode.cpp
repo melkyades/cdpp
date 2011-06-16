@@ -16,11 +16,14 @@
 
 // ** include files **//
 #include <sstream>
+#include <climits>
 
 #include "synnode.h"
 #include "neighval.h"         // NeighborhoodValue
 #include "atomcell.h"
 #include "strutil.h"          // lowerCase 
+
+using namespace std;
 
 // ** public data ** //
 const RealType RealType::TheReal;

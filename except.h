@@ -21,18 +21,18 @@
 #define _MEXCEPT_HPP
 
 /** include files **/
-#include <list.h>
-#include <iostream.h>
-#include <stdlib.h>
-#include "stringp.h"     // operator +( const string &, int ) ;
+#include <list>
+#include <iostream>
+#include <cstdlib>
+#include "stringp.h"     // operator +( const std::string &, int ) ;
 
 /** definitions **/
-#define MEXCEPTION_LOCATION() ( string("File: ") + __FILE__ + " - Method: " + __FUNCTION__ + " - Line: " + __LINE__ )
+#define MEXCEPTION_LOCATION() ( std::string("File: ") + __FILE__ + " - Method: " + __FUNCTION__ + " - Line: " + __LINE__ )
 
 #define MASSERT(lexp) if( !( lexp ) ) { AssertException e( "Invalid assertion" ) ; e.addText( #lexp ) ; e.addLocation( MEXCEPTION_LOCATION() ) ; throw e ; }
 #define MASSERTMSG(lexp,text) if( !( lexp ) ) { AssertException e( "Invalid assertion" ) ; e.addText( #lexp ) ; e.addText( text ) ; e.addLocation( MEXCEPTION_LOCATION() ) ; throw e ; }
 
-#define MASSERT_ERR(str)  { cout << str; exit(-1); }
+#define MASSERT_ERR(str)  { std::cout << str; exit(-1); }
 
 #define MTHROW( e ) e.addLocation( MEXCEPTION_LOCATION() ) ; throw e ;
 
@@ -40,21 +40,21 @@ class MException
 {
 public:
 	// ** Constructors ** //
-	MException( const string &description = "" )
+	MException( const std::string &description = "" )
 	: descr( description )
 	{}
 
 	MException( const MException & ) ;
 	virtual ~MException() ;
 
-	const string &description() const
+	const std::string &description() const
 	{return descr;}
 
-	MException &addText( const string & ) ;
-	MException &addLocation( const string & ) ;
+	MException &addText( const std::string & ) ;
+	MException &addLocation( const std::string & ) ;
 
-	typedef list< string > TextList ;
-	typedef list< string > LocationList ;
+	typedef std::list< std::string > TextList ;
+	typedef std::list< std::string > LocationList ;
 
 	const TextList &textList() const
 	{return texts;}
@@ -62,13 +62,13 @@ public:
 	const LocationList &locationList() const
 	{return locations;}
 
-	ostream &print( ostream & ) const ;
+	std::ostream &print( std::ostream & ) const ;
 
-	virtual const string type() const
+	virtual const std::string type() const
 	{return "MException";}
 
 private:
-	string descr ;
+	std::string descr ;
 	TextList texts ;
 	LocationList locations ;
 
@@ -78,10 +78,10 @@ class AssertException: public MException
 {
 public:
 	// ** Constructors ** //
-	AssertException( const string &description = ""): MException( description )
+	AssertException( const std::string &description = ""): MException( description )
 	{};
 
-	const string type() const
+	const std::string type() const
 	{return "AssertException";}
 };	// AssertException
 
@@ -89,7 +89,7 @@ public:
 class InvalidMessageException: public MException
 {
 public:
-	const string type() const
+	const std::string type() const
 	{return "InvalidMessageException";}
 };	// InvalidMessageException
 
@@ -97,28 +97,28 @@ public:
 class InvalidModelIdException: public MException
 {
 public:
-	const string type() const
+	const std::string type() const
 	{return "InvalidModelIdException";}
 };	// InvalidModelIdException
 
 class InvalidProcessorIdException: public MException
 {
 public:
-	const string type() const
+	const std::string type() const
 	{return "InvalidProcessorIdException";}
 };	// InvalidProcessorIdException
 
 class InvalidAtomicTypeException: public MException
 {
 public:
-	const string type() const
+	const std::string type() const
 	{return "InvalidAtomicTypeException";}
 };	// InvalidAtomicTypeException
 
 class InvalidPortRequest: public MException
 {
 public:
-	const string type() const
+	const std::string type() const
 	{return "InvalidPortRequest";}
 };	// InvalidPortRequest
 
@@ -139,21 +139,21 @@ inline
 {}
 
 inline
-	MException &MException::addText( const string &str )
+	MException &MException::addText( const std::string &str )
 {
 	texts.push_back( str ) ;
 	return *this ;
 }
 
 inline
-	MException &MException::addLocation( const string &str )
+	MException &MException::addLocation( const std::string &str )
 {
 	locations.push_back( str ) ;
 	return *this ;
 }
 
 inline
-	ostream &operator << (ostream &os, const MException &e)
+	std::ostream &operator << (std::ostream &os, const MException &e)
 {
 	e.print( os ) ;
 	return os ;

@@ -46,11 +46,11 @@ public:
 class Generator : public Atomic
 {
 public:
-	Generator( const string &name = "Generator" );				  // Default constructor
+	Generator( const std::string &name = "Generator" );				  // Default constructor
 
 	~Generator();
 
-	virtual string className() const
+	virtual std::string className() const
 	{return "Generator";}
 
 protected:

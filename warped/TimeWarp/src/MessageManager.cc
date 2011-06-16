@@ -22,8 +22,8 @@
 //
 //---------------------------------------------------------------------------
 #include "MessageManager.hh"
-#include <fstream.h>
-#include <stdlib.h>
+#include <fstream>
+#include <cstdlib>
 #include "CommMgrInterface.hh"
 
 ofstream* gFileHandle;

@@ -1,6 +1,6 @@
 #include "ParseInput.hh"
-#include <fstream.h>
-#include <string.h>
+#include <fstream>
+#include <string>
 
 ParseInput::ParseInput() {
   configFile.open("Queue.config");

@@ -2,7 +2,7 @@
 *
 *  DESCRIPTION: class StateVarsList
 *
-*  AUTHOR: Alejandro López
+*  AUTHOR: Alejandro LÃ³pez
 *
 *  EMAIL: mailto://alopez@dc.uba.ar
 *         
@@ -10,11 +10,12 @@
 *  REVISION: $Revision$  $Date$
 *
 *******************************************************************/
-#include <stdlib.h>
+#include <cstdlib>
 #include <string>
 #include "real.h"
 #include "statevars.h"
 
+using namespace std;
 
 bool StateVars::createVariable(const string& name, Real& value)
 {

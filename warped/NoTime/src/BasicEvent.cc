@@ -28,7 +28,10 @@
 //---------------------------------------------------------------------------
 
 #include "BasicEvent.hh"
-#include <string.h>
+#include <string>
+#include <cstring>
+
+using namespace std;
 
 ostream&
 operator<<(ostream& os, const BasicEvent& e) {

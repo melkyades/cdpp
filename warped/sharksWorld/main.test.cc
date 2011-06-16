@@ -1,6 +1,6 @@
 
 #include <iostream.h>
-#include <string.h>
+#include <string>
 
 #include "LogicalProcess.hh"
 
@@ -10,7 +10,7 @@
 #include "OceanEvent.hh"
 
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 #ifdef MPI
 extern "C" {
 #include "mpi.h"

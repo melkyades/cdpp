@@ -29,7 +29,7 @@
 //---------------------------------------------------------------------------
 
 #ifdef COMMDEBUG
-#include <fstream.h>
+#include <fstream>
 #endif
 
 #include "warped.hh"
@@ -139,7 +139,7 @@ public:
   void deliver(BasicEvent *);
 
   virtual void flush(){
-    cerr << "CommMgrInterface::flush() not implemented" << endl;
+    cerr << "CommMgrInterface::flush() not implemented" << std::endl;
     abort() ;
   }
 

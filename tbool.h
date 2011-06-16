@@ -20,6 +20,7 @@
 /** include files **/
 #include "except.h"
 #include "real.h"
+#include "evaldeb.h"
 
 /** foward declarations **/
 #define	T_NOT_TYPE	"NOT"
@@ -73,7 +74,7 @@ private:
 
 
 template <class T, class Z>
-struct t_and : public binary_function<T, T, Z>
+struct t_and : public std::binary_function<T, T, Z>
 {
 	Z operator()(const T& t1, const T& t2) const
 	{	
@@ -83,12 +84,12 @@ struct t_and : public binary_function<T, T, Z>
 		return t1 && t2;
 	}
 
-	string type(){return T_AND_TYPE;}
+	std::string type(){return T_AND_TYPE;}
 };
 
 
 template <class T, class Z>
-struct t_or : public binary_function<T, T, Z>
+struct t_or : public std::binary_function<T, T, Z>
 {
 	Z operator()(const T& t1, const T& t2) const
 	{	
@@ -98,12 +99,12 @@ struct t_or : public binary_function<T, T, Z>
 		return t1 || t2;
 	}
 
-	string type(){return T_OR_TYPE;}
+	std::string type(){return T_OR_TYPE;}
 };
 
 
 template <class T, class Z>
-struct t_not : public unary_function<T, Z>
+struct t_not : public std::unary_function<T, Z>
 {
 	Z operator()(const T& t) const
 	{
@@ -113,12 +114,12 @@ struct t_not : public unary_function<T, Z>
 		return !t;
 	}
 
-	string type(){return T_NOT_TYPE;}
+	std::string type(){return T_NOT_TYPE;}
 };
 
 
 template <class T, class Z>
-struct t_eqv : public binary_function<T, T, Z>
+struct t_eqv : public std::binary_function<T, T, Z>
 {
 	Z operator()(const T& t1, const T& t2) const
 	{	
@@ -128,12 +129,12 @@ struct t_eqv : public binary_function<T, T, Z>
 		return t1.eqv(t2);
 	}
 
-	string type(){return T_EQV_TYPE;}
+	std::string type(){return T_EQV_TYPE;}
 };
 
 
 template <class T, class Z>
-struct t_imp : public binary_function<T, T, Z>
+struct t_imp : public std::binary_function<T, T, Z>
 {
 	Z operator()(const T& t1, const T& t2) const
 	{	
@@ -143,12 +144,12 @@ struct t_imp : public binary_function<T, T, Z>
 		return t1.imp(t2);
 	}
 
-	string type(){return T_IMP_TYPE;}
+	std::string type(){return T_IMP_TYPE;}
 };
 
 
 template <class T, class Z>
-struct t_Xor : public binary_function<T, T, Z>
+struct t_Xor : public std::binary_function<T, T, Z>
 {
 	Z operator()(const T& t1, const T& t2) const
 	{	
@@ -158,7 +159,7 @@ struct t_Xor : public binary_function<T, T, Z>
 		return t1.Xor(t2);
 	}
 	
-	string type(){return T_XOR_TYPE;}
+	std::string type(){return T_XOR_TYPE;}
 };
 
 

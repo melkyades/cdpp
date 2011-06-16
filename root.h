@@ -18,7 +18,7 @@
 #define __ROOT_H
 
 /** include files **/
-#include <list>      //Template list
+#include <list>      //Template std::list
 #include "event.h"         //class event
 #include "process.h"       // class Processor
 #include "sprocadm.h"      // StandAloneProcessorAdmin::RootId 
@@ -30,7 +30,7 @@ class Port ;
 class VTime ;
 
 /** declarations **/
-typedef list<Event> EventList;
+typedef std::list<Event> EventList;
 
 class Root : public Processor
 {
@@ -46,7 +46,7 @@ public:
 	const VTime &stopTime() const ;
 	const EventList &events() const ;
 	
-	const string description() const ;
+	const std::string description() const ;
 	
 private:
 	friend ParallelMainSimulator;
@@ -87,7 +87,7 @@ inline
 }
 
 inline
-	const string Root::description() const
+	const std::string Root::description() const
 {
 	return "Root" ;
 }

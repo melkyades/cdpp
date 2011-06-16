@@ -33,10 +33,10 @@
 enum KernelMsgType { INITMSG, STARTMSG, TERMINATEMSG,
 		     CHECKIDLEMSG, EVENTMSG, DUMMYMSG, DEBUGMSG };
 
-extern ostream& operator<<(ostream&, const KernelMsgType);
+extern std::ostream& operator<<(std::ostream&, const KernelMsgType);
 
 class BasicMsg {
-  friend ostream& operator<<(ostream&, const BasicMsg &);
+  friend std::ostream& operator<<(std::ostream&, const BasicMsg &);
 public:
   BasicMsg(){};
   BasicMsg(KernelMsgType kMT) : type(kMT) {};
@@ -48,7 +48,7 @@ public:
 };
 
 class InitMsg : public BasicMsg {
-  friend ostream& operator<<(ostream&, const InitMsg &);
+  friend std::ostream& operator<<(std::ostream&, const InitMsg &);
 public:
   InitMsg() : BasicMsg(INITMSG) {}
   ~InitMsg() {}
@@ -64,21 +64,21 @@ public:
 };
 
 class CheckIdleMsg : public BasicMsg {
-  friend ostream & operator<<(ostream&, const CheckIdleMsg & );
+  friend std::ostream & operator<<(std::ostream&, const CheckIdleMsg & );
 public:
   CheckIdleMsg() : BasicMsg(CHECKIDLEMSG) {}
   int tokenNum;
 };
 
 class TerminateMsg : public BasicMsg {
-  friend ostream& operator<<(ostream&, const TerminateMsg &);
+  friend std::ostream& operator<<(std::ostream&, const TerminateMsg &);
 public:
   TerminateMsg() : BasicMsg(TERMINATEMSG) {}
   char error[255];
 };
 
 class EventMsg : public BasicMsg, public BasicEvent {
-  friend ostream& operator<<(ostream&, const EventMsg&);
+  friend std::ostream& operator<<(std::ostream&, const EventMsg&);
 public:
   EventMsg() : BasicMsg(EVENTMSG) {}
   ~EventMsg() {}

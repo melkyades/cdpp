@@ -17,6 +17,8 @@
 /** include files **/
 #include "port.h"    // class Port
 
+using namespace std;
+
 /** public **/
 
 int Port::idCount( 0 );

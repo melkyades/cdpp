@@ -4,7 +4,7 @@
 *                                   y a la CPU)
 *
 *  AUTORES: Ing. Carlos Giorgetti
-*           Iv醤 Melgrati
+*           Iv谩n Melgrati
 *           Dra. Ana Rosa Tymoschuk
 *
 *  EMAIL: mailto://cgiorget@frsf.utn.edu.ar
@@ -21,8 +21,8 @@
 #include "message.h"       // InternalMessage ....
 #include "parsimu.h"      // class ParallelMainSimulator
 #include "strutil.h"       // str2float( ... )
-#include <stdlib.h>      // random() y randomize()
-#include <time.h>
+#include <cstdlib>      // random() y randomize()
+#include <ctime>
 #include <stdio.h>
 
 /*******************************************************************
@@ -59,8 +59,8 @@ int  ControladoraState::getSize() const {
 *********************************************************************/
 
 /*******************************************************************
-* Nombre de la Funci髇: Controladora::Controladora
-* Descripci髇: Constructor
+* Nombre de la Funci贸n: Controladora::Controladora
+* Descripci贸n: Constructor
 ********************************************************************/
 Controladora::Controladora( const string &name ): Atomic( name ), in( addInputPort( "in" ) ), out( addOutputPort( "out" ) )
 	,discoin( addInputPort( "discoin" ) ), discoout1( addOutputPort( "discoout1" ) ), discoout2( addOutputPort( "discoout2" ) )
@@ -84,9 +84,9 @@ Controladora::Controladora( const string &name ): Atomic( name ), in( addInputPo
 }
 
 /*******************************************************************
-* Nombre de la Funci髇: Controladora::externalFunction
-* Descripci髇: Se reciben peticiones desde la CPU. Elige un disco al azar y rutea la petici髇
-*              Si retorna una petici髇, se env韆 a la CPU
+* Nombre de la Funci贸n: Controladora::externalFunction
+* Descripci贸n: Se reciben peticiones desde la CPU. Elige un disco al azar y rutea la petici贸n
+*              Si retorna una petici贸n, se env铆a a la CPU
 ********************************************************************/
 Model &Controladora::externalFunction( const ExternalMessage &msg )
 {
@@ -108,8 +108,8 @@ Model &Controladora::externalFunction( const ExternalMessage &msg )
 }
 
 /*******************************************************************
-* Nombre de la Funci髇: Controladora::internalFunction
-* Descripci髇: Se pone en estado pasivo, esperando un nuevo pedido
+* Nombre de la Funci贸n: Controladora::internalFunction
+* Descripci贸n: Se pone en estado pasivo, esperando un nuevo pedido
 ********************************************************************/
 Model &Controladora::internalFunction( const InternalMessage & )
 {
@@ -119,8 +119,8 @@ Model &Controladora::internalFunction( const InternalMessage & )
 }
 
 /*******************************************************************
-* Nombre de la Funci髇: Controladora::outputFunction
-* Descripci髇: Env韆 el trabajo a los discos o a la CPU
+* Nombre de la Funci贸n: Controladora::outputFunction
+* Descripci贸n: Env铆a el trabajo a los discos o a la CPU
 ********************************************************************/
 Model &Controladora::outputFunction( const CollectMessage &msg )
 {

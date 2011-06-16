@@ -67,7 +67,7 @@
 //
 //---------------------------------------------------------------------------
 static const char* simple_stack_cc_rcsid = "$Id: SimpleStack.cc,v 1.1 1998/12/01 14:53:50 dmartin Exp $";
-#include <stdio.h>
+#include <cstdio>
 
 template < class Element >
 SimpleStack< Element >::SimpleStack() {

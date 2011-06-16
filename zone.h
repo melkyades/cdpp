@@ -23,7 +23,7 @@
 class ZoneException : public MException
 {
 protected:
-	ZoneException( const string &str = "Invalid String Zone " ): MException( str )
+	ZoneException( const std::string &str = "Invalid String Zone " ): MException( str )
 	{} ;
 };	// ZoneException
 
@@ -31,7 +31,7 @@ protected:
 class Zone
 {
 public:
-	Zone( const string &zoneStr )
+	Zone( const std::string &zoneStr )
 	{createFrom( zoneStr );}
 	
 	struct Iterator
@@ -52,7 +52,10 @@ public:
 	
 	bool operator ==( const Iterator &it ) const
 	{ return (current == *it); }
-	
+
+	bool operator !=( const Iterator &it ) const
+	{ return !(*this == it); }
+
 	CellPosition first, last, current ;
 };
 
@@ -61,13 +64,13 @@ Iterator begin()
 
 Iterator end() ;
 
-Zone &operator =( const string &zoneStr )
+Zone &operator =( const std::string &zoneStr )
 { createFrom( zoneStr ); return *this; }
 
 protected:
 
 friend struct Iterator ;
-Zone &createFrom( const string & ) ;
+Zone &createFrom( const std::string & ) ;
 
 CellPosition first, last ;
 

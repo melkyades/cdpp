@@ -29,6 +29,8 @@
 #include "tdcell.h"
 #include "except.h"
 
+using namespace std;
+
 /** methods **/
 
 CoupledCell::CoupledCell( const string &name )
@@ -111,7 +113,7 @@ void CoupledCell::afterProcessorInitialize()
 ********************************************************************/
 CoupledCell &CoupledCell::createCells( const CellPositionList &neighborList, 
                                        CellPartition *part,
-				       list<string> NCPorts)
+				       std::list<string> NCPorts)
 {
 	unsigned long cellIndex;
 
@@ -121,7 +123,7 @@ CoupledCell &CoupledCell::createCells( const CellPositionList &neighborList,
 
 	neighbors = neighborList;
 
-	AtomicCell **matrix = new (AtomicCell *)[ dimension().totalElements() ] ;
+	AtomicCell **matrix = new AtomicCell*[ dimension().totalElements() ] ;
 
 	//Set all the pointers to NULL. This will help to check if the cell has 
 	//already been created.

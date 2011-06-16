@@ -35,7 +35,7 @@ public:
 	{ valTupla = new int[1]; }
 
 	nTupla(const nTupla &pos);	// Constructor
-	nTupla(const string &str);	// Constructor
+	nTupla(const std::string &str);	// Constructor
 	nTupla(unsigned dim, int value);
 					// Constructor. Crea una nTupla conteniendo dim elementos con el valor indicado
 
@@ -45,7 +45,7 @@ public:
 
 	nTupla  &operator = (const nTupla & );
 
-	nTupla  &operator = (const string &cellStr)
+	nTupla  &operator = (const std::string &cellStr)
 	{ parseString(cellStr); return *this; }
 
 	nTupla  *operator += ( const nTupla & );
@@ -106,7 +106,7 @@ public:
 	bool	contains( int elem ) const;	// Returns true if the tuple
 						// contains the element elem.
 
-	string print() const;
+	std::string print() const;
 
 	void minCoordToCoord( nTupla &t1, nTupla &t2 );
 						// Calcula el minimo coordenada
@@ -127,7 +127,7 @@ public:
 private:
 	void	calcTotalElements();		// Recalcula el valTotalElem
 
-	nTupla	&parseString( const string &str );
+	nTupla	&parseString( const std::string &str );
 
 	int *tupla()
 	{ return valTupla; }
@@ -146,7 +146,7 @@ private:
 
 // Inline functions
 inline
-	ostream &operator << (ostream &os, const nTupla &t)
+	std::ostream &operator << (std::ostream &os, const nTupla &t)
 {
 	os << t.print();
 	return os;

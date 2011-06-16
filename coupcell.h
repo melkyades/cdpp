@@ -77,36 +77,36 @@ public:
 	CoupledCell &localTransition( const LocalTransAdmin::Function &lf )
 	{ localFn = lf; return *this; }
 
-	virtual CoupledCell &createCells( const CellPositionList &neighbors, CellPartition *part, list<string> NCPorts );
+	virtual CoupledCell &createCells( const CellPositionList &neighbors, CellPartition *part, std::list<std::string> NCPorts );
 
-	virtual CoupledCell &setCellValue( const CellPosition &, const string &, const Real & ) ;
+	virtual CoupledCell &setCellValue( const CellPosition &, const std::string &, const Real & ) ;
 
-	CoupledCell &setCellValue( const ModelId &, const string &, Value ) ;
+	CoupledCell &setCellValue( const ModelId &, const std::string &, Value ) ;
 
-	CoupledCell &setCellValue( const string &sCellPos, const string &, const Real & );
+	CoupledCell &setCellValue( const std::string &sCellPos, const std::string &, const Real & );
 
 	CoupledCell &setCellAllValues( const ModelId &, Value ) ;
 
 	CoupledCell &setCellAllValues( const CellPosition &, const Real & ) ;
 
-	CoupledCell &setCellAllValues( const string &sCellPos, const Real & );
+	CoupledCell &setCellAllValues( const std::string &sCellPos, const Real & );
 
 	CoupledCell &setVariablesValue( const CellPosition &, const char * );
 	
-	CoupledCell &setVariablesValue( const string &, const char * );
+	CoupledCell &setVariablesValue( const std::string &, const char * );
 
 	virtual CoupledCell &setLocalTransition( const CellPosition &, const LocalTransAdmin::Function & ) ;
 
-	string className() const
+	std::string className() const
 	{return COUPLED_CELL_NAME;}
 
 	Type type() const
 	{return cell;}
 
-	string cellName( const CellPosition &pos ) const
+	std::string cellName( const CellPosition &pos ) const
 	{ return description() + pos.print(); }
 
-	string cellName( const string &sCellPos ) const
+	std::string cellName( const std::string &sCellPos ) const
 	{ return description() + sCellPos; }
 
 	unsigned int dim(unsigned int pos) const
@@ -120,7 +120,7 @@ public:
 
 	const LocalTransAdmin::Function &localTrans() const ;
 
-	virtual void setPortInFunction( const CellPosition &cellPos, const string &sourcePort, const string &actionName );
+	virtual void setPortInFunction( const CellPosition &cellPos, const std::string &sourcePort, const std::string &actionName );
 
 	virtual CoupledCell& setCellMachine( const CellPosition &cellPos, const MachineId& m, const ProcId& p);
 
@@ -150,9 +150,9 @@ protected:
 	friend class ParallelMainSimulator ;
 	friend class ParallelModelAdmin;
 
-	CoupledCell( const string &name = "CoupledCell" ) ; // default constructor
+	CoupledCell( const std::string &name = "CoupledCell" ) ; // default constructor
 
-	virtual Model &addInfluence( const string &sourceName, const string &sourcePort, const string &destName, const string &destPort) ;
+	virtual Model &addInfluence( const std::string &sourceName, const std::string &sourcePort, const std::string &destName, const std::string &destPort) ;
 
 	virtual ParallelProcessor &createParallelProcessor()
 	{ return SingleParallelProcessorAdmin::Instance().generateProcessor(this, localProc());}

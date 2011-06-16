@@ -5,7 +5,7 @@
 #if defined(CLUMPS_ICM) && defined(CLUMPS_ICM_IRCM)
 
 #include "CommPhyInterface.hh"
-#include <fstream.h>
+#include <fstream>
 #include "ClumpsDefines.hh"
 #include <pthread.h>
 

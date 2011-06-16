@@ -16,6 +16,9 @@
 /** include files **/
 #include "VTime.hh"         // base class
 #include "stringp.h"      // operator + int
+#include <cstdlib>
+
+using namespace std;
 
 /** public data **/
 const VTime VTime::Zero(0,0,0,0)	 ;	  // Zero constant
@@ -157,6 +160,23 @@ bool VTime::operator <( const VTime &t ) const
 					( seconds() < t.seconds() ||
 						( seconds() == t.seconds() &&
 							mseconds() < t.mseconds() ) ) ) ) ) ) ;
+}
+
+
+bool VTime::operator <=( const VTime &t ) const
+{
+	return( hours() < t.hours()    ||
+		( hours() == t.hours() &&
+			( minutes() < t.minutes()  ||
+				( minutes() == t.minutes()  &&
+					( seconds() < t.seconds() ||
+						( seconds() == t.seconds() &&
+							mseconds() <= t.mseconds() ) ) ) ) ) ) ;
+}
+
+bool VTime::operator >=( const VTime &t ) const
+{
+	return t < *this or *this == t;
 }
 
 /*******************************************************************

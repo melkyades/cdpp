@@ -20,7 +20,7 @@
 #define __MODEL_H
 
 /** include files **/
-#include <string>    // Template string
+#include <string>    // Template std::string
 #include <map>
 #include "machineid.h" //type MachineId
 #include "port.h"     // class Port 
@@ -44,7 +44,7 @@ class SendPortNode ;
 
 /** type definitions **/
 
-typedef map<MachineId, ProcId, less <MachineId> > ModelPartition;
+typedef std::map<MachineId, ProcId, std::less <MachineId> > ModelPartition;
 
 /** definitions **/
 
@@ -56,10 +56,10 @@ class Model
 public:
 	virtual ~Model();	// Destructor
 
-	virtual string className() const = 0;
+	virtual std::string className() const = 0;
 
-	virtual Port &addInputPort( const string & );
-	virtual Port &addOutputPort( const string & );
+	virtual Port &addInputPort( const std::string & );
+	virtual Port &addOutputPort( const std::string & );
 
 	virtual const PortList &inputPorts() const
 	{return inputList;}
@@ -73,7 +73,7 @@ public:
 	virtual PortList &outputPorts()
 	{return outputList;}
 
-	Port & port( const string & );
+	Port & port( const std::string & );
 
 	Port & port( const PortId & );
 
@@ -86,10 +86,10 @@ public:
 	const ModelId &id() const
 	{return ident;}
 
-	const string &description() const
+	const std::string &description() const
 	{return descript;}
 
-	const string asString() const
+	const std::string asString() const
 	{return description() + "(" + id() + ")";}
 
 	const Model *parent() const
@@ -147,7 +147,7 @@ protected:
 	friend class ParallelRoot;
 	friend class ParallelModelAdmin;
 
-	Model( const string &name = "Model" ) ; // Default constructor
+	Model( const std::string &name = "Model" ) ; // Default constructor
 
 	Model &nextChange( const VTime & );
 	Model &lastChange( const VTime & );
@@ -191,7 +191,7 @@ private:
 	Model *parentModel;
 	ParallelProcessor *proc;
 
-	string descript ;
+	std::string descript ;
 
 	ModelPartition model_partition;
 

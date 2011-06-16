@@ -31,7 +31,7 @@
 //---------------------------------------------------------------------------
 
 
-#include <stdlib.h>
+#include <cstdlib>
 #include "BasicEvent.hh"
 
 #define SHIFT 24

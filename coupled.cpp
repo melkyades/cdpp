@@ -22,6 +22,8 @@
 #include "coupled.h"    // base header
 #include "pmodeladm.h"	// SingleParallelModelAdm
 
+using namespace std;
+
 /** public functions **/
 /*******************************************************************
 * Function Name: addModel

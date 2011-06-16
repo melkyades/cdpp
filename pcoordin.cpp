@@ -17,6 +17,7 @@
 #include "pmessage.h"
 #include "parsimu.h"		//class ParallelMainSimulator
 
+using namespace std;
 
 /*******************************************************************
 * Function Name: Constructor
@@ -106,7 +107,7 @@ ParallelProcessor &ParallelCoordinator::receive( const InternalMessage &msg )
 	MASSERTMSG( doneCount() == 0, "Received an InternalMessage and doneCount is not cero!" );	
 
 	//1. Sort the external message queue
-	for( MessageBag::iterator extMsgs = externalMsgs.begin(); extMsgs != externalMsgs.end(); extMsgs++ )
+	for( MessageBag::iterator extMsgs = externalMsgs.begin(); !(extMsgs == externalMsgs.end()); extMsgs++ )
 	{
 		sortExternalMessage( *((BasicExternalMessage*) (*extMsgs)));	
 	}

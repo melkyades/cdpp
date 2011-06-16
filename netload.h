@@ -40,7 +40,7 @@ protected:
 	
 private:
 	CommChannel *commChannel ;
-	const string delimitator ;
+	const std::string delimitator ;
 	
 };	// class NetworkLoader
 

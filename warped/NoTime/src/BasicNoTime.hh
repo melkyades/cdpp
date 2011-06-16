@@ -28,7 +28,7 @@
 //---------------------------------------------------------------------------
 
 #include "ObjectRecord.hh"
-#include <iostream.h>
+#include <iostream>
 #include "NoTime.hh"
 #include "DefaultVTime.hh"
 
@@ -37,7 +37,7 @@ class InputQueue;
 class BasicEvent;
 
 class BasicNoTime {
-  friend LogicalProcess;
+  friend class LogicalProcess;
 public:
   char *name;
   int  id;           // A unique number for each process

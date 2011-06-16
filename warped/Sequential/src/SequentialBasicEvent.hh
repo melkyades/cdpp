@@ -39,7 +39,7 @@ public:
   BasicEvent *next;
   BasicEvent *prev;
 
-  friend ostream& operator<<(ostream&, const BasicEvent &);
+  friend std::ostream& operator<<(std::ostream&, const BasicEvent &);
   
   inline BasicEvent() { 
     sign = POSITIVE; 

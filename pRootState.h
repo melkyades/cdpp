@@ -20,7 +20,7 @@ class ParallelRootState :public ParallelProcessorState {
 public:
 	
 	
-	//The root processor has to hold the External events list
+	//The root processor has to hold the External events std::list
 	//and has to "remember" which is the next type of message to send:
 	//a CollectMessage or an InternalMessage
 	
@@ -33,11 +33,23 @@ public:
 	nextMsgType next;
 	
 	//To manage the external events, we only need a pointer to the 
-	//current element, we do not need the whole list in the state
+	//current element, we do not need the whole std::list in the state
 	EventList::iterator eventsCursor;
 	
-	ParallelRootState();
-	virtual ~ParallelRootState();
+	/*******************************************************************
+	* Function Name: constructor
+	********************************************************************/
+	inline
+	ParallelRootState() {
+	}
+
+	/*******************************************************************
+	* Function Name: destructor
+	********************************************************************/
+	inline virtual
+	~ParallelRootState() {
+	}
+
 	
 	ParallelRootState& operator=(ParallelRootState& thisState); //Assignment
 	void copyState(BasicState *);

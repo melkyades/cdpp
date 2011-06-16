@@ -56,8 +56,8 @@
 
 #ifndef ASSERT
 #ifdef DEVELOPER_ASSERTIONS
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <assert.h>
 #define ASSERT(x) assert(x)
 #else

@@ -16,6 +16,7 @@
 #include "pmessage.h"          // class InitMessage
 #include "parsimu.h"
 
+using namespace std;
 
 /** public functions **/
 /*******************************************************************

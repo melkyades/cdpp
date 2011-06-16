@@ -21,7 +21,7 @@
 #define __COUPLED_H
 
 /** include files **/
-#include <list.h>    // Template list
+#include <list>    // Template std::list
 #include "model.h"    // Base class Model
 
 /** foward declarations **/
@@ -37,14 +37,14 @@ public:
 	Model &addModel( Model & );
 	
 	
-	//ModelList as list<ModelId> is used by the StandAlone version of NCD++
-	typedef list<ModelId> ModelList;
+	//ModelList as std::list<ModelId> is used by the StandAlone version of NCD++
+	typedef std::list<ModelId> ModelList;
 	
 	const ModelList &children() const
 	{return childs;}
 	
 	//For the parallel version, PModelList will be defined
-	typedef list< Model *> PModelList;
+	typedef std::list< Model *> PModelList;
 	
 	const PModelList &childModels() const
 	{return pchilds;}
@@ -58,7 +58,7 @@ public:
 	virtual Type type() const
 	{return regular;}
 	
-	virtual string className() const
+	virtual std::string className() const
 	{return COUPLED_NAME;}
 	
 	unsigned long totalProcCount() const;
@@ -71,13 +71,13 @@ protected:
 	friend class ParallelModelAdmin ;
 	friend class ParallelMainSimulator ;
 	
-	Coupled( const string &name = "Coupled" )	// Default constructor
+	Coupled( const std::string &name = "Coupled" )	// Default constructor
 	: Model( name )
 	{}
 	
 	Coupled( const Coupled & )  ;		 // Copy constructor
 	
-	virtual Model &addInfluence( const string &sourceName, const string &sourcePort, const string &destName, const string &destPort) ;
+	virtual Model &addInfluence( const std::string &sourceName, const std::string &sourcePort, const std::string &destName, const std::string &destPort) ;
 	
 	virtual ParallelProcessor &createParallelProcessor()
 	{ return SingleParallelProcessorAdmin::Instance().generateProcessor(this, localProc());}

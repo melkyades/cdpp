@@ -1,5 +1,5 @@
 #include <iostream.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include "PingObject.hh"
 
 #include "LogicalProcess.hh"

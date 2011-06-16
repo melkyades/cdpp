@@ -18,8 +18,8 @@
 #define __MODEL_ADMIN_H
 
 /** include files **/
-#include <map.h>            // Template map
-#include <string>           // Template string
+#include <map>            // Template std::map
+#include <string>           // Template std::string
 #include "except.h"
 
 /** foward declarations **/
@@ -39,14 +39,14 @@ class FlatCoupledCell ;
 
 struct NewFunction
 {
-	virtual Atomic *operator()( const string &  ) = 0 ;   
+	virtual Atomic *operator()( const std::string &  ) = 0 ;   
 	virtual NewFunction *duplicate() const = 0 ;
 };
 
 template <class T> 
 struct NewAtomicFunction : NewFunction
 {
-	Atomic *operator()( const string &name )
+	Atomic *operator()( const std::string &name )
 	{return new T( name ) ;}
 	NewFunction *duplicate() const
 	{return new NewAtomicFunction<T>() ;}
@@ -58,13 +58,13 @@ class ModelAdmin
 public:   
 	typedef int AtomicType ;
 	
-	AtomicType registerAtomic( const NewFunction &f, const string & );
+	AtomicType registerAtomic( const NewFunction &f, const std::string & );
 	
 	//Functions for accesing the ModelDB.
-	typedef map< string, Model *, less < string > > ModelDB;
+	typedef std::map< std::string, Model *, less < std::string > > ModelDB;
 	
 	const ModelDB &models() const;
-	virtual Model& model( const string modelName );	
+	virtual Model& model( const std::string modelName );	
 	
 	ModelAdmin();
 	virtual ~ModelAdmin(){};
@@ -83,17 +83,17 @@ protected:
 //	virtual ModelAdmin& operator =( const ModelAdmin & ) = 0 ; //Assignment operator
 //	virtual int operator ==( const ModelAdmin & ) const = 0; //Equality operator
 	
-	virtual Atomic &newAtomic( const AtomicType &, const string &modelName ) = 0;
-	virtual Atomic &newAtomic( const string &typeNmae, const string &modelName ) = 0;
+	virtual Atomic &newAtomic( const AtomicType &, const std::string &modelName ) = 0;
+	virtual Atomic &newAtomic( const std::string &typeNmae, const std::string &modelName ) = 0;
 	
-	virtual AtomicCell &newAtomicCell( bool inertial = false, const string &modelName = "AtomicCell" ) = 0;
+	virtual AtomicCell &newAtomicCell( bool inertial = false, const std::string &modelName = "AtomicCell" ) = 0;
 	
-	virtual Coupled &newCoupled( const string &modelName ) = 0;
-	virtual CoupledCell &newCoupledCell( const string &modelName ) = 0;
-	virtual FlatCoupledCell &newFlatCoupledCell( const string &modelName ) = 0;
+	virtual Coupled &newCoupled( const std::string &modelName ) = 0;
+	virtual CoupledCell &newCoupledCell( const std::string &modelName ) = 0;
+	virtual FlatCoupledCell &newFlatCoupledCell( const std::string &modelName ) = 0;
 	
-	typedef map< string, AtomicType, less< string > > AtomicTypes ;
-	typedef map< AtomicType, NewFunction*, less< AtomicType > > AtomicKinds ;
+	typedef std::map< std::string, AtomicType, std::less< std::string > > AtomicTypes ;
+	typedef std::map< AtomicType, NewFunction*, std::less< AtomicType > > AtomicKinds ;
 	
 	AtomicKinds kinds  ;
 	AtomicType  typeCount ;

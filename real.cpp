@@ -17,6 +17,8 @@
 
 #define MAX_WIDTH	50
 
+using namespace std;
+
 Real Real::tundef(UNDEFINED);	// Constante
 Real Real::one(1);		// Constante
 Real Real::zero(0);		// Constante

@@ -28,7 +28,7 @@
 
 #include "CommPhyDefault.hh"
 #include <iostream.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 void
 CommPhyDefault::physicalInit(int *, char ***) {

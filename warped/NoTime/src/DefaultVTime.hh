@@ -29,7 +29,7 @@
 //---------------------------------------------------------------------------
 
 #include "NoTime.hh"
-#include <limits.h>
+#include <limits>
 
 #ifdef USE_USER_VTIME
 #include "VTime.hh"

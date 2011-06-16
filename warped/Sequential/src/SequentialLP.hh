@@ -32,7 +32,7 @@
 #include "BasicEvent.hh"
 #include "DefaultVTime.hh"
 #include "Stopwatch.hh"
-#include <time.h>
+#include <ctime>
 
 class BaseSequential;
 class SequentialObjectRecord;

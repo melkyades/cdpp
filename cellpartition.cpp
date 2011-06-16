@@ -13,6 +13,8 @@
 
 #include "cellpartition.h"
 
+using namespace std;
+
 /* Set the InvalidCellIndex to the maximum positive integer */
 const unsigned long CellPartition::InvalidCellIndex(-1);
 
@@ -100,7 +102,7 @@ CellPartition &CellPartition::addNeighborCells( const CellPositionList& neighbor
 	CellPositionList::const_iterator neighbors;
 	nTupla pos;
 
-	for( cells = begin(); cells != end(); cells++ ) {
+	for( cells = begin(); !(cells == end()); cells++ ) {
 
 		for ( neighbors = neighborList.begin(); neighbors!= neighborList.end(); neighbors++ ) {
 

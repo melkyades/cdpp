@@ -30,9 +30,9 @@
 
 
 #include <iostream.h>
-#include <fstream.h>
+#include <fstream>
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <new.h>
 
 #include "warped.hh"

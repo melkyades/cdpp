@@ -2,7 +2,7 @@
 # Generated automatically by configure.
 # Run this file to recreate the current configuration.
 # This directory was configured as follows,
-# on host aguila:
+# on host pocho-laptop:
 #
 # ./configure 
 #
@@ -37,7 +37,7 @@ sed 's/%@/@@/; s/@%/@@/; s/%g$/@g/; /@g$/s/[\\&%]/\\&/g;
 
 s%@SHELL@%/bin/sh%g
 s%@CFLAGS@%-g -O2%g
-s%@CPPFLAGS@% -DHAS_BOOLEAN%g
+s%@CPPFLAGS@% -DHAS_BOOLEAN -DOLD_STYLE_FRIENDS%g
 s%@CXXFLAGS@%-g -O2%g
 s%@FFLAGS@%%g
 s%@DEFS@%-DHAVE_CONFIG_H%g

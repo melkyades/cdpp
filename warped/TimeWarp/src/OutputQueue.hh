@@ -27,7 +27,7 @@
 //
 //
 //---------------------------------------------------------------------------
-#include <fstream.h>
+#include <fstream>
 #include "BasicEvent.hh"
 #include "SortedList.hh"
 #include <iostream.h>

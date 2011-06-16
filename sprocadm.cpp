@@ -20,6 +20,8 @@
 #include "flatcoor.h"         // FlatCoordinator
 #include "flatcoup.h"         // FlatCoupledCell
 
+using namespace std;
+
 /** public data **/
 const ProcId StandAloneProcessorAdmin::rootId( 0 ) ;
 

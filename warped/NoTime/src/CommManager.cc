@@ -32,10 +32,13 @@
 #include "LogicalProcess.hh"
 #include "NoTime.hh"
 #include "KernelMsgs.hh"
-#include <string.h>
+#include <string>
 #include "DebugStream.hh"
+#include <cstring>
 
 #define BUFFER_SIZE 2097152
+
+using namespace std;
 
 
 CommManager::CommManager(int numberOfLps, LogicalProcess* lp) : BasicNoTime() {

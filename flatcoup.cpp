@@ -24,6 +24,7 @@
 #include "strutil.h"	// lowerCase
 #include "realfunc.h"   // calculateWithQuantum
 
+using namespace std;
 
 // ** private data ** //             
 #define	OUT_PORT	"out"

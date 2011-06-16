@@ -10,7 +10,7 @@
 *
 *******************************************************************/
 
-#include <stdlib.h>
+#include <cstdlib>
 #include "evaldeb.h"
 
 clsEvalParam	*evalDebugInstance = NULL;

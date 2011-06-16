@@ -19,7 +19,7 @@
 class PartitionZone: public Zone {
 	
 public:
-	PartitionZone( const string& zoneStr );
+	PartitionZone( const std::string& zoneStr );
 	
 	const CellPosition &firstCell() 
 	{ return first;}

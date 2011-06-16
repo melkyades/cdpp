@@ -32,7 +32,7 @@
 //---------------------------------------------------------------------------
 
 
-#include <stdlib.h>
+#include <cstdlib>
 #include "BasicEvent.hh"
 
 enum DISK_TYPE {FUJITSU, FUTUREDISK, LIGHTNING};
@@ -82,7 +82,7 @@ public:
 	 << logicalSector << " startCyl: " << startCylinder 
 	 << " startSector: " << startSector << " sizeRead: " << sizeRead
 	 << " sizeParity: " << sizeParity << " parityMsg: " << parityMsg 
-	 << " read: " << read << endl;
+	 << " read: " << read << std::endl;
   };
 
 #if defined(LAZYCANCELLATION) || defined(LAZYAGGR_CANCELLATION)
@@ -96,11 +96,11 @@ public:
        (tmp->sizeParity == this->sizeParity ) &&
        (tmp->parityMsg == this->parityMsg ) && 
        (tmp->read == this->read )){
-      //cout << "comparison is true" << endl;
+      //cout << "comparison is true" << std::endl;
       return BasicEvent::lazyCmp(rhs);
     }
     else {
-      //cout << "comparison is false" << endl;
+      //cout << "comparison is false" << std::endl;
       return false;
     }
   };
@@ -120,7 +120,7 @@ operator<< (ostream& os, RAIDRequest& rq) {
   else {
     os << "F]\n";
   }
-  os << (BasicEvent& ) rq << endl;
+  os << (BasicEvent& ) rq << std::endl;
 
   return(os);
 

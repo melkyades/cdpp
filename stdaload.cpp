@@ -20,9 +20,9 @@
 *******************************************************************/
 
 /** include files **/
-#include <fstream.h>
-#include <strstream.h>     // class strstream
-#include <time.h>
+#include <fstream>
+#include <strstream>     // class strstream
+#include <ctime>
 #include <math.h>
 #include "stdaload.h"      // base class
 #include "realprec.h"
@@ -39,6 +39,8 @@ extern "C"
 {
 #include "randlib.h"
 }
+
+using namespace std;
 
 #define	CTE_STR_W	"The format for the -w parameter is: -wXX-YY where XX and YY are integer numbers."
 

@@ -17,6 +17,8 @@
 #include "pmessage.h"
 #include "parsimu.h"		//class ParallelMainSimulator
 
+using namespace std;
+
 /*******************************************************************
 * Function Name: Constructor
 ********************************************************************/

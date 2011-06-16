@@ -1,7 +1,7 @@
 #ifndef __STACKOFPTR_HH__
 #define __STACKOFPTR_HH__
 
-#include <iostream.h>
+#include <iostream>
 
 template <class Element>
 class StackOfPtr {

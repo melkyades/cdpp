@@ -24,7 +24,7 @@
 #include "Transceiver.hh"
 #include "KernelMsgs.hh"
 #include <iostream.h>
-#include <fstream.h>
+#include <fstream>
 
 #include "MessageManager.hh"
 #include "CommPhyInterface.hh"

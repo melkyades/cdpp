@@ -22,6 +22,7 @@
 #include "message.h"
 #include "except.h"
 
+using namespace std;
 
 /*******************************************************************
 * Function Name: Destructor
@@ -32,7 +33,7 @@ Atomic::~Atomic()	// Destructor
 /*******************************************************************
 * Function Name: Constructor
 ********************************************************************/
-Atomic::Atomic( const string &name = "Atomic" )	// Constructor
+Atomic::Atomic( const string &name )	// Constructor
 : Model( name )
 {}
 
@@ -91,7 +92,7 @@ Model &Atomic::externalFunction ( const MessageBag & msgs )
 
 	MessageBag::iterator cursor;
 
-	for( cursor = msgs.begin(); cursor != msgs.end(); cursor++ )
+	for( cursor = msgs.begin(); !(cursor == msgs.end()); cursor++ )
 	{
 		externalFunction( *(( ExternalMessage* )( *cursor )) );
 	}

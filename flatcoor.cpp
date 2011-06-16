@@ -20,6 +20,8 @@
 #include "msgadm.h"     // SingleMessageAdm
 #include "cellstate.h"
 
+using namespace std;
+
 /*******************************************************************
 * Method: receive
 * Description: InitMessage

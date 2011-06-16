@@ -26,8 +26,8 @@
 // $Id: LTSFInputQueue.hh,v 1.7 1999/10/24 23:26:00 ramanan Exp $
 //---------------------------------------------------------------------------
 #include "config.hh"
-#include <fstream.h>
-#include <stdlib.h>
+#include <fstream>
+#include <cstdlib>
 #include "BasicEvent.hh"
 #include "MultiList.hh"
 

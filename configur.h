@@ -31,7 +31,7 @@ class Configurator
 public:
 	virtual ~Configurator();	//Destructor
 
-	Configurator &iniFileName( const string & ) ;
+	Configurator &iniFileName( const std::string & ) ;
 
 	const IniFile &iniFile() const ;
 

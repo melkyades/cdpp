@@ -14,7 +14,7 @@
 #define __ROOT_H
 
 /** include files **/
-#include <list>      //Template list
+#include <list>      //Template std::list
 #include "event.h"         //class event
 #include "eventlist.h"
 #include "prootmodel.h"
@@ -49,7 +49,7 @@ public:
 	const VTime &stopTime() const ;
 	const EventList &events() const ;
 	
-	const string description() const ;
+	const std::string description() const ;
 	BasicState* allocateState();
 	
 	bool createOutput;
@@ -102,7 +102,7 @@ inline
 }
 
 inline
-	const string ParallelRoot::description() const
+	const std::string ParallelRoot::description() const
 {
 	return "ParallelRoot" ;
 }

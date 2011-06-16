@@ -23,6 +23,8 @@
 #include "coupled.h"    // class Coupled
 #include "parsimu.h"   // class Simulator
 
+using namespace std;
+
 /** public **/
 /*******************************************************************
 * Function Name: Instance

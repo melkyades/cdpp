@@ -19,6 +19,8 @@
 #include "parsimu.h"         // class Simulator
 #include "procadm.h"
 
+using namespace std;
+
 /** private data **/
 MessageAdmin *SingleMsgAdm::instance( NULL ) ;
 

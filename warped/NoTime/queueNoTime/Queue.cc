@@ -1,6 +1,6 @@
 #include "Queue.hh"
 #include "QueueState.hh"
-#include <limits.h>
+#include <limits>
 
 Queue::Queue(int myId, int firstServId, int lastServId){
   id = myId;

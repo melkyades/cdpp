@@ -25,6 +25,8 @@
 #include "strutil.h"    // lowerCase
 #include "except.h"
 
+using namespace std;
+
 /** public functions **/
 /*******************************************************************
 * Function Name: Model

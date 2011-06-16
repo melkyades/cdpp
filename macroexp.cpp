@@ -12,9 +12,10 @@
 
 /** include files **/
 #include <unistd.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include "macroexp.h"	// class macroExpansion
 #include "strutil.h"	// string utils
+#include <cstring>
 
 #define TAM_BUFFER	32000
 
@@ -37,6 +38,7 @@
 #endif
 
 
+using namespace std;
 
 macroExpansion	*instanceMacroExpansion = NULL;
 

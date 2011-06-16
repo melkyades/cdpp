@@ -41,14 +41,14 @@ public:
     name = new char[strlen(myname)+1];
     strcpy(name,myname);
 #ifdef OBJECTDEBUG
-    cout << "PoliceSinkObject created!" << endl;
+    cout << "PoliceSinkObject created!" << std::endl;
 #endif
 };
 
   ~PoliceSinkObject(){
 
 #ifdef OBJECTDEBUG
-    cout << "PoliceSinkObject destroyed!" << endl;
+    cout << "PoliceSinkObject destroyed!" << std::endl;
 #endif
 };
 

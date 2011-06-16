@@ -1,5 +1,5 @@
 #include "ConfigNet.hh"
-#include <string.h>
+#include <string>
 
 ConfigNet::ConfigNet() {
   configFile.open("Net.config");

@@ -15,6 +15,8 @@
 #include "message.h"    // class ExternalMessage, InternalMessage
 #include "parsimu.h"   // ParallelMainSimulator::Instance().getParameter( ... )
 
+using namespace std;
+
 /** public functions **/
 
 /*******************************************************************
@@ -28,8 +30,8 @@ Gdevs::Gdevs( const string &name )
     myGP = new GdevsParser(name);
 
   
-    // agrego los ports del modelo a la simulaci髇
-    list<GdevsParser::GdevsPort>::iterator cursor2;
+    // agrego los ports del modelo a la simulaci贸n
+    std::list<GdevsParser::GdevsPort>::iterator cursor2;
     for( cursor2 = myGP->inports.begin() ; cursor2 != myGP->inports.end() ; cursor2 ++ )
         addInputPort( *cursor2 );
 
@@ -71,7 +73,7 @@ Model &Gdevs::externalFunction( const ExternalMessage &msg )
         cout << "Transicion EXTERNA, Hora: " << msg.time() << " ,estado destino:"<< myGP->estadoActual<< endl  ;
 	    GdevsParser::GdevsEstado estado1 = myGP->interna( myGP->estadoActual );
 		if( estado1 != "" ) {
-			cout << "Luego de la transici髇 se queda en holdin con estado destino " << estado1 << endl<< endl;
+			cout << "Luego de la transici贸n se queda en holdin con estado destino " << estado1 << endl<< endl;
 			//cout << "Timeout:" << myGP->timeout << endl;
 			holdIn(active, myGP->timeout );
 		} else {
@@ -79,7 +81,7 @@ Model &Gdevs::externalFunction( const ExternalMessage &msg )
 			passivate();
 		}
 	}
-    else cout << "Transici髇 externa no definida!" << endl;
+    else cout << "Transici贸n externa no definida!" << endl;
     
 //    cout << "Transicion EXTERNA, Hora: " << msg.time() << " ,estado destino:"<< myGP->estadoActual<< endl << endl ;
     
@@ -101,7 +103,7 @@ Model &Gdevs::internalFunction( const InternalMessage &msg )
 
 		GdevsParser::GdevsEstado estado1 = myGP->interna( myGP->estadoActual );
 		if( estado1 != "" ) {
-			cout << "Luego de la transici髇 se queda en holdin con estado destino " << estado1 << endl<< endl;
+			cout << "Luego de la transici贸n se queda en holdin con estado destino " << estado1 << endl<< endl;
 			//cout << "Timeout:" << myGP->timeout << endl;
 			holdIn(active, myGP->timeout );
 		} else {
@@ -109,9 +111,9 @@ Model &Gdevs::internalFunction( const InternalMessage &msg )
 			passivate();
 		}
 	}
-    else cout << "Transici髇 interna no definida!" << endl;
+    else cout << "Transici贸n interna no definida!" << endl;
 
-    //cout << "Transici髇 interna- Estado post trans. :"<< myGP->estadoActual<< endl <<endl ;
+    //cout << "Transici贸n interna- Estado post trans. :"<< myGP->estadoActual<< endl <<endl ;
 
     return *this ;
 }
@@ -132,9 +134,9 @@ Model &Gdevs::outputFunction( const InternalMessage &msg )
 // copylist
 // copia una lista de Ini::IdList a una. 
 // El tipo de la lista destino se especifica como Template
-template <class T> static copylist( const Ini::IdList &l, list<T> &lista2 )
+template <class T> static copylist( const Ini::IdList &l, std::list<T> &lista2 )
 {   
-    list<T>::const_iterator cursor ;
+    std::list<T>::const_iterator cursor ;
 
     lista2.insert (lista2.end(), l.begin(), l.end());
     
@@ -146,9 +148,9 @@ template <class T> static copylist( const Ini::IdList &l, list<T> &lista2 )
     
 }
 
-template <class T> static int find( const T &e, list<T> &x )
+template <class T> static int find( const T &e, std::list<T> &x )
 {   
-    list<T>::const_iterator cursor ;
+    std::list<T>::const_iterator cursor ;
 	int status = 0;
 
     for( cursor = x.begin() ; cursor != x.end() ; cursor ++ )
@@ -196,7 +198,7 @@ GdevsParser::parseTransExt( )
 				if( atoi((*cursor).c_str()) > 0 ) {
 					t.valor = atoi((*cursor).c_str());
 				} else // error
-					cout << "Valor inv醠ido : "  << *cursor << endl;
+					cout << "Valor inv谩lido : "  << *cursor << endl;
 
                 transExterna.insert(transExterna.end(), t);
                 break;
@@ -207,7 +209,7 @@ GdevsParser::parseTransExt( )
     }
 
 	if (campo != 0)
-		cout << "Transici髇 incompleta" << endl;
+		cout << "Transici贸n incompleta" << endl;
 
     // descomente para ver las transiciones
     //list<transicion>::iterator cursor2;
@@ -253,7 +255,7 @@ GdevsParser::parseTransInt( )
 				if( atoi((*cursor).c_str()) > 0 ) {
 					t.valor = atoi((*cursor).c_str());
 				} else // error
-					cout << "Valor inv醠ido : "  << *cursor << endl;
+					cout << "Valor inv谩lido : "  << *cursor << endl;
 
                 transInterna.insert(transInterna.end(), t);
                 break;
@@ -264,7 +266,7 @@ GdevsParser::parseTransInt( )
     }
 
 	if (campo != 0)
-		cout << "Transici髇 incompleta" << endl;
+		cout << "Transici贸n incompleta" << endl;
 
     // descomente para ver las transiciones
     //list<transicion>::iterator cursor2;
@@ -286,12 +288,12 @@ GdevsParser::loadData() {
     parseTransInt();
 }
 
-// busca un transici髇 externa que parta de estado y con entrada valor por port. Devuelve la
-// primera transici髇 que encuentra.
+// busca un transici贸n externa que parta de estado y con entrada valor por port. Devuelve la
+// primera transici贸n que encuentra.
 GdevsParser::GdevsEstado GdevsParser::externa( GdevsEstado estado, GdevsPort port, int valor )
 {
 	//cout << "entro en GP externa" << endl;
-    list<transicion>::const_iterator cursor ;
+    std::list<transicion>::const_iterator cursor ;
     int hallo=0;
     for( cursor = transExterna.begin() ; cursor != transExterna.end() ; cursor ++ )
     {
@@ -316,10 +318,10 @@ GdevsParser::GdevsEstado GdevsParser::externa( GdevsEstado estado, GdevsPort por
     }
 }
 
-// busca la transici髇 interna que sale de estado
+// busca la transici贸n interna que sale de estado
 GdevsParser::GdevsEstado GdevsParser::interna( GdevsEstado estado )
 {
-    list<transicion>::const_iterator cursor ;
+    std::list<transicion>::const_iterator cursor ;
     int hallo=0;
 	//cout << "entro en GP interna" << endl;
     for( cursor = transInterna.begin() ; cursor != transInterna.end() ; cursor ++ )
@@ -339,11 +341,11 @@ GdevsParser::GdevsEstado GdevsParser::interna( GdevsEstado estado )
 }
 
 
-// devuelve el port y el valor de salida de la transici髇 interna que sale del estado
+// devuelve el port y el valor de salida de la transici贸n interna que sale del estado
 
 GdevsParser::salida( GdevsEstado estado, GdevsPort &port, int &valor )
 {
-    list<transicion>::const_iterator cursor ;
+    std::list<transicion>::const_iterator cursor ;
     int hallo=0;
     for( cursor = transInterna.begin() ; cursor != transInterna.end() ; cursor ++ )
     {

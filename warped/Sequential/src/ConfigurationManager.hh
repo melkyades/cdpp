@@ -33,7 +33,7 @@
 //Features will be added as time goes by. The interfaces are to be added and 
 //trimmed as we get more understanding on this class functionality.
 
-#include <fstream.h>
+#include <fstream>
 
 class InputQ;
 

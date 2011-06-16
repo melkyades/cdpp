@@ -18,12 +18,12 @@
 #define __MESSAGE_ADMIN_H
 
 /** include files **/
-#include <pair.h>
-#include <list.h>
+#include <utility>
+#include <list>
 #include "message.h"    // class Message 
 
 /** foward declarations **/
-class ostream;
+class std::ostream;
 class MessageAdmin ;
 class SingleMsgAdm ;
 
@@ -48,7 +48,7 @@ private:
 	bool running ;
 	MessageAdmin();	// Default constructor
 	typedef pair< Message*, ProcId > UnprocessedMsg ;
-	typedef list< UnprocessedMsg > UnprocessedMsgQueue ;
+	typedef std::list< UnprocessedMsg > UnprocessedMsgQueue ;
 	UnprocessedMsgQueue unprocessedQueue;
 
 	bool isRunning() const

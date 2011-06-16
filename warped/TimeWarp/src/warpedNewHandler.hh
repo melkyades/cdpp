@@ -29,7 +29,7 @@
 //
 //
 //---------------------------------------------------------------------------
-#include <stdlib.h>
+#include <cstdlib>
 #include "warped.hh"
 #include "config.hh"
 

@@ -6,6 +6,8 @@
 #include "message.h"    // class ExternalMessage, InternalMessage
 #include "parsimu.h"   // ParallelMainSimulator::Instance().getParameter( ... )
 
+using namespace std;
+
 /** public functions **/
 
 /*******************************************************************

@@ -44,7 +44,7 @@ public:
     
   PoliceSourceState();
   PoliceSourceState( const PoliceSourceState& ) {
-   cerr << "PoliceSourceState copy constructor not implemented" << endl ; 
+   cerr << "PoliceSourceState copy constructor not implemented" << std::endl ; 
   };
   int CallsPending ;
   float hours ;

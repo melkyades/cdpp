@@ -28,8 +28,8 @@
 //
 //
 //---------------------------------------------------------------------------
-#include <fstream.h>
-#include <stdlib.h>
+#include <fstream>
+#include <cstdlib>
 #include "BasicEvent.hh"
 
 #include "SequentialEventQueue.hh"

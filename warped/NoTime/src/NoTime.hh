@@ -31,7 +31,7 @@
 //
 //---------------------------------------------------------------------------
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #ifndef NULL
 #define NULL 0

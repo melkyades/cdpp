@@ -26,7 +26,7 @@
 // Authors: Philip A. Wilsey            phil.wilsey@uc.edu
 //          Malolan Chetlur             mal@ececs.uc.edu
 //---------------------------------------------------------------------------
-#include <iostream.h>
+#include <iostream>
 
 class BasicEvent;
 class TreeElement;

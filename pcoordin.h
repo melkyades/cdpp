@@ -47,7 +47,7 @@ protected:
 
 	ProcId parentId;
 
-	typedef set<ProcId> ProcSet;
+	typedef std::set<ProcId> ProcSet;
 	ProcSet synchronizeList;
 
 

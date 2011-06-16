@@ -31,6 +31,8 @@
 #include "InputQueue.hh"
 #include "NoTimeObject.hh"
 
+using namespace std;
+
 NoTimeObject::NoTimeObject() {
   inputQueue     = NULL;
   eventCounter   = 0;
@@ -77,7 +79,7 @@ NoTimeObject::fillEventInfo(BasicEvent* eventToSend) {
 
 void
 NoTimeObject::sendEventUnconditionally(BasicEvent* toSend) {
-  int receiver = toSend->dest;
+  //int receiver = toSend->dest;
   communicationHandle[toSend->dest].ptr->recvEvent(toSend);
 }
 

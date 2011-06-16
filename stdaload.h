@@ -40,13 +40,13 @@ protected:
 	SimLoader &writeResults();
 	
 private:
-	string	iniName;
-	string	evName;
-	string	evalDebugName;
-	string	flatDebugName;
-	string	parserFileName;
+	std::string	iniName;
+	std::string	evName;
+	std::string	evalDebugName;
+	std::string	flatDebugName;
+	std::string	parserFileName;
 	int	preprocessor;	// if is 0 then bypass the preprocessor
-	string	partitionFileName;	
+	std::string	partitionFileName;	
 	
 	void readCommandLine();
 	

@@ -40,9 +40,9 @@ public:
 	Log& logToStdOut( bool );
 	bool logToStdOut();
 
-	string filename();
+	std::string filename();
 	Log& filename( const char *);
-	Log& filename( const string& );
+	Log& filename( const std::string& );
 
 	Log& logType( const char* );		//creates the logtype from the command line modifiers.
 	unsigned logType();
@@ -51,7 +51,7 @@ public:
 
 private:
 	bool blLogToStdOut;
-	string strLogFileName;
+	std::string strLogFileName;
 	unsigned type;
 
 }; // Log
@@ -75,7 +75,7 @@ inline bool Log::logToStdOut()
 	return blLogToStdOut;
 }
 
-inline string Log::filename()
+inline std::string Log::filename()
 {
 	return strLogFileName;
 }

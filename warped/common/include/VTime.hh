@@ -17,7 +17,7 @@
 #define __VTIME_H
 
 /** include files **/
-#include <string> // class string
+#include <string> // class std::string
 
 /** definitions **/
 typedef int Hours ;
@@ -32,14 +32,14 @@ typedef int MSeconds ;
 class VTime
 {
 public:
-	VTime( Hours h = 0, Minutes m = 0, Seconds s = 0, MSeconds ms = 0 )
+	VTime( Hours h = 0, Minutes m = 0, Seconds s = 0, MSeconds ms = 0, double remaining = 0. )
 		: hour( h )
 		, min( m )
 		, sec( s )
 		, msec( ms )
 		{ normalize(); }
 
-	VTime( const string &t )
+	VTime( const std::string &t )
 		{ makeFrom(t); }
 		
 	VTime( float mseconds )
@@ -72,9 +72,11 @@ public:
 	VTime &operator =( const VTime & ) ;			// assignment operator
 
 	bool operator ==( const VTime & ) const ;	// Equality test
+	bool operator !=( const VTime &t ) const
+	{ return !(*this == t); }
 
 
-	VTime &operator =( const string &t )		// assignment operator
+	VTime &operator =( const std::string &t )		// assignment operator
 		{makeFrom(t); return *this;}
 	
 	VTime &operator -=( const VTime &t ) ;
@@ -82,13 +84,17 @@ public:
 
 
 	bool operator <( const VTime & ) const ;	// comparission operator 
+	bool operator <=( const VTime & ) const ;	// comparission operator 
+	bool operator >=( const VTime & ) const ;	// comparission operator
+	bool operator >( const VTime &t ) const
+	{ return t < *this; }
 
-	string asString() const ;
+	std::string asString() const ;
 
 	float asMsecs() const
 		{ return mseconds() + seconds() * 1000 + minutes() * 60000 + hours() * 3600 * 1000; }
 
-	friend istream &operator >>( istream &is, VTime &t );
+	friend std::istream &operator >>( std::istream &is, VTime &t );
 
 	
 	static const VTime Zero ;
@@ -100,8 +106,9 @@ private:
 	Minutes min ;
 	Seconds sec ;
 	MSeconds msec ;
+	double remaining;
 
-	VTime &makeFrom( const string & ) ;
+	VTime &makeFrom( const std::string & ) ;
 
 	VTime &makeFrom( float miliseconds ) ;
 	VTime &normalize() ;
@@ -179,7 +186,7 @@ VTime &VTime::operator +=( const VTime &t )
 }
 
 inline
-ostream &operator <<( ostream &os, const VTime &t )
+std::ostream &operator <<( std::ostream &os, const VTime &t )
 {
 	os << t.asString();
 	return os;

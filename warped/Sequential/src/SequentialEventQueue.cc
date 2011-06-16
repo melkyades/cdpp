@@ -241,14 +241,14 @@ SequentialEventQueue::remove(Element* delptr) {
   else {
     if (delptr == head) {
       nextptr = delptr->next;
-      if (nextptr == NULL) { // list has only 1 element
+      if (nextptr == NULL) { // std::list has only 1 element
 	head       = NULL;
 	tail       = NULL;
 	insertPos  = NULL;
 	currentPos = NULL;
 	findPos    = NULL;
       }
-      else { // list has at least 2 elements
+      else { // std::list has at least 2 elements
 	nextptr->prev = NULL;
 	head = nextptr;
 	if (insertPos == delptr) { 
@@ -264,14 +264,14 @@ SequentialEventQueue::remove(Element* delptr) {
     }
     else if (delptr == tail) {
       prevptr = delptr->prev;
-      if (prevptr == NULL) { // list has only 1 element
+      if (prevptr == NULL) { // std::list has only 1 element
 	head = NULL;
 	tail = NULL;
 	insertPos = NULL;
 	currentPos = NULL;
 	findPos = NULL;
       }
-      else { // list has at least 2 elements
+      else { // std::list has at least 2 elements
 	prevptr->next = NULL;
 	tail = prevptr;
 	if (findPos == delptr) { 

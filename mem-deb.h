@@ -7,7 +7,7 @@
 #define	MEM_DEBUG_H
 
 #include <malloc.h>
-#include <iostream.h>
+#include <iostream>
 
 inline void memory(int tabs = 0)
 {

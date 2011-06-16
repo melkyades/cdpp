@@ -46,11 +46,11 @@ public:
 class CPU: public Atomic
 {
 public:
-	CPU( const string &name = "CPU" ) ;	 // Default constructor
+	CPU( const std::string &name = "CPU" ) ;	 // Default constructor
 
 	~CPU();					// Destructor
 
-	virtual string className() const
+	virtual std::string className() const
 	{return "CPU";}
 
 protected:

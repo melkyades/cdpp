@@ -14,31 +14,31 @@
 #ifndef __STRINGP_H
 #define __STRINGP_H
 #include <string>
-#include <stdio.h>
+#include <cstdio>
 
 template< class T >
 inline
-string opadd( const char *format, T val )
+std::string opadd( const char *format, T val )
 {
 	static char buf[10];
 	sprintf( buf, format, val );
-	return string( buf );
+	return std::string( buf );
 }
 
 inline
-string operator +( const string &str, double val )
+std::string operator +( const std::string &str, double val )
 {
 	return str + opadd( "%03.3g", val );
 }
 
 inline
-string operator +( const string &str, int val )
+std::string operator +( const std::string &str, int val )
 {
 	return str + opadd( "%02d", val );
 }
 
 inline
-string operator +( const string &str, unsigned int val )
+std::string operator +( const std::string &str, unsigned int val )
 {
 	return str + opadd( "%02d", val );
 }

@@ -16,7 +16,7 @@
 #ifndef __TRANSDUCER2_H
 #define __TRANSDUCER2_H
 
-#include <map.h>
+#include <map>
 #include "atomic.h"
 #include "message.h"
 

@@ -33,26 +33,26 @@ class VTime ;
 class SpecNode ;
 
 /** declarations **/
-typedef pair <string, Real> PortValue;
+typedef pair <std::string, Real> PortValue;
 
 class SingleLocalTransAdmin ;
 
 class LocalTransAdmin
 {
 public:
-	typedef string Function;
+	typedef std::string Function;
 	static const Function InvalidFn ;
 
 	~LocalTransAdmin() ;
 
-	list<PortValue> evaluate( const string &, const NeighborhoodValue &, PortValues *, VTime &delay , VTime &actualtime, VirtualPortList *outPorts, Model *actualCell, string portSource = "" ) ;
+	std::list<PortValue> evaluate( const std::string &, const NeighborhoodValue &, PortValues *, VTime &delay , VTime &actualtime, VirtualPortList *outPorts, Model *actualCell, std::string portSource = "" ) ;
 		// NOTA: Actual time solo es usada para el caso en que se requiera
 		// 	obtener el tiempo actual de simulacion (con la funcion 'time').
 		// NOTA: PortValues contendra NULL si se evaluara una funcion de transicion
 		//	local sin considerar el valor de los puertos. Si es distinto a NULL
 		//	entonces, se esta evaluando una funcion de transicion local para el
 		//	caso en que arribo un mensage a traves de un puerto IN.
-		// NOTA: outPorts es una lista de los puertos de salida de la celda que llamo a
+		// NOTA: outPorts es una std::lista de los puertos de salida de la celda que llamo a
 		//	la funcion Evaluate.
 		//	Solo es usada en caso de que durante la evaluacion se encuentre una
 		//	referencia a la funcion SEND la cual debe enviar un valor por un puerto
@@ -60,15 +60,15 @@ public:
 		// NOTA: actualCell es el modelo (celda atomica o flatCoupled) que se usara
 		//	para llamar a sendOutput al evaluarse SEND
 
-	LocalTransAdmin &registerTransition( const LocalTransAdmin::Function &transName, istream &transText, bool printParserInfo, bool parseForPortIn, const string &elseFunction = "" ) ;
+	LocalTransAdmin &registerTransition( const LocalTransAdmin::Function &transName, std::istream &transText, bool printParserInfo, bool parseForPortIn, const std::string &elseFunction = "" ) ;
 
-	const Real &cellValue( const NeighborPosition &, const string PortName ) ;
+	const Real &cellValue( const NeighborPosition &, const std::string PortName ) ;
 
 	const NeighborhoodValue &neighborhood() const ;
-	const Real &portValue(const string name) ;
+	const Real &portValue(const std::string name) ;
 	const VTime &actualTime() const ;
-	const string &functionName() const ;
-	const string &portSource() const ;
+	const std::string &functionName() const ;
+	const std::string &portSource() const ;
 	const VirtualPortList &outputPorts() const ;
 	const Model *actualModel() const;
 
@@ -80,7 +80,7 @@ private:
 
 	LocalTransAdmin() ;
 
-	typedef map< Function, SpecNode*, less< Function> > LocalTransDB ;
+	typedef std::map< Function, SpecNode*, std::less< Function> > LocalTransDB ;
 
 	LocalTransDB transDB ;
 
@@ -88,8 +88,8 @@ private:
 	PortValues *portTable;
 	VTime ActualTime;
 	CellPosition	cellpos;	// This is for show extra information in case of error
-	string		functionname;	// This is for extra info too.
-	string		portsource;	// This is for the command 'thisPort' of PortRefNode::evaluate
+	std::string		functionname;	// This is for extra info too.
+	std::string		portsource;	// This is for the command 'thisPort' of PortRefNode::evaluate
 	VirtualPortList	*outPortList;	// This is for the command 'send' of SendPortNode::evaluate
 	Model		*evalModel;	// This is for the command 'send' of SendPortNode::evaluate
 
@@ -132,13 +132,13 @@ inline
 }
 
 inline
-	const string &LocalTransAdmin::functionName() const
+	const std::string &LocalTransAdmin::functionName() const
 {
 	return functionname;
 }
 
 inline
-	const string &LocalTransAdmin::portSource() const
+	const std::string &LocalTransAdmin::portSource() const
 {
 	return portsource;
 }

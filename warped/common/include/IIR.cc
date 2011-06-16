@@ -75,7 +75,7 @@
 // add up to 1.0, or you will get an error message when the
 // filter is initialized.
 
-#include <iostream.h>
+#include <iostream>
 
 template <class Type> class IIR {
 public:

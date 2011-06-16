@@ -19,6 +19,8 @@
 #include "coupcell.h"      // class CupledCell
 #include "msgadm.h"        // SingleMsgAdmin
 
+using namespace std;
+
 // ** public data ** //
 
 // ** private data ** //             

@@ -19,8 +19,8 @@
 #define __EVAL_PARAMS_H
 
 /** definitions **/
-#include <ostream.h>
-#include <stdlib.h>
+#include <ostream>
+#include <cstdlib>
 
 class clsEvalParam
 {
@@ -31,10 +31,10 @@ public:
 		,strat(false)
                 {}
 
-	ostream &Stream()
+	std::ostream &Stream()
 			{return *evalParamOut;}
 			
-	void Stream( ostream *evalParamStr )
+	void Stream( std::ostream *evalParamStr )
 			{ evalParamOut = evalParamStr; }
 
 	const bool Active()
@@ -63,7 +63,7 @@ public:
 
 protected:
 	// ** Instance variables ** //
-	ostream *evalParamOut ;
+	std::ostream *evalParamOut ;
 	bool evalParamActive ;
 	double value ;
         double ratio;

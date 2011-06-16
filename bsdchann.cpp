@@ -17,9 +17,12 @@
 #include <sys/socket.h>    // socket( ... )
 #include <netinet/in.h>    // htonl( ... )
 #include <arpa/inet.h>
-#include <stdio.h>         // close( int ) 
+#include <cstdio>         // close( int ) 
+#include <cstring>
 #include <unistd.h>        // fork() 
 #include "bsdchann.h"      // base header
+
+using namespace std;
 
 /** public data **/
 

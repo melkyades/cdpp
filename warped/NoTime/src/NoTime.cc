@@ -29,7 +29,9 @@
 //---------------------------------------------------------------------------
 
 #include "NoTime.hh"
-#include <iostream.h>
+#include <iostream>
+
+using namespace std;
 
 ostream&
 operator<<(ostream& os, const SIGN s) {

@@ -28,11 +28,11 @@
 //
 //---------------------------------------------------------------------------
 #include "warped.hh"
-#include <fstream.h>
+#include <fstream>
 #include "BasicEvent.hh"
 #include "InputQ.hh"
 
-// This class implements a doubly link list, which follows the
+// This class implements a doubly link std::list, which follows the
 // specification outlined in the warped kernel documentation
 
 #define Element BasicEvent
@@ -42,7 +42,7 @@ extern "C" {
 }
 
 class SequentialEventQueue : public InputQ {
-  friend ostream& operator<< (ostream&, const SequentialEventQueue& );
+  friend std::ostream& operator<< (std::ostream&, const SequentialEventQueue& );
   
 public:
   SequentialEventQueue();
@@ -82,8 +82,8 @@ public:
 	    currentPos);
   }
   
-  int size() { return listsize;};
-  Element* seek (int, listMode_t);
+  int size() { return std::listsize;};
+  Element* seek (int, std::listMode_t);
   void insert(Element*);
   
   inline Element* get() const  {
@@ -98,7 +98,7 @@ public:
   Element* removeCurrent();
   Element* find(Element*, findMode_t mode = EQUAL);
   Element* findNext();
-  void print(ostream & = cout) const;
+  void print(std::ostream & = std::cout) const;
   
   Element* setCurrentToInsert();
   Element* setCurrentToFind();
@@ -119,7 +119,7 @@ public:
   Element* insertPos;
   Element* currentPos;
   Element* findPos;
-  int listsize;
+  int std::listsize;
   
 private:
   

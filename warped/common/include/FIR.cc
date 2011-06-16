@@ -69,7 +69,7 @@
 // and "3" with whatever order filter you'd like to use.  If you specify
 // a 0 or a 1 for a filter order, an error message is generated.
 
-#include <iostream.h>
+#include <iostream>
 
 template <class Type> class FIR 
 {

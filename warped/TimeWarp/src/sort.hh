@@ -9,7 +9,7 @@
 #define MAX_ELEMS 25
 
 #include <iostream.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include "BasicEvent.hh"
 
 void
@@ -124,7 +124,7 @@ void
 printArray(BasicEvent* array[],int arrayLen) {
   int i;
   for(i=0;i<arrayLen;i++)
-    cout << "Array[" << i << "]" << " = " << array[i]->recvTime << endl;
+    cout << "Array[" << i << "]" << " = " << array[i]->recvTime << std::endl;
   cout.flush();
 };
 

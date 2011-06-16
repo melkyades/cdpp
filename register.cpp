@@ -38,6 +38,8 @@
 #include "transduc2.h"
 #endif
 
+using namespace std;
+
 void ParallelMainSimulator::registerNewAtomics()
 {
 	SingleParallelModelAdm::Instance().registerAtomic( NewAtomicFunction<Queue>() , "Queue" ) ;

@@ -16,6 +16,8 @@
 
 #include "strutil.h"
 
+using namespace std;
+
 float str2float( const string &str )
 {
 	register float v ;
@@ -72,7 +74,7 @@ string trimSpaces( const string &str )
 
 	for ( string::const_iterator curs = str.begin(); curs != str.end(); curs ++ )
 		if ( *curs != ' ' )
-			s += *((char *) curs);
+			s += *curs;
 
 	return s;
 }

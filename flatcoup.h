@@ -47,21 +47,21 @@ public:
 
 	CoupledCell &setLocalTransition( const CellPosition &, const LocalTransAdmin::Function & ) ;
 
-	void setPortInFunction( const CellPosition &cellPos, const string &sourcePort, const string &actionName );
+	void setPortInFunction( const CellPosition &cellPos, const std::string &sourcePort, const std::string &actionName );
 
 	Model &initFunction();
 
-	Model &externalFunction( const VTime&, const CellPosition&, bool = false, Real mtv = Real::tundef, const string &portIn = "" );
+	Model &externalFunction( const VTime&, const CellPosition&, bool = false, Real mtv = Real::tundef, const std::string &portIn = "" );
 
 	Model &internalFunction( const VTime& );
 
-	string className() const
+	std::string className() const
 	{return FLAT_COUPLED_CELL_NAME;}
 
 protected:
-	Model &addInfluence( const string &sourceName, const string &sourcePort, const string &destName, const string &destPort) ;
+	Model &addInfluence( const std::string &sourceName, const std::string &sourcePort, const std::string &destName, const std::string &destPort) ;
 
-	void setLastValuePortIn( const CellPosition &cellPos, const string &portIn, const Real &value);
+	void setLastValuePortIn( const CellPosition &cellPos, const std::string &portIn, const Real &value);
 
 private:
 
@@ -77,15 +77,15 @@ private:
 		Real value ;
 	} ; // NextEvent
 
-	friend ostream &operator <<( ostream &os, NextEvent &next ) ;
+	friend std::ostream &operator <<( std::ostream &os, NextEvent &next ) ;
 
-	typedef list< NextEvent > NextEventList ;
-	typedef map< CellPosition, LocalTransAdmin::Function > FunctionZones ;
+	typedef std::list< NextEvent > NextEventList ;
+	typedef std::map< CellPosition, LocalTransAdmin::Function > FunctionZones ;
 
 	struct ElementList
 	{
 		CellPosition	cellPosition;
-		string		port;
+		std::string		port;
 	}; // ElementList
 
 	// ** Instance variables ** //
@@ -108,13 +108,13 @@ private:
 	FlatPortInFunction &getPortFunction()
 	{return portFunction;}
 
-	const string &getPortInFunction( const CellPosition &cellPos, const string &sourcePort );
+	const std::string &getPortInFunction( const CellPosition &cellPos, const std::string &sourcePort );
 
-	void getInputPortValues( PortValues *pv, const CellPosition &cellPos, const string &portIn );
+	void getInputPortValues( PortValues *pv, const CellPosition &cellPos, const std::string &portIn );
 
 	void getOutputPorts( VirtualPortList **vpl, const CellPosition &cellPos );
 
-	FlatCoupledCell( const string &name )
+	FlatCoupledCell( const std::string &name )
 		: CoupledCell( name )
 	{}
 
@@ -130,7 +130,7 @@ private:
 
 /** inline **/
 inline
-	ostream &operator <<( ostream &os, FlatCoupledCell::NextEvent &next )
+	std::ostream &operator <<( std::ostream &os, FlatCoupledCell::NextEvent &next )
 {
 	os << next.time.asString() << " |" << next.pos << "| " << next.value.asString(Impresion::Default.Width(), Impresion::Default.Precision() ) ;
 	return os ;

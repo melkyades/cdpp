@@ -35,22 +35,22 @@ public:
 	virtual SimLoader &openComm() = 0;
 	virtual SimLoader &closeComm() = 0;
 
-	virtual istream &modelsStream()
+	virtual std::istream &modelsStream()
 	{return *models;}
 
-	virtual istream &eventsStream()
+	virtual std::istream &eventsStream()
 	{return *events;}
 
-	virtual istream &partitionStream()
+	virtual std::istream &partitionStream()
 	{return *partition;}
 
-	virtual string logName()
+	virtual std::string logName()
 	{return log;}
 
-	virtual string outputName()
+	virtual std::string outputName()
 	{return output;}
 
-	virtual string partitionDebugName(){
+	virtual std::string partitionDebugName(){
 		return partitionDebug;	
 	}
 
@@ -92,15 +92,15 @@ protected:
 	// ** Instance variables ** //
 	VTime stop ;
 	bool printParser ;
-	istream *models ;
-	istream *events ;
-	istream *partition;
+	std::istream *models ;
+	std::istream *events ;
+	std::istream *partition;
 	int machineID;
 	int argc;
 	char** argv;	
-	string log ;
-	string output;
-	string partitionDebug;
+	std::string log ;
+	std::string output;
+	std::string partitionDebug;
 	bool logSend;
 
 

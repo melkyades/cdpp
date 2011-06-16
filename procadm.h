@@ -40,7 +40,7 @@ public:
 	virtual Processor &generateRoot() = 0;
 
 	virtual Processor &processor( const ProcId & ) = 0 ;
-	virtual Processor &processor( const string & ) = 0;
+	virtual Processor &processor( const std::string & ) = 0;
 
 	static const ProcId rootId ;
 

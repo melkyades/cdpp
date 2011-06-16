@@ -4,7 +4,7 @@
 *
 *  AUTORES:
 *  	    Ing. Carlos Giorgetti
-*          Iv·n A. Melgrati
+*          Iv√°n A. Melgrati
 *          Dra. Ana Rosa Tymoschuk
 *	    Alejandro Troccoli (v2)
 *
@@ -23,7 +23,7 @@
 #include "atomic.h"
 #include "mformats.h"
 #include "VTime.hh"
-#include <time.h>
+#include <ctime>
 #include "distri.h"
 #include <list.h>
 
@@ -33,7 +33,7 @@
 class MultiCPUState:public AtomicState {
 public:	
 	typedef list<Value> Cola ;
-	Cola Proc_Inicial, Proc_Final;                      // Colas de EjecuciÛn
+	Cola Proc_Inicial, Proc_Final;                      // Colas de Ejecuci√≥n
 
 	MultiCPUState(){};
 	virtual ~MultiCPUState(){};
@@ -71,7 +71,7 @@ private:
 	Port &cpuout ;
 	Port &controladoraout;
 
-	Distribution *dist_inicial, *dist_final ;		// DistribuciÛn de probabilidad de tiempo de servicio
+	Distribution *dist_inicial, *dist_final ;		// Distribuci√≥n de probabilidad de tiempo de servicio
 	MultiCPUState::Cola &Proc_Inicial();
 	MultiCPUState::Cola &Proc_Final();
 

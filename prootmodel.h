@@ -34,11 +34,11 @@ protected:
 	
 	friend class ParallelModelAdmin;
 	
-	RootModel( const string &name = "ParallelRoot" )	// Constructor
+	RootModel( const std::string &name = "ParallelRoot" )	// Constructor
 	: Model( name )
 	{}
 	
-	virtual string className() const
+	virtual std::string className() const
 	{return ROOT_NAME;}
 	
 	virtual ParallelProcessor &createParallelProcessor()

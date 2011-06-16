@@ -36,12 +36,12 @@ extern DebugStream err;
 extern DebugStream& operator << (DebugStream&, const char *);
 extern DebugStream& operator << (DebugStream&, const int);
 extern DebugStream& operator << (DebugStream&, const VTime);
-extern DebugStream& operator << (DebugStream&, const ostream& (*)(ostream&));
+extern DebugStream& operator << (DebugStream&, const std::ostream& (*)(std::ostream&));
 extern DebugStream& operator << (DebugStream&, const float);
 
 #else
-#define console cout
-#define debug   cout
+#define console std::cout
+#define debug   std::cout
 #define err     cerr
 #endif
 

@@ -28,10 +28,13 @@
 //-----------------------------------------------------------------------
 
 #include "FileQueue.hh"
+#include <cstring>
+
+using namespace std;
 
 int FileQueue::standardOut = -1;
 
-FileQueue::FileQueue() : outFile(NULL), outFileName(NULL) {
+FileQueue::FileQueue() : outFileName(NULL), outFile(NULL) {
   outFile = new ofstream();
 
   statusBit = 0;

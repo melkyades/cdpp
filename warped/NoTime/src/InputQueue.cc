@@ -31,6 +31,8 @@
 #include "InputQueue.hh"
 #include "BasicEvent.hh"
 
+using namespace std;
+
 InputQueue::InputQueue() {
   head = tail = currentPos = NULL;
 }

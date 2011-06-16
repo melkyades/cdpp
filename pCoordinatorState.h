@@ -21,7 +21,7 @@ class ParallelCoordinatorState : public ParallelProcessorState {
 public:
 	
 	
-	typedef map < ProcId, VTime, less <ProcId> > DependantList;
+	typedef std::map < ProcId, VTime, std::less <ProcId> > DependantList;
 	
 	DependantList* dependants;
 	

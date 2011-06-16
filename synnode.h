@@ -41,7 +41,7 @@
 #define __SYNTAX_NODE_H
 
 /** include files **/
-#include <iostream.h>
+#include <iostream>
 #include <functional>
 #include <list>
 #include "tbool.h"
@@ -72,7 +72,7 @@ public:
 	Type type() const
 	{return t ;}
 
-	ostream &print( ostream &os )
+	std::ostream &print( std::ostream &os )
 	{return os << ( t == tint ? "int" : (t == tbool ? "bool" : ( t == treal ? "real" : "portvalue" ) ) ) ;}
 
 	bool isValid( const TypeValue &ty ) const
@@ -123,7 +123,7 @@ public:
 
 
 inline
-	ostream &operator <<( ostream &os, TypeValue &nval )
+	std::ostream &operator <<( std::ostream &os, TypeValue &nval )
 {
 	return nval.print( os ) ;
 }
@@ -135,7 +135,7 @@ public:
 	virtual ~SyntaxNode()
 	{}
 
-	virtual const string name() = 0 ;
+	virtual const std::string name() = 0 ;
 
 	virtual SyntaxNode *clone() = 0 ;
 
@@ -145,7 +145,7 @@ public:
 
 	virtual bool checkType() const = 0 ;
 
-	virtual ostream &print( ostream & ) = 0 ;
+	virtual std::ostream &print( std::ostream & ) = 0 ;
 
 protected:
 	SyntaxNode()
@@ -157,7 +157,7 @@ private:
 
 
 inline
-	ostream &operator <<( ostream &os, SyntaxNode &node )
+	std::ostream &operator <<( std::ostream &os, SyntaxNode &node )
 {
 	return node.print( os ) ;
 }
@@ -169,13 +169,13 @@ inline
 class VarNode: public SyntaxNode
 {
 public:
-	VarNode( nTupla nt, string pName = "" ) : portname( pName )
+	VarNode( nTupla nt, std::string pName = "" ) : portname( pName )
 	{ tupla = nt; }
 
 	SyntaxNode *clone()
 	{ return new VarNode( tupla, portname ); }
 
-	const string name()
+	const std::string name()
 	{ return "VarRef"; }
 
 	Real evaluate() ;
@@ -186,17 +186,17 @@ public:
 	bool checkType() const
 	{ return true; }
 
-	ostream &print( ostream &os );
+	std::ostream &print( std::ostream &os );
 	
-	string &port(void)
+	std::string &port(void)
 	{ return portname; }
 	
-	VarNode &port(string pName)
+	VarNode &port(std::string pName)
 	{ portname = pName; return *this; }
 
 private:
 	nTupla	tupla;
-	string  portname;
+	std::string  portname;
 
 } ; // VarRefNode
 
@@ -217,7 +217,7 @@ public:
 	SyntaxNode *clone()
 	{return new PortRefNode( portName ) ;}
 
-	const string name()
+	const std::string name()
 	{return "PortRef" ;}
 
 	Real evaluate() ;
@@ -228,7 +228,7 @@ public:
 	bool checkType() const
 	{return true ;}
 
-	ostream &print( ostream &os )
+	std::ostream &print( std::ostream &os )
 	{os << " (" << portName << ")" ; return os ;}
 
 private:
@@ -253,7 +253,7 @@ public:
 	SyntaxNode *clone()
 	{return new SendPortNode( portName, portValue ) ;}
 
-	const string name()
+	const std::string name()
 	{return "SendPort" ;}
 
 	Real evaluate();
@@ -264,11 +264,11 @@ public:
 	bool checkType() const
 	{return true ;}
 
-	ostream &print( ostream &os )
+	std::ostream &print( std::ostream &os )
 	{os << " (" << portName << ", " << portValue << ")"; return os;}
 
 private:
-	string PortName();
+	std::string PortName();
 
 	SyntaxNode	*portName ;
 	SyntaxNode	*portValue ;
@@ -292,7 +292,7 @@ public:
 	SyntaxNode *clone()
 	{return new SendNCPortNode( portName, portValue ) ;}
 
-	const string name()
+	const std::string name()
 	{return "SendNCPort" ;}
 
 	Real evaluate();
@@ -303,13 +303,13 @@ public:
 	bool checkType() const
 	{return true ;}
 
-	ostream &print( ostream &os )
+	std::ostream &print( std::ostream &os )
 	{os << " (" << portName << ", " << portValue << ")"; return os;}
 	
 	PortValue getPortValue();
 
 private:
-	string PortName();
+	std::string PortName();
 
 	SyntaxNode *portName ;
 	SyntaxNode *portValue ;
@@ -328,7 +328,7 @@ public:
 	~ConstantNode()
 	{}
 
-	const string name()
+	const std::string name()
 	{return "Constant" ;}
 
 	Real evaluate();
@@ -339,7 +339,7 @@ public:
 	const TypeValue &type() const
 	{return tval ;}
 
-	ostream &print( ostream &os )
+	std::ostream &print( std::ostream &os )
 	{return os << value ;}
 
 	bool checkType() const
@@ -359,24 +359,24 @@ private:
 class StringNode: public SyntaxNode
 {
 public:
-	StringNode( string n ) : value( n )
+	StringNode( std::string n ) : value( n )
 	{}
 
 	~StringNode()
 	{}
 
-	const string name()
+	const std::string name()
 	{return "String" ;}
 
 	Real evaluate()
 	{ return 0; }
 
-	string getString();
+	std::string getString();
 
 	SyntaxNode *clone()
 	{return new StringNode( value ) ;}
 
-	ostream &print( ostream &os )
+	std::ostream &print( std::ostream &os )
 	{return os << value ;}
 
 	const TypeValue &type() const
@@ -386,7 +386,7 @@ public:
 	{return true ;}
 
 private:
-	string value ;
+	std::string value ;
 
 };	// StringNode 
 
@@ -402,7 +402,7 @@ public:
 	TimeNode( )
 	{}
 
-	const string name()
+	const std::string name()
 	{return "TimeNode" ;}
 
 	SyntaxNode *clone()
@@ -419,7 +419,7 @@ public:
 	bool checkType() const
 	{return true ;}
 
-	ostream &print( ostream &os )
+	std::ostream &print( std::ostream &os )
 	{return os << "VTime " << SingleLocalTransAdmin::Instance().actualTime() ;}
 
 	const TypeValue &type() const
@@ -442,7 +442,7 @@ public:
 	~AbsCellPosNode()
 	{ delete posIndex; }
 
-	const string name()
+	const std::string name()
 	{return "AbsCellPosNode";}
 
 	SyntaxNode *clone()
@@ -453,7 +453,7 @@ public:
 	bool checkType() const
 	{return true ;}
 
-	ostream &print( ostream &os );
+	std::ostream &print( std::ostream &os );
 
 	const TypeValue &type() const
 	{return RealType::TheReal ;}
@@ -470,12 +470,12 @@ private:
 class StateVarNode: public SyntaxNode
 {
 public:
-	StateVarNode( const string &VarName ) : varName(VarName)
+	StateVarNode( const std::string &VarName ) : varName(VarName)
 	{}
 	~StateVarNode()
 	{}
 
-	const string name()
+	const std::string name()
 	{ return "StateVar"; }
 
 	Real evaluate();
@@ -486,17 +486,17 @@ public:
 	const TypeValue &type() const
 	{ return RealType::TheReal; }
 
-	ostream &print( ostream &os )
+	std::ostream &print( std::ostream &os )
 	{ return os << varName; }
 
 	bool checkType() const
 	{ return true ; }
 	
-	const string &getVarName()
+	const std::string &getVarName()
 	{ return varName; }
 
 private:
-	string varName;
+	std::string varName;
 
 };	// StateVarNode 
 
@@ -504,7 +504,7 @@ private:
 
 /***************************************
 * class AssignNode
-* Representa una asignación a una variable de estado
+* Representa una asignaciÃ³n a una variable de estado
 ***************************************/
 class AssignNode: public SyntaxNode
 {
@@ -516,7 +516,7 @@ public:
 	{ if (variable != NULL) delete variable;
 	  if (value != NULL) delete value; }
 
-	const string name()
+	const std::string name()
 	{ return "Assign"; }
 
 	Real evaluate();
@@ -533,7 +533,7 @@ public:
 	const TypeValue &type() const
 	{ return RealType::TheReal; }
 
-	ostream &print( ostream &os )
+	std::ostream &print( std::ostream &os )
 	{ variable->print(os); os << " := "; value->print(os); return os; }
 
 	bool checkType() const
@@ -548,7 +548,7 @@ private:
 
 /***************************************
 * class ListNode
-* Representa una lista de SysntaxNodes
+* Representa una std::lista de SysntaxNodes
 ***************************************/
 class ListNode: public SyntaxNode
 {
@@ -557,12 +557,12 @@ public:
 
 	~ListNode();	
 
-	const string name()
+	const std::string name()
 	{ return "ListNode"; }
 
 	Real evaluate();
 	
-	list<PortValue> getPortValues();
+	std::list<PortValue> getPortValues();
 
 	SyntaxNode *clone()
 	{ return new ListNode(NodeList); }
@@ -573,12 +573,12 @@ public:
 	const TypeValue &type() const
 	{ return RealType::TheReal; }
 
-	ostream &print(ostream &os);
+	std::ostream &print(std::ostream &os);
 
 	bool checkType() const;
 
 private:
-	typedef list<SyntaxNode *> SynNodeList;
+	typedef std::list<SyntaxNode *> SynNodeList;
 	
 	ListNode(SynNodeList &snl)
 	   : NodeList(snl)
@@ -609,7 +609,7 @@ public:
 	{ delete val; delete dly; delete boolExp;
 	  if (asgn != NULL) delete asgn; }
 
-	const string name()
+	const std::string name()
 	{return "RuleNode" ;}
 
 	SyntaxNode *clone()
@@ -622,9 +622,9 @@ public:
 
 	bool checkType() const;
 
-	ostream &print( ostream &os );
+	std::ostream &print( std::ostream &os );
 
-	list<PortValue> value()
+	std::list<PortValue> value()
 	{ return this->val->getPortValues(); }
 
 	Real assign()
@@ -649,7 +649,7 @@ public:
 	OpNode()
 	{}
 
-	const string name()
+	const std::string name()
 	{return "Operation" ;}
 
 	const TypeValue &type() const
@@ -686,7 +686,7 @@ public:
 		return op( this->child()->evaluate() );
 	}
 
-	const string name()
+	const std::string name()
 	{return "UnaryOp" ;}
 
 	SyntaxNode *child()
@@ -695,7 +695,7 @@ public:
 	SyntaxNode *clone()
 	{return new UnaryOpNode< Operation, ReturnType, ParameterType >( node ) ;}
 
-	ostream &print( ostream &os )
+	std::ostream &print( std::ostream &os )
 	{this->child()->print( os ) ; return os ;} 
 
 	bool checkType() const
@@ -749,7 +749,7 @@ public:
 		return op( left, this->right()->evaluate() );
 	}
 
-	const string name()
+	const std::string name()
 	{return "BinaryOp";}
 
 	SyntaxNode *left()
@@ -761,7 +761,7 @@ public:
 	SyntaxNode *clone()
 	{return new BinaryOpNode<Operation, ReturnType, ParameterType>( l, r );}
 
-	ostream &print( ostream &os )
+	std::ostream &print( std::ostream &os )
 	{this->left()->print( os ) << " BOP "; this->right()->print(os); return os ;}
 
 	bool checkType() const
@@ -809,7 +809,7 @@ public:
 		return op( this->child1()->evaluate(), this->child2()->evaluate(), this->child3()->evaluate() );
 	}
 
-	const string name()
+	const std::string name()
 	{return "ThreeOp" ;}
 
 	SyntaxNode *child1()
@@ -824,7 +824,7 @@ public:
 	SyntaxNode *clone()
 	{return new ThreeOpNode<Operation, ReturnType, ParameterType>( c1, c2, c3 ) ;}
 
-	ostream &print( ostream &os )
+	std::ostream &print( std::ostream &os )
 	{this->child1()->print( os ) << " ThreeOP " ;
 		this->child2()->print( os ) ;
 		this->child3()->print( os ) ;
@@ -880,7 +880,7 @@ public:
 		return op( this->child1()->evaluate(), this->child2()->evaluate(), this->child3()->evaluate(), this->child4()->evaluate() );
 	}
 
-	const string name()
+	const std::string name()
 	{return "FourOp" ;}
 
 	SyntaxNode *child1()
@@ -898,7 +898,7 @@ public:
 	SyntaxNode *clone()
 	{return new FourOpNode<Operation, ReturnType, ParameterType>( c1, c2, c3, c4 ) ;}
 
-	ostream &print( ostream &os )
+	std::ostream &print( std::ostream &os )
 	{this->child1()->print( os ) << " ThreeOP " ;
 		this->child2()->print( os ) ;
 		this->child3()->print( os ) ;
@@ -917,7 +917,7 @@ private:
 
 /********************************************
 * class SpecNode
-* Represent a list of rules.
+* Represent a std::list of rules.
 ********************************************/
 class SpecNode: public SyntaxNode
 {
@@ -927,7 +927,7 @@ public:
 
 	~SpecNode();
 
-	const string name()
+	const std::string name()
 	{return "SpecNode" ;}
 
 	SyntaxNode *clone()
@@ -947,21 +947,21 @@ public:
 
 	bool checkType() const ;
 
-	ostream &print( ostream &os ) ;
+	std::ostream &print( std::ostream &os ) ;
 
 	SpecNode &addRule( SyntaxNode *rule, int StochasticCondition ) ;
 
 	// ** Queries ** //
-	list<PortValue> value() const
+	std::list<PortValue> value() const
 	{return lastValue ;}
 
 	Real delay() const
 	{return lastDelay ;}
 
-	const string elseFunction() const
+	const std::string elseFunction() const
 	{ return ElseFunction ; }
 
-	void elseFunction( const string ef )
+	void elseFunction( const std::string ef )
 	{ ElseFunction = ef; }
 
 	const bool AnyUndef() const
@@ -979,11 +979,11 @@ private:
 		bool		StochasticNode;
 	} Rule;
 	
-	typedef list< Rule > RuleList;
+	typedef std::list< Rule > RuleList;
 	RuleList rules;
-	string ElseFunction ;
+	std::string ElseFunction ;
 	Real lastDelay; 
-	list<PortValue> lastValue;
+	std::list<PortValue> lastValue;
 	bool anyUndef, anyStochastic;
 
 } ; // SpecNode 
@@ -992,7 +992,7 @@ private:
 class InvalidEvaluation: public MException
 {
 public:
-	InvalidEvaluation( const string &text ): MException( text )
+	InvalidEvaluation( const std::string &text ): MException( text )
 	{}
 
 	InvalidEvaluation &addNeighborhood( const NeighborhoodValue & ) ;
@@ -1019,7 +1019,7 @@ public:
 	~CountNode()
 	{ delete sn; delete portName; }
 
-	const string name()
+	const std::string name()
 	{return "CountNode" ;}
 
 	SyntaxNode *clone()
@@ -1030,7 +1030,7 @@ public:
 	bool checkType() const
 	{return true ;}
 
-	ostream &print( ostream &os )
+	std::ostream &print( std::ostream &os )
 	{ return os << "Count " << value.value() << " on " << portName->getString(); }
 
 	const TypeValue &type() const
@@ -1167,7 +1167,7 @@ inline
 }
 
 inline
-	string StringNode::getString()
+	std::string StringNode::getString()
 {
 	if (EvalDebug().Active())
 		EvalDebug().Stream() << "Evaluate: String (PortName) = " << value << "\n";

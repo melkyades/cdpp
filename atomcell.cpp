@@ -21,6 +21,8 @@
 #include "strutil.h"       // function lowerCase
 #include "pmodeladm.h"
 
+using namespace std;
+
 // ** public data **
 const string AtomicCell::cellClassName( "AtomicCell" ) ;
 
@@ -224,7 +226,7 @@ bool AtomicCell::addOutputNCPort( string portName)
 * Function Name: createNCPorts
 * Description: Creates all the in and out NC ports
 ********************************************************************/
-void AtomicCell::createNCPorts( list<string> &portNames)
+void AtomicCell::createNCPorts( std::list<string> &portNames)
 {
 	list<string>::iterator cursor;
 	

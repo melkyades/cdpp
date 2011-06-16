@@ -18,12 +18,12 @@
 #include "cellpos.h"
 
 //For the draw log utility.
-bool parseLine( const char *l, VTime &current, const string &modelName,
-                CellPosition &posi, Real &value, const string &portName  );
+bool parseLine( const char *l, VTime &current, const std::string &modelName,
+                CellPosition &posi, Real &value, const std::string &portName  );
 
 bool isMessageLine( const char* l, int& LP, VTime &msgTime);
 
-bool isMessageLine( const char* l, int& LP, VTime &msgTime, string& msgType);
+bool isMessageLine( const char* l, int& LP, VTime &msgTime, std::string& msgType);
 
 
 

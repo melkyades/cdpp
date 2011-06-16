@@ -27,8 +27,8 @@ class CommChannel
 {
 public:
 	virtual ~CommChannel();	//Destructor
-	virtual string readLine() = 0 ;
-	virtual CommChannel &writeLine( const string & ) = 0 ;
+	virtual std::string readLine() = 0 ;
+	virtual CommChannel &writeLine( const std::string & ) = 0 ;
 
 protected:
 	CommChannel();	//Default constructor

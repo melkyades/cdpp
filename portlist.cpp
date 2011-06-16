@@ -14,6 +14,8 @@
 #include "portlist.h"
 #include "strutil.h"
 
+using namespace std;
+
 const Port *getPort( VirtualPortList *pl, string name)
 {
 	VirtualPortList::iterator	cursor;

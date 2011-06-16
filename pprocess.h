@@ -15,7 +15,7 @@
 #define __PPROCESSOR_H
 
 /** include files **/
-#include "fstream.h"
+#include <fstream>
 #include "SimulationObj.hh"		// SimulationObj
 #include "pProcessorState.h"	//ProcessorState
 #include "modelid.h"          	// class ModelId
@@ -92,9 +92,9 @@ public:
 		return nextChange() + lastChange();
 	}
 
-	const string asString() const ;
+	const std::string asString() const ;
 
-	virtual const string description() const;
+	virtual const std::string description() const;
 
 	static const ProcId InvalidId ;
 
@@ -143,13 +143,13 @@ protected:
 
 #ifndef KERNEL_TIMEWARP
 	//If the NoTime Kernel is used, create a FileQueue.
-	ostream** outFileQ;
+	std::ostream** outFileQ;
 #endif
 
 private:
 
 	void sendTWMessage(TWMessage*, const Message&, const ProcId &dest); //Sends a TWMessage
-	void writelog( const VTime&, const string& );
+	void writelog( const VTime&, const std::string& );
 
 	Model *mdl ;
 	ProcId ident ;
@@ -207,7 +207,7 @@ inline
 }
 
 inline
-	const string ParallelProcessor::asString() const
+	const std::string ParallelProcessor::asString() const
 {
 	return description() + "(" + id() + ")" ;
 }

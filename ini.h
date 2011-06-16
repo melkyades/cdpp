@@ -23,11 +23,12 @@
 /** include files **/
 #include <list>
 #include <map>
+#include <iostream> /// added by pocho
 #include "except.h"
 #include "tokit.h"
 
 /** forward declarations **/
-class istream;
+///class std::istream;   // commented by pocho
 
 /** declarations **/
 class Ini
@@ -35,28 +36,28 @@ class Ini
 public:
 	Ini() ;
 
-	typedef list< string > IdList;
-	typedef map< string, IdList, less< string > > DefList;
-	typedef map< string, DefList, less< string > > GroupList;
+	typedef std::list< std::string > IdList;
+	typedef std::map< std::string, IdList, std::less< std::string > > DefList;
+	typedef std::map< std::string, DefList, std::less< std::string > > GroupList;
 
-	string join( IdList & );
+	std::string join( IdList & );
 
-	Ini &parse( istream & );
-	Ini &parse( const string & );
+	Ini &parse( std::istream & );
+	Ini &parse( const std::string & );
 
-	Ini &save( ostream & );
-	Ini &save( const string & );
+	Ini &save( std::ostream & );
+	Ini &save( const std::string & );
 
 	const GroupList &groupList() const;
-	const DefList &group( const string & ) const;
-	const IdList &definition( const string &groupName, const string &defName ) const;
+	const DefList &group( const std::string & ) const;
+	const IdList &definition( const std::string &groupName, const std::string &defName ) const;
 
-	Ini &addGroup( const string &groupName ) ;
-	Ini &addDefinition( const string &groupName, const string &def ) ;
-	Ini &addId( const string &groupName, const string &def, const string &id ) ;
+	Ini &addGroup( const std::string &groupName ) ;
+	Ini &addDefinition( const std::string &groupName, const std::string &def ) ;
+	Ini &addId( const std::string &groupName, const std::string &def, const std::string &id ) ;
 
-	bool exists( const string &groupName, const string &defName ) const ;
-	bool exists( const string &groupName ) const ;
+	bool exists( const std::string &groupName, const std::string &defName ) const ;
+	bool exists( const std::string &groupName ) const ;
 
 private:
 	Ini( const Ini& ) ;
@@ -69,15 +70,15 @@ private:
 		id_TK
 	} ;
 
-	Token readToken( TokenIterator &, string & ) ;
-        bool isNumber( const string & );
+	Token readToken( TokenIterator &, std::string & ) ;
+        bool isNumber( const std::string & );
 };
 
 
 class IniException : public MException
 {
 protected:
-	IniException( const string &str = "Ini Exception" ): MException( str )
+	IniException( const std::string &str = "Ini Exception" ): MException( str )
 	{} ;
 };
 
@@ -93,7 +94,7 @@ public:
 class IniRequestException : public IniException
 {
 public:
-	IniRequestException( const string &msg ) : IniException( "Data not found!!!\nR(etry), I(gnore), P(anic)?" ) 
+	IniRequestException( const std::string &msg ) : IniException( "Data not found!!!\nR(etry), I(gnore), P(anic)?" ) 
 	{
 		this->addText( msg );
 	};

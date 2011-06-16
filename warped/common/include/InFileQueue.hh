@@ -26,7 +26,7 @@
 // $Id: InFileQueue.hh,v 1.2 1999/02/25 20:41:23 dmadhava Exp $
 //
 //------------------------------------------------------------------------
-#include <fstream.h>
+#include <fstream>
 #include "SortedList.hh"
 #include "InFileData.hh"
 

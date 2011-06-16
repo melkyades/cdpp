@@ -12,7 +12,7 @@
 #include "../rnd/MLCG.h"
 #endif
 
-#include <fstream.h>
+#include <fstream>
 #include <math.h>
 #include "InitObjectState.hh"
 #include "OceanEvent.hh"

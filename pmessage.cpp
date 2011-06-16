@@ -15,6 +15,7 @@
 #include "model.h"
 #include "pmodeladm.h"
 
+using namespace std;
 
 InitMessage* TWInitMessage::getMessage() {
 

@@ -18,36 +18,38 @@
 #define __STRUTIL_H
 
 #include <ctype.h>   // tolower 
-#include <stdio.h>
+#include <cstdio>
 #include <hash_map>
 #include "real.h"
 
-string lowerCase( const string &str );
-float str2float( const string &str );
-Value str2Value( const string &str );
+std::string lowerCase( const std::string &str );
+float str2float( const std::string &str );
+Value str2Value( const std::string &str );
 
-inline string Value2StrReal( const double f)
+inline std::string Value2StrReal( const double f)
 { Real r(f); return r.asString(); }
 
 inline float char2float( const char c )
 {return c - '0';}
 
-inline Real str2Real( const string &str )
+inline Real str2Real( const std::string &str )
 { return str[0] == '?' ? Real() : Real( str2Value(str)); }
 
-int str2Int( const string &str );
-string int2Str( int val );
-bool isNumeric( const string &str);
-bool isDigitOrSpace( const string &str );
-string trimSpaces( const string &str );
-string trimSpaces( const char *str );
-string substringLenght( const string str, int len );
-string upcase( const string str );
+int str2Int( const std::string &str );
+std::string int2Str( int val );
+bool isNumeric( const std::string &str);
+bool isDigitOrSpace( const std::string &str );
+std::string trimSpaces( const std::string &str );
+std::string trimSpaces( const char *str );
+std::string substringLenght( const std::string str, int len );
+std::string upcase( const std::string str );
+
+using namespace __gnu_cxx;
 
 class HashString
 {
 public:
-	size_t operator()(const string &str) const
+	size_t operator()(const std::string &str) const
 	{
 		hash<const char*> h;
 		return (h(str.c_str()));

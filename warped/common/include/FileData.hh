@@ -41,13 +41,13 @@ struct FileData {
 };
 
 inline
-ostream& operator<<(ostream& os, const FileData& e) {
+ostream& operator<<(std::ostream& os, const FileData& e) {
   os << "Time: " << e.time << " Length: " << e.length 
      << "\nLine: " << e.line;
   return os;
 }
 
-inline int FileDataCompareTime(const FileData *a, const FileData *b) {
+/*inline*/ int FileDataCompareTime(const FileData *a, const FileData *b) {
   if (a->time > b->time) {
     return 1;
   }

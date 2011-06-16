@@ -1,10 +1,10 @@
 /*******************************************************************
 *
-*  DESCRIPCION: Cola GenÈrica (on demand)
+*  DESCRIPCION: Cola Gen√©rica (on demand)
 *
 *  AUTORES:
 *  	    Ing. Carlos Giorgetti
-*          Iv·n A. Melgrati
+*          Iv√°n A. Melgrati
 *          Dra. Ana Rosa Tymoschuk
 *	    v2:Alejandro Troccoli
 *
@@ -19,7 +19,7 @@
 #ifndef __QUEUE_H
 #define __QUEUE_H
 
-#include <list.h>
+#include <list>
 #include "atomic.h"     	// class Atomic
 #include "atomicstate.h"	//
 #include "VTime.hh"
@@ -30,7 +30,7 @@ class QueueState : public AtomicState {
 
 public:
 
-	typedef list<Value> ElementList ;
+	typedef std::list<Value> ElementList ;
 	ElementList elements ;
 
 	QueueState(){};
@@ -45,8 +45,8 @@ public:
 class Queue : public Atomic
 {
 public:
-	Queue( const string &name = "Queue" );
-	virtual string className() const {  return "Queue" ;}
+	Queue( const std::string &name = "Queue" );
+	virtual std::string className() const {  return "Queue" ;}
 protected:
 	Model &initFunction();
 	Model &externalFunction( const ExternalMessage & );

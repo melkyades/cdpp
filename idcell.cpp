@@ -23,6 +23,7 @@
 #include "coupcell.h"	// CoupledCell
 #include "realfunc.h"	// calculateWithQuantum
 
+using namespace std;
 
 /***************************************
  * INERTIAL DELAY CELL STATE
@@ -152,7 +153,7 @@ Model &InertialDelayCell::externalFunction( const MessageBag &msgs )
 				holdIn( AtomicState::active, delay ) ;
 			else
 				// the coupled sets sigma to the reminder time until the next internal transition 
-				if( nextChange() > VTime::Zero && futureValue(pvCursor->first) != pvCursor->second)
+				if( VTime::Zero < nextChange() && futureValue(pvCursor->first) != pvCursor->second)
 					holdIn( AtomicState::active, delay ) ;
 			futureValue( pvCursor->first, pvCursor->second);
 		}

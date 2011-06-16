@@ -20,6 +20,8 @@
 #include "coupled.h"       // class Coupled
 #include "procadm.h"
 
+using namespace std;
+
 /*******************************************************************
 * Function Name: Coordinator
 ********************************************************************/

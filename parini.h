@@ -19,7 +19,7 @@
 #include "except.h"
 
 /** forward declarations **/
-class istream;
+class std::istream;
 
 /** declarations **/
 class PIni
@@ -27,22 +27,22 @@ class PIni
 public:
 	PIni() ;
 
-	typedef list< string > IdList;
-	typedef map< int, IdList, less< int > > MachineList;
+	typedef std::list< std::string > IdList;
+	typedef std::map< int, IdList, std::less< int > > MachineList;
 
-	string join( IdList & );
+	std::string join( IdList & );
 
-	Ini &parse( istream & );
-	Ini &parse( const string & );
+	Ini &parse( std::istream & );
+	Ini &parse( const std::string & );
 
-	Ini &save( ostream & );
-	Ini &save( const string & );
+	Ini &save( std::ostream & );
+	Ini &save( const std::string & );
 
 	const MachineList &machines() const;
 	const IdList &machine( const int idMachine ) const;
 
 	Ini &addMachine( const int idMachine ) ;
-	Ini &addDependent( const int idMachine, const string &dependent ) ;
+	Ini &addDependent( const int idMachine, const std::string &dependent ) ;
 
 	bool exists( const int idMachine) const ;
 
@@ -58,7 +58,7 @@ private:
 class PIniException : public MException
 {
 protected:
-	PIniException( const string &str = "Parallel Ini Exception" ): MException( str )
+	PIniException( const std::string &str = "Parallel Ini Exception" ): MException( str )
 	{} ;
 };
 

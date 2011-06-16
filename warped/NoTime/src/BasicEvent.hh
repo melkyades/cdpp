@@ -29,10 +29,10 @@
 
 #include "NoTime.hh"
 #include "SimulationTime.hh"
-#include <iostream.h>
+#include <iostream>
 
 class BasicEvent {
-	friend ostream& operator<<(ostream&, const BasicEvent &);
+	friend std::ostream& operator<<(std::ostream&, const BasicEvent &);
 public:
 	BasicEvent() {}
 

@@ -24,8 +24,8 @@
 class Trafico : public Atomic
 {
 public:
-	Trafico( const string &name = "Trafico" );	// Default constructor
-	virtual string className() const ;
+	Trafico( const std::string &name = "Trafico" );	// Default constructor
+	virtual std::string className() const ;
 
 protected:
 	Model &initFunction();

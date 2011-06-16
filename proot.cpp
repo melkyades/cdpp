@@ -20,6 +20,7 @@
 #include "parsimu.h"   // class ParallelMainSimulator
 #include "log.h"	//class Log
 
+using namespace std;
 
 /** public **/
 /*******************************************************************

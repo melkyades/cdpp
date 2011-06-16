@@ -18,8 +18,8 @@
 *******************************************************************/
 
 /** include files **/
-#include <fstream.h>
-#include <strstream.h>
+#include <fstream>
+#include <strstream>
 #include "parsimu.h"   // base header
 #include "stdasimu.h"	// StandAloneMainSimulator
 #include "parsimu.h"	// ParallelMainSimulator
@@ -31,6 +31,8 @@
 #include "flatcoup.h"   // class FlatCoupledCell
 #include "tdcell.h"	//
 #include "idcell.h"	//
+
+using namespace std;
 
 ParallelMainSimulator* ParallelMainSimulator::instance(NULL);
 

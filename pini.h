@@ -16,12 +16,13 @@
 /** include files **/
 #include <list>
 #include <map>
+#include <iostream>  /// added by pocho
 #include "machineid.h"	//type MachineId
 #include "except.h"
 #include "tokit.h"
 
 /** forward declarations **/
-class istream;
+//class std::istream;   /// commented by pocho
 
 /** declarations **/
 class PIni
@@ -29,20 +30,20 @@ class PIni
 public:
 	PIni() ;
 
-	typedef list< string > IdList;
-	typedef map< MachineId, IdList, less< int > > MachineList;
+	typedef std::list< std::string > IdList;
+	typedef std::map< MachineId, IdList, std::less< int > > MachineList;
 
-	PIni &parse( istream & );
-	PIni &parse( const string & );
+	PIni &parse( std::istream & );
+	PIni &parse( const std::string & );
 
-	PIni &save( ostream & );
-	PIni &save( const string & );
+	PIni &save( std::ostream & );
+	PIni &save( const std::string & );
 
 	const MachineList &machines() const;
 	const IdList &machine( const MachineId idMachine ) const;
 
 	PIni &addMachine( const MachineId idMachine ) ;
-	PIni &addDependent( const MachineId idMachine, const string &dependent ) ;
+	PIni &addDependent( const MachineId idMachine, const std::string &dependent ) ;
 	
 
 	bool exists( const MachineId idMachine) const ;
@@ -59,7 +60,7 @@ private:
 		id_TK
 	} ;
 
-	Token readToken( TokenIterator &, string & ) ;
+	Token readToken( TokenIterator &, std::string & ) ;
 
 };
 
@@ -67,7 +68,7 @@ private:
 class PIniException : public MException
 {
 protected:
-	PIniException( const string &str = "Parallel Ini Exception" ): MException( str )
+	PIniException( const std::string &str = "Parallel Ini Exception" ): MException( str )
 	{} ;
 };
 
@@ -82,7 +83,7 @@ public:
 class PIniRequestException : public PIniException
 {
 public:
-	PIniRequestException ( const string &msg ) : PIniException( "Data not found!!!\n R(etry), I(gnore), P(anic) ?") {
+	PIniRequestException ( const std::string &msg ) : PIniException( "Data not found!!!\n R(etry), I(gnore), P(anic) ?") {
 		this->addText ( msg);
 	};
 };

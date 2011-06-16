@@ -16,6 +16,8 @@
 #include "pini.h"
 #include "logparser.h"
 
+using namespace std;
+
 void showHelp()
 {
 	cout << "PARLOG: An utility to determine the level of parallelism" << endl;

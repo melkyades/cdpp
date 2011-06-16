@@ -15,13 +15,15 @@
 *******************************************************************/
 
 // ** include files **//
-#include <iostream.h>
+#include <iostream>
 #include "parser.h"        // class Parser
 #include "synnode.h"       // class SyntaxNode
 #include "gram.h"          // defines AND, OR, etc
 #include "strutil.h"       // lowercase
 #include "tbool.h"         // TValBool
 #include "mathincl.h"	   // Constants M_PI and M_E
+
+using namespace std;
 
 // ** The prefix character for the state variables ** //
 #define VAR_PREFIX      '$'

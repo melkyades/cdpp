@@ -14,11 +14,14 @@
 #include <strstream>
 #include <fstream>
 #include <unistd.h>
-#include <time.h>
+#include <ctime>
+#include <cstring>
 #include "ini.h"     // Class Ini
 #include "VTime.hh"    // Class VTime
 #include "strutil.h" // str2Int y str2Real
 #include "cellstate.h"
+
+using namespace std;
 
 // ** main ** //
 void showHelp()

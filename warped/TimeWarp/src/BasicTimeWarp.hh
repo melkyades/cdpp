@@ -34,8 +34,8 @@
 #include "OutputQueue.hh"
 #include "ObjectRecord.hh"
 #include "KernelMsgs.hh"
-#include <fstream.h>
-#include <stdlib.h>
+#include <fstream>
+#include <cstdlib>
 #include "StateManagerInclude.hh"
 
 /// forward declaration of the LTSFScheduler class
@@ -214,7 +214,7 @@ public:
 #ifdef STATS
   ofstream *fileHandle;
   virtual void setStatsFile(ofstream *statsfile){
-    cerr << "Error: This function shouldn't be called" << endl;
+    cerr << "Error: This function shouldn't be called" << std::endl;
   }
 #endif  
 

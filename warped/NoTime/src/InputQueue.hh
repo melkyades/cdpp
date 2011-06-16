@@ -28,7 +28,7 @@
 //
 //---------------------------------------------------------------------------
 
-#include <iostream.h>
+#include <iostream>
 #include "SimulationTime.hh"
 #include "NoTime.hh"
 
@@ -51,7 +51,7 @@ public:
   BasicEvent* removeAlreadyProcessedEvents();
   void removeAllElements();
   
-  void printList(ostream& os = cout);
+  void printList(std::ostream& os = std::cout);
 
 private:
   BasicEvent* head;

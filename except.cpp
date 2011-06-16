@@ -21,6 +21,8 @@
 #include "except.h"
 #include "macroexp.h"
 
+using namespace std;
+
 ostream &MException::print( ostream &out ) const
 {
 	out << "Exception " << this->type() << " thrown!" << endl

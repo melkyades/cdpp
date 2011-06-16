@@ -32,7 +32,7 @@
 
 
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <new.h>
 #include "warped.hh"
 #include "config.hh"

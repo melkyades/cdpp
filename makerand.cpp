@@ -14,12 +14,15 @@
 #include <strstream>
 #include <fstream>
 #include <unistd.h>
-#include <time.h>
-#include <stdlib.h>
+#include <ctime>
+#include <cstdlib>
+#include <cstring>
 #include "ini.h"     // Class Ini
 #include "VTime.hh"    // Class VTime
 #include "strutil.h" // str2Int y str2Real
 #include "cellstate.h"
+
+using namespace std;
 
 // ** main ** //
 static const unsigned long unifc = 1234567891;  // Estos son los valores de la

@@ -29,7 +29,7 @@
 
 #include "CommPhyMPI.hh"
 #include <malloc.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <iostream.h>
 
 extern "C" {
