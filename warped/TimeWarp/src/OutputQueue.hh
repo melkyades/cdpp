@@ -51,7 +51,7 @@ public:
 
   BasicEvent*  find(VTime, findMode_t = EQUAL );  // nicer interface to find.
 
-  void setFile(ofstream *outfile) {
+  void setFile(std::ofstream *outfile) {
     lpFile = outfile;
   };
 

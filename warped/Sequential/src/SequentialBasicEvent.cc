@@ -29,6 +29,8 @@
 //---------------------------------------------------------------------------
 #include "BasicEvent.hh"
 
+using namespace std;
+
 ostream&
 operator<<(ostream& os, const BasicEvent& e) {
   os << "sTime: " << e.sendTime << " rTime: " << e.recvTime << " sendID: " 

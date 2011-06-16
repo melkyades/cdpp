@@ -124,11 +124,11 @@ public:
   void printQ(){stateQ.print();};
   
   ofstream *lpFile;
-  void setFile(ofstream*);
+  void setFile(std::ofstream*);
   
 #ifdef STATS
   ofstream *statsFile;
-  void setStatsFile (ofstream *statsfile) { statsFile = statsfile;};
+  void setStatsFile (std::ofstream *statsfile) { statsFile = statsfile;};
 #endif
 
   BasicState*    current;	// the object's current state

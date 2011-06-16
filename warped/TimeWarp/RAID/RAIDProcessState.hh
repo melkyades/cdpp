@@ -50,12 +50,12 @@ public:
   RAIDProcessState();
 
   RAIDProcessState( const RAIDProcessState& );
-  void serialize(ofstream*, int);
-  void deserialize(ifstream*);
+  void serialize(std::ofstream*, int);
+  void deserialize(std::ifstream*);
   // this is needed to copy User State
   RAIDProcessState& operator=(RAIDProcessState&);
   void print(ostream& os);
-  void print(ofstream& os);
+  void print(std::ofstream& os);
 
   ~RAIDProcessState();
   

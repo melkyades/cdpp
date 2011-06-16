@@ -65,7 +65,7 @@ public:
 
 #ifdef STATEDEBUG
 	ofstream *outFile;
-	void setStateFile (ofstream *outfile) {
+	void setStateFile (std::ofstream *outfile) {
 		outFile = outfile;
 	}
 #endif

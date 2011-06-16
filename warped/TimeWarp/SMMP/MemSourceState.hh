@@ -55,8 +55,8 @@ public:
   int numTokens;
   int maxTokens;
  
-  void serialize(ofstream* ckFile, int mysize);
-  void deserialize(ifstream* inFile);
+  void serialize(std::ofstream* ckFile, int mysize);
+  void deserialize(std::ifstream* inFile);
   MemSourceState& operator=(MemSourceState& thisState);
   void copyState(BasicState *);
   int  getSize() const;

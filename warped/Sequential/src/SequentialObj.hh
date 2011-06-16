@@ -28,7 +28,6 @@
 // $Id: SequentialObj.hh,v 1.2 1999/10/28 04:55:47 mal Exp $
 //
 //---------------------------------------------------------------------------
-#include <new.h>
 
 #include "DefaultVTime.hh"
 #include "SimulationTime.hh"
@@ -41,6 +40,8 @@
 #include "BasicState.hh"
 #include "warped.hh"
 #include "SequentialInputQueue.hh"
+
+#include <new>
 
 class BasicEvent;
 
@@ -66,7 +67,7 @@ public:
   virtual void initialize() {};
   virtual void finalize() {};
 #ifdef LPDEBUG
-  void setFile(ofstream *outFile){
+  void setFile(std::ofstream *outFile){
     lpFile = outFile ; // lpfile is declared in BaseSequential
   }
 #endif

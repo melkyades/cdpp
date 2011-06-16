@@ -48,8 +48,8 @@ public:
   ForkState& operator=(ForkState& thisState);
   void copyState(BasicState *);
   int getSize() const;
-  void serialize(ofstream*, int);
-  void deserialize(ifstream*);
+  void serialize(std::ofstream*, int);
+  void deserialize(std::ifstream*);
   
   MLCG *gen ;
   int lastOutput;

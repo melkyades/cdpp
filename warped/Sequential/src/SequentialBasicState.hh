@@ -72,8 +72,8 @@ public:
   // The following functions needs to know the size of the object
   // to serialize.
   
-  virtual void serialize(ofstream* ckFile, int);
-  virtual void deserialize(ifstream* inFile);
+  virtual void serialize(std::ofstream* ckFile, int);
+  virtual void deserialize(std::ifstream* inFile);
   
   
   virtual void copyState( BasicState * );

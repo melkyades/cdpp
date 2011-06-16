@@ -47,15 +47,15 @@ public:
   SortedList( int (*)(const Element*, const Element*) );  // construct with compare func
   virtual ~SortedList();
 
-  ofstream* lpFile;
+  std::ofstream* lpFile;
   
-  virtual void setFile(ofstream *outfile);
+  virtual void setFile(std::ofstream *outfile);
 
   void setFunc( int (*)(const Element*, const Element*) );
-  int size() { return std::listsize;};
+  int size() { return listsize;};
   Element* front();
   Element* back();
-  Element* seek (int, std::listMode_t);
+  Element* seek (int, listMode_t);
   virtual void insert(Element*);
   Element* get() const;
   Element* removeFind();
@@ -91,7 +91,7 @@ public:
     insertPos = NULL;
     currentPos = NULL;
     tmpPos = NULL;
-    std::listsize = 0;
+    listsize = 0;
   };
 
   int memoryUseage;
@@ -104,7 +104,7 @@ protected:
   Container< Element > *currentPos;
   Container< Element > *tmpPos;
   int (*compare)(const Element*, const Element*);
-  int std::listsize;
+  int listsize;
 
 private:
 

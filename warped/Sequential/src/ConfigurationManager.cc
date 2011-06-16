@@ -2,6 +2,8 @@
 #include "SplayTree.hh"
 #include "SequentialInputQueue.hh"
 
+using namespace std;
+
 int ConfigurationManager::inputQConfigFileOpen = 0;
 
 ifstream ConfigurationManager::inputQConfigFile;

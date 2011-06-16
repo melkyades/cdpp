@@ -28,6 +28,8 @@
 //
 //---------------------------------------------------------------------------
 
+using namespace std;
+
 template < class Element >
 inline SortedList < Element >::SortedList() {
   head = NULL;

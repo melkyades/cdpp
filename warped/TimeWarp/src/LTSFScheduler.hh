@@ -45,7 +45,7 @@ public:
 	int id;
 #ifdef LPDEBUG
   ofstream* outFile;
-  void setFile(ofstream* tempOutFile) {
+  void setFile(std::ofstream* tempOutFile) {
     outFile = tempOutFile;
   }
 #endif

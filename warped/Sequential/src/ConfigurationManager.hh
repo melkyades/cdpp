@@ -49,7 +49,7 @@ private:
 
   enum InputQType { LINEARQ, SPLAYTREE};
 
-  static ifstream inputQConfigFile;
+  static std::ifstream inputQConfigFile;
   static int inputQConfigFileOpen;
 
   void openInputQConfigFile();

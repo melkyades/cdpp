@@ -33,9 +33,9 @@
 
 #include <iostream>
 #include <strstream>
-#include <std::string.h>
+#include <string.h>
 #include <values.h>
-#include <ctype>
+#include <ctype.h>
 #include <cstdlib>
 
 // #if !defined (__GNUC_MINOR__) || __GNUC_MINOR__ < 6
@@ -66,7 +66,7 @@ MIN_FUNC(const type& x, const type& y) {
 }
 
 enum SIGN       {POSITIVE, NEGATIVE};
-enum std::listMode_t {START, CURRENT, END};
+enum listMode_t {START, CURRENT, END};
 enum findMode_t {LESS, LESSEQUAL, EQUAL, GREATEREQUAL, GREATER};
 
 

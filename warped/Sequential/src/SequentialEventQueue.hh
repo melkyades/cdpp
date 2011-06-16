@@ -48,8 +48,8 @@ public:
   SequentialEventQueue();
   ~SequentialEventQueue();
   
-  ofstream* lpFile;
-  void setFile(ofstream *outfile) {
+  std::ofstream* lpFile;
+  void setFile(std::ofstream *outfile) {
     lpFile = outfile;
   }
   
@@ -82,8 +82,8 @@ public:
 	    currentPos);
   }
   
-  int size() { return std::listsize;};
-  Element* seek (int, std::listMode_t);
+  int size() { return listsize;};
+  Element* seek (int, listMode_t);
   void insert(Element*);
   
   inline Element* get() const  {
@@ -119,7 +119,7 @@ public:
   Element* insertPos;
   Element* currentPos;
   Element* findPos;
-  int std::listsize;
+  int listsize;
   
 private:
   

@@ -59,7 +59,7 @@ public:
   static InputQInterface inputQ;
   
 #ifdef LPDEBUG
-  virtual void setFile(ofstream *) {
+  virtual void setFile(std::ofstream *) {
     cerr << name << ": Error! BaseSequential::setFile called!" << std::endl;
     abort();
   };

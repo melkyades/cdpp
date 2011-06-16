@@ -31,6 +31,8 @@
 
 #include "BasicState.hh"
 
+using namespace std;
+
 BasicState& 
 BasicState::operator=(BasicState& bs) {
   lVT          = bs.lVT;

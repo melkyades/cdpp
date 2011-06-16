@@ -107,10 +107,10 @@ public:
   };
 #endif
   
-  void setFile(ofstream *outfile);
+  void setFile(std::ofstream *outfile);
 
 #ifdef STATEDEBUG
-  void setStateFile(ofstream *outfile);
+  void setStateFile(std::ofstream *outfile);
 #endif
 
 #ifdef DC_DEBUG
@@ -156,7 +156,7 @@ public:
 
 #ifdef STATS
 
-  void setStatsFile (ofstream *statsfile) {
+  void setStatsFile (std::ofstream *statsfile) {
     fileHandle = statsfile;
     state->setStatsFile(fileHandle);
   };

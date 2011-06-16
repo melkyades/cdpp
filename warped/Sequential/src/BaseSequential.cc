@@ -31,6 +31,7 @@
 
 #include "BaseSequential.hh"
 
+using namespace std;
 
 InputQInterface BaseSequential::inputQ ;
 

@@ -175,10 +175,10 @@ public:
   /// open a file
   virtual void openFile();
   /// set the output file stream
-  virtual void setFile(ofstream *);
+  virtual void setFile(std::ofstream *);
 
 #ifdef STATEDEBUG
-  virtual void setStateFile(ofstream *);
+  virtual void setStateFile(std::ofstream *);
 #endif
 
   //@} // end of Public Class Methods
@@ -213,7 +213,7 @@ public:
 
 #ifdef STATS
   ofstream *fileHandle;
-  virtual void setStatsFile(ofstream *statsfile){
+  virtual void setStatsFile(std::ofstream *statsfile){
     cerr << "Error: This function shouldn't be called" << std::endl;
   }
 #endif  

@@ -30,6 +30,8 @@
 
 #include "SequentialEventQueue.hh"
 
+using namespace std;
+
 SequentialEventQueue::SequentialEventQueue() {
   head       = NULL;
   tail       = NULL;

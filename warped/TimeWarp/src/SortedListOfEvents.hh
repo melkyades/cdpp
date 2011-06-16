@@ -55,7 +55,7 @@ public:
   ~SortedListOfEvents();
 
   ofstream* lpFile;
-  void setFile(ofstream *outfile) {
+  void setFile(std::ofstream *outfile) {
     lpFile = outfile;
   };
 

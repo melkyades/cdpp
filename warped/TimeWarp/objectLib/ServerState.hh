@@ -49,8 +49,8 @@ public:
   ServerState& operator=(ServerState& thisState);
   void copyState(BasicState *);
   int getSize() const;
-  void serialize(ofstream*, int);
-  void deserialize(ifstream*);
+  void serialize(std::ofstream*, int);
+  void deserialize(std::ifstream*);
 };
 
 #endif

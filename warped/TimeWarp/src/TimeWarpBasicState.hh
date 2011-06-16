@@ -64,14 +64,14 @@ public:
   virtual ~BasicState(){};
   virtual BasicState& operator=(BasicState&);
   virtual void print(ostream& os);
-  virtual void print(ofstream& os);
+  virtual void print(std::ofstream& os);
   
   // The following functions needs to know the size of the object
   // to serialize.
   
-  virtual void serialize(ofstream* ckFile, int);
-  virtual void deserialize(ifstream* inFile);
-  virtual void deserialize(ifstream* inFile, BasicTimeWarp*) {
+  virtual void serialize(std::ofstream* ckFile, int);
+  virtual void deserialize(std::ifstream* inFile);
+  virtual void deserialize(std::ifstream* inFile, BasicTimeWarp*) {
     deserialize(inFile);
   };
   
@@ -105,7 +105,7 @@ BasicState::getSize() const {
 }
 
 inline void
-BasicState::serialize(ofstream *ckFile, int size) {
+BasicState::serialize(std::ofstream *ckFile, int size) {
   char *charPtr;
   
   *ckFile << size << CHECKPOINT_DELIMITER;
@@ -115,7 +115,7 @@ BasicState::serialize(ofstream *ckFile, int size) {
 }
 
 inline void
-BasicState::deserialize(ifstream *inFile) {
+BasicState::deserialize(std::ifstream *inFile) {
   char delimiter;
   int size;
 
