@@ -96,7 +96,7 @@ public:
 	std::string asString() const ;
 
 	float asMsecs() const
-		{ return mseconds() + seconds() * 1000 + minutes() * 60000 + hours() * 3600 * 1000; }
+		{ return remaining() + (mseconds() + seconds() * 1000 + minutes() * 60000 + hours() * 3600 * 1000); }
 
 	friend std::istream &operator >>( std::istream &is, VTime &t );
 
