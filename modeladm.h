@@ -61,7 +61,7 @@ public:
 	AtomicType registerAtomic( const NewFunction &f, const std::string & );
 	
 	//Functions for accesing the ModelDB.
-	typedef std::map< std::string, Model *, less < std::string > > ModelDB;
+	typedef std::map< std::string, Model *, std::less < std::string > > ModelDB;
 	
 	const ModelDB &models() const;
 	virtual Model& model( const std::string modelName );	
