@@ -7,6 +7,7 @@ export CC=gcc
 export AR=ar
 export YACPP=yacc
 
+
 #export DEFINES_CPP += -DNEWCOORDIN
 #===========================================================================
 #PCD++ Directory Details
@@ -14,6 +15,8 @@ export YACPP=yacc
 #export MAINDIR=$(dir $(lastword $(MAKEFILE_LIST)))
 export MAINDIR=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 export INCLUDES_CPP +=-I$(MAINDIR)/include
+export INCLUDES_CPP += -I$(MAINDIR)
+export LDFLAGS += -L$(MAINDIR)
 
 #If running parallel simulation, uncomment the following lines
 #export DEFINES_CPP += -DMPI 
@@ -45,9 +48,9 @@ export TWLIB = libNoTime.a
 
 #Common defines
 export TWOBJ=$(TWDIR)/obj
-export COMMON=./warped/common
+export COMMON=$(MAINDIR)/warped/common
 export DEFINES_CPP += -DUSE_USER_VTIME -DHAS_BOOLEAN
-export INCLUDES_CPP += -I$(TWDIR) -I$(TWDIR)/../../common/include
+export INCLUDES_CPP += -I$(TWDIR) -I$(COMMON)/include
 export LDFLAGS += -L$(TWOBJ)/
 #export DEPENDINC = -I/usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include
 #export DEPENDINC = -I$(GCC_HOME)/usr/lib/gcc-lib/i386-redhat-linux/2.96/include
@@ -90,7 +93,7 @@ export DEFINES_CPP += -DDEVS_NOTRANDOM
 
 #============================================================================
 # Optimized Code - Requires more virtual memory.
-export CPPFLAGS += -O3
+#export CPPFLAGS += -O3
 #============================================================================
 
 # gcc < 2.8.x 
@@ -107,7 +110,7 @@ export CPPFLAGS += -Wall -Wno-deprecated
 #export CPPFLAGS += -w
 
 # Include information for GDB:
-#export CPPFLAGS += -g
+export CPPFLAGS += -g
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # The next flag must be actived ONLY if we are compiling under Windows 95 !!!!
