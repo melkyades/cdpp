@@ -32,7 +32,7 @@ typedef int MSeconds ;
 class VTime
 {
 public:
-	VTime( Hours h = 0, Minutes m = 0, Seconds s = 0, MSeconds ms = 0, double remaining = 0. )
+	explicit VTime( Hours h = 0, Minutes m = 0, Seconds s = 0, MSeconds ms = 0, double remaining = 0. )
 		: hour( h )
 		, min( m )
 		, sec( s )
@@ -40,16 +40,16 @@ public:
 		, rem(remaining)
 		{ normalize(); }
 
-	VTime( const std::string &t )
+	explicit VTime( const std::string &t )
 		{ makeFrom(t); }
 		
-	/* VTime( float mseconds )
+	explicit VTime( float mseconds )
 		: hour( 0 )
 		, min( 0 )
 		, sec( 0 )
 		, msec( 0 )
 		, rem( 0.0 )
-		{ makeFrom( mseconds ); } */
+		{ makeFrom( mseconds ); }
 	
 	VTime( const VTime & ) ; // copy constructor
 
@@ -60,13 +60,14 @@ public:
 	VTime &mseconds( const MSeconds & ) ;
 	VTime &remaining( const double & );
 
-	// ** Queries ** // 
+	// ** Queries ** //
+private:
 	const Hours    &hours() const ;
 	const Minutes  &minutes() const ;
 	const Seconds  &seconds() const ;
 	const MSeconds &mseconds() const ;
 	const double   &remaining() const;
-
+public:
 	VTime operator +( const VTime & ) const ;	// addition operator
 	VTime operator -( const VTime & ) const ;	// substraction operator
 	VTime operator * (const int &mult) const;	// multiplication by an integer
