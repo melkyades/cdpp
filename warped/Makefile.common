@@ -1,6 +1,7 @@
 # Generated automatically from Makefile.common.in by configure.
 export LIBS = -lm 
-export CFLAGS=-g -O2
+export CFLAGS=-g -O0
+#-O2
 export CPPFLAGS+=-I.  -DHAS_BOOLEAN -DOLD_STYLE_FRIENDS
 export LDFLAGS=
 export INSTALL = /usr/bin/install -c

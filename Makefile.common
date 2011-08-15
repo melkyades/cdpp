@@ -13,8 +13,8 @@ export YACPP=yacc
 #export MAINDIR=$(HOME)/cd++/dev
 #export MAINDIR=$(dir $(lastword $(MAKEFILE_LIST)))
 export MAINDIR=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-export INCLUDES_CPP +=-I$(MAINDIR)/include
-
+export INCLUDES_CPP +=-I$(MAINDIR)/include -I$(MAINDIR)
+export LDFLAGS += -L$(MAINDIR)/
 #If running parallel simulation, uncomment the following lines
 #export DEFINES_CPP += -DMPI 
 #export LIBMPI = -lmpich
@@ -90,7 +90,7 @@ export DEFINES_CPP += -DDEVS_NOTRANDOM
 
 #============================================================================
 # Optimized Code - Requires more virtual memory.
-export CPPFLAGS += -O3
+#export CPPFLAGS += -O3
 #============================================================================
 
 # gcc < 2.8.x 
@@ -107,7 +107,7 @@ export CPPFLAGS += -Wall -Wno-deprecated
 #export CPPFLAGS += -w
 
 # Include information for GDB:
-#export CPPFLAGS += -g
+export CPPFLAGS += -g -O0
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # The next flag must be actived ONLY if we are compiling under Windows 95 !!!!
