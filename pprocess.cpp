@@ -197,6 +197,7 @@ bool ParallelProcessor::rollbackCheck( const VTime& currentTime )
 	{
 		externalMsgs.eraseAll();
 		rollback = true;
+		cout << "Rolling back, current time: " << currentTime << " last time: " << lastMsgTime << endl;
 	} 
 	else
 	{
